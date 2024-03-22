@@ -44,6 +44,8 @@ namespace World.Chunks
         /// </summary>
         public void SetTile(int x, int y, in TileData tile)
         {
+            Debug.Assert(x >= 0 && x < _chunkSizePixels, $"X position {x} is out of bounds");
+            Debug.Assert(y >= 0 && y < _chunkSizePixels, $"Y position {y} is out of bounds");
             int index = GetArrayIndex(x, y);
             _tiles[index] = tile.ID;
             _pixels[index] = tile.Color;
