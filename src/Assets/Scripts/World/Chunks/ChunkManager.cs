@@ -68,6 +68,42 @@ namespace World.Chunks
         }
         
         
+        public bool ContainsNonAirTilesInRange(Vector2 centerPosition, int radius)
+        {
+            int chunkCount = GetNeighbouringChunks(centerPosition, _chunkNeighbourhoodBuffer);
+            
+            for (int i = 0; i < chunkCount; i++)
+            {
+                Chunk chunk = _chunkNeighbourhoodBuffer[i];
+                if (chunk == null)
+                    continue;
+                
+                Vector2Int chunkPosition = chunk.Position;
+                Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, centerPosition);
+                
+                UVToTileCoordinates(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
+                
+                for (int x = -radius; x <= radius; x++)
+                {
+                    for (int y = -radius; y <= radius; y++)
+                    {
+                        int tilePosX = centerTileRelativeX + x;
+                        int tilePosY = centerTileRelativeY + y;
+                        
+                        // Skip tiles outside of this chunk.
+                        if (tilePosX < 0 || tilePosY < 0 || tilePosX >= Constants.CHUNK_SIZE_PIXELS || tilePosY >= Constants.CHUNK_SIZE_PIXELS)
+                            continue;
+                        
+                        if (chunk.GetTile(tilePosX, tilePosY) != 0)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BreakTilesInRange(Span<uint> replacedTiles, Vector2 centerPosition, int radius)
         {

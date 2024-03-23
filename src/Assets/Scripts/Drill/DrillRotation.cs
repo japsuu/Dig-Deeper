@@ -23,6 +23,7 @@ namespace Drill
         private float _rotationEndTweenDuration = 2f;
 
         private float _rotationSpeed;
+        private float _rotationSpeedFactor;
 
         public bool IsEnabled { get; private set; }
         
@@ -43,6 +44,12 @@ namespace Drill
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+        
+        
+        public void SetSpeedFactor(float factor)
+        {
+            _rotationSpeedFactor = factor;
+        }
 
 
         private float GetRotationSpeed() => _rotationSpeed;
@@ -54,7 +61,7 @@ namespace Drill
             if (!IsEnabled)
                 return;
             
-            float rotation = Input.GetAxis("Horizontal") * _rotationSpeed * Time.deltaTime;
+            float rotation = Input.GetAxis("Horizontal") * _rotationSpeed * _rotationSpeedFactor * Time.deltaTime;
             transform.Rotate(Vector3.forward, rotation);
 
             // Clamp the rotation to prevent the player from going back to the surface.

@@ -5,7 +5,7 @@ namespace Drill
     public class DrillHead : TerrainDigger
     {
         private const int BREAK_INTERVAL_FRAMES_CUTSCENE = 2;
-        private const int BREAK_INTERVAL_FRAMES = 10;
+        private const int BREAK_INTERVAL_FRAMES = 8;
 
         private DrillInventory _inventory;
 
@@ -27,7 +27,7 @@ namespace Drill
         public void SetEnabled(bool isEnabled)
         {
             IsEnabled = isEnabled;
-            BreakIntervalFrames = BREAK_INTERVAL_FRAMES;
+            BreakIntervalFrames = isEnabled ? BREAK_INTERVAL_FRAMES : BREAK_INTERVAL_FRAMES_CUTSCENE;
         }
 
 

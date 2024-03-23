@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace World.Chunks
 {
+    /// <summary>
+    /// Component that removes terrain tiles in a radius around it.
+    /// </summary>
     public class TerrainDigger : MonoBehaviour
     {
         [SerializeField]

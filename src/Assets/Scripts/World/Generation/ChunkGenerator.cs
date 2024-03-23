@@ -4,6 +4,7 @@ using Materials;
 using NaughtyAttributes;
 using Thirdparty;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World.Chunks;
 
@@ -27,18 +28,22 @@ namespace World.Generation
         [SerializeField]
         private int _groundLevel;
 
+        [FormerlySerializedAs("_caveNoiseSettings")]
         [Header("Noise")]
         [SerializeField]
-        private NoiseFieldSettings _caveNoiseSettings;
+        private NoiseFieldSettings _densityNoiseSettings;
 
+        [FormerlySerializedAs("_noise1Settings")]
         [SerializeField]
-        private NoiseFieldSettings _noise1Settings;
+        private NoiseFieldSettings _temperatureSettings;
 
+        [FormerlySerializedAs("_noise2Settings")]
         [SerializeField]
-        private NoiseFieldSettings _noise2Settings;
+        private NoiseFieldSettings _pressureSettings;
 
+        [FormerlySerializedAs("_noise3Settings")]
         [SerializeField]
-        private NoiseFieldSettings _noise3Settings;
+        private NoiseFieldSettings _tectonicsSettings;
 
         [SerializeField]
         [Range(0f, 1f)]
@@ -54,9 +59,9 @@ namespace World.Generation
 
         private TileDatabase _tileDatabase;
         private FastNoiseLite _caveNoise;
-        private FastNoiseLite _noise0;
-        private FastNoiseLite _noise1;
-        private FastNoiseLite _noise2;
+        private FastNoiseLite _temperatureNoise;
+        private FastNoiseLite _pressureNoise;
+        private FastNoiseLite _tectonicsNoise;
         private Queue<Chunk> _chunksToGenerate;
 
 
@@ -121,58 +126,58 @@ namespace World.Generation
                     float densityC10 = GetNoiseValue(_caveNoise, brickWorldXExt, brickYWorld);
                     float densityC01 = GetNoiseValue(_caveNoise, brickXWorld, brickWorldYExt);
                     float densityC11 = GetNoiseValue(_caveNoise, brickWorldXExt, brickWorldYExt);
-                    float noise0C00 = GetNoiseValue(_noise0, brickXWorld, brickYWorld);
-                    float noise0C10 = GetNoiseValue(_noise0, brickWorldXExt, brickYWorld);
-                    float noise0C01 = GetNoiseValue(_noise0, brickXWorld, brickWorldYExt);
-                    float noise0C11 = GetNoiseValue(_noise0, brickWorldXExt, brickWorldYExt);
-                    float noise1C00 = GetNoiseValue(_noise1, brickXWorld, brickYWorld);
-                    float noise1C10 = GetNoiseValue(_noise1, brickWorldXExt, brickYWorld);
-                    float noise1C01 = GetNoiseValue(_noise1, brickXWorld, brickWorldYExt);
-                    float noise1C11 = GetNoiseValue(_noise1, brickWorldXExt, brickWorldYExt);
-                    float noise2C00 = GetNoiseValue(_noise2, brickXWorld, brickYWorld);
-                    float noise2C10 = GetNoiseValue(_noise2, brickWorldXExt, brickYWorld);
-                    float noise2C01 = GetNoiseValue(_noise2, brickXWorld, brickWorldYExt);
-                    float noise2C11 = GetNoiseValue(_noise2, brickWorldXExt, brickWorldYExt);
+                    float temperatureC00 = GetNoiseValue(_temperatureNoise, brickXWorld, brickYWorld);
+                    float temperature0C10 = GetNoiseValue(_temperatureNoise, brickWorldXExt, brickYWorld);
+                    float temperature0C01 = GetNoiseValue(_temperatureNoise, brickXWorld, brickWorldYExt);
+                    float temperature0C11 = GetNoiseValue(_temperatureNoise, brickWorldXExt, brickWorldYExt);
+                    float pressureC00 = GetNoiseValue(_pressureNoise, brickXWorld, brickYWorld);
+                    float pressureC10 = GetNoiseValue(_pressureNoise, brickWorldXExt, brickYWorld);
+                    float pressureC01 = GetNoiseValue(_pressureNoise, brickXWorld, brickWorldYExt);
+                    float pressureC11 = GetNoiseValue(_pressureNoise, brickWorldXExt, brickWorldYExt);
+                    float tectonicsC00 = GetNoiseValue(_tectonicsNoise, brickXWorld, brickYWorld);
+                    float tectonicsC10 = GetNoiseValue(_tectonicsNoise, brickWorldXExt, brickYWorld);
+                    float tectonicsC01 = GetNoiseValue(_tectonicsNoise, brickXWorld, brickWorldYExt);
+                    float tectonicsC11 = GetNoiseValue(_tectonicsNoise, brickWorldXExt, brickWorldYExt);
 
-                    // Process each block within the brick.
-                    for (int blockY = 0; blockY < NOISE_SAMPLE_BRICK_SIZE; blockY++)
+                    // Process each pixel within the brick.
+                    for (int pixelY = 0; pixelY < NOISE_SAMPLE_BRICK_SIZE; pixelY++)
                     {
-                        for (int blockX = 0; blockX < NOISE_SAMPLE_BRICK_SIZE; blockX++)
+                        for (int pixelX = 0; pixelX < NOISE_SAMPLE_BRICK_SIZE; pixelX++)
                         {
-                            // Calculate the relative position of the block within its brick.
-                            float rx = blockX / (float)NOISE_SAMPLE_BRICK_SIZE;
-                            float ry = blockY / (float)NOISE_SAMPLE_BRICK_SIZE;
+                            // Calculate the relative position of the pixel within its brick.
+                            float rx = pixelX / (float)NOISE_SAMPLE_BRICK_SIZE;
+                            float ry = pixelY / (float)NOISE_SAMPLE_BRICK_SIZE;
 
-                            // Interpolate the noise values for the block's position.
+                            // Interpolate the noise values for the pixel's position.
                             float density = InterpolateNoise(
                                 densityC00,
                                 densityC10,
                                 densityC01,
                                 densityC11,
                                 rx, ry);
-                            float noise0 = InterpolateNoise(
-                                noise0C00,
-                                noise0C10,
-                                noise0C01,
-                                noise0C11,
+                            float temperature = InterpolateNoise(
+                                temperatureC00,
+                                temperature0C10,
+                                temperature0C01,
+                                temperature0C11,
                                 rx, ry);
-                            float noise1 = InterpolateNoise(
-                                noise1C00,
-                                noise1C10,
-                                noise1C01,
-                                noise1C11,
+                            float pressure = InterpolateNoise(
+                                pressureC00,
+                                pressureC10,
+                                pressureC01,
+                                pressureC11,
                                 rx, ry);
-                            float noise2 = InterpolateNoise(
-                                noise2C00,
-                                noise2C10,
-                                noise2C01,
-                                noise2C11,
+                            float tectonics = InterpolateNoise(
+                                tectonicsC00,
+                                tectonicsC10,
+                                tectonicsC01,
+                                tectonicsC11,
                                 rx, ry);
 
-                            int chunkRelativeX = brickXLocal + blockX;
-                            int chunkRelativeY = brickYLocal + blockY;
+                            int chunkRelativeX = brickXLocal + pixelX;
+                            int chunkRelativeY = brickYLocal + pixelY;
 
-                            GenerateTerrain(chunk, chunkRelativeX, chunkRelativeY, density, noise0, noise1, noise2);
+                            GenerateTerrain(chunk, chunkRelativeX, chunkRelativeY, density, temperature, pressure, tectonics);
                         }
                     }
                 }
@@ -190,13 +195,13 @@ namespace World.Generation
         }
 
 
-        private void GenerateTerrain(Chunk chunk, int chunkRelativeX, int chunkRelativeY, float density, float noise0, float noise1, float noise2)
+        private void GenerateTerrain(Chunk chunk, int chunkRelativeX, int chunkRelativeY, float density, float temperature, float pressure, float tectonics)
         {
             // Carve caves.
             if (density < _caveFactor)
                 return;
 
-            byte tileId = GetTileAt(chunkRelativeX, chunkRelativeY, noise0, noise1, noise2);
+            byte tileId = GetTileAt(chunkRelativeX, chunkRelativeY, temperature, pressure, tectonics);
             TileData tileData = _tileDatabase.TileData[tileId];
 
             chunk.SetTile(chunkRelativeX, chunkRelativeY, tileData);
@@ -204,17 +209,17 @@ namespace World.Generation
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private byte GetTileAt(int x, int y, float n0, float n1, float n2)
+        private byte GetTileAt(int x, int y, float temp, float press, float tect)
         {
             foreach (MaterialGenerationSettings s in _materialGenerationSettings)
             {
-                if (s.Threshold1 < n0)
+                if (s.TemperatureThreshold < temp)
                     continue;
 
-                if (s.Threshold2 < n1)
+                if (s.PressureThreshold < press)
                     continue;
 
-                if (s.Threshold3 < n2)
+                if (s.TectonicsThreshold < tect)
                     continue;
 
                 return s.Material.DynamicId;
@@ -226,10 +231,10 @@ namespace World.Generation
 
         private void InitializeNoise()
         {
-            _caveNoise = _caveNoiseSettings.GetNoise();
-            _noise0 = _noise1Settings.GetNoise();
-            _noise1 = _noise2Settings.GetNoise();
-            _noise2 = _noise3Settings.GetNoise();
+            _caveNoise = _densityNoiseSettings.GetNoise();
+            _temperatureNoise = _temperatureSettings.GetNoise();
+            _pressureNoise = _pressureSettings.GetNoise();
+            _tectonicsNoise = _tectonicsSettings.GetNoise();
         }
 
 
@@ -263,19 +268,19 @@ namespace World.Generation
                     continue;
                 }
 
-                float n0 = GetNoiseValue(_noise0, tileWorldX, tileWorldY);
-                float n1 = GetNoiseValue(_noise1, tileWorldX, tileWorldY);
-                float n2 = GetNoiseValue(_noise2, tileWorldX, tileWorldY);
+                float n0 = GetNoiseValue(_temperatureNoise, tileWorldX, tileWorldY);
+                float n1 = GetNoiseValue(_pressureNoise, tileWorldX, tileWorldY);
+                float n2 = GetNoiseValue(_tectonicsNoise, tileWorldX, tileWorldY);
 
                 if (_debugSettings != null)
                 {
-                    if (_debugSettings.Threshold1 < n0)
+                    if (_debugSettings.TemperatureThreshold < n0)
                         continue;
 
-                    if (_debugSettings.Threshold2 < n1)
+                    if (_debugSettings.PressureThreshold < n1)
                         continue;
 
-                    if (_debugSettings.Threshold3 < n2)
+                    if (_debugSettings.TectonicsThreshold < n2)
                         continue;
 
                     texture.SetPixel(x, y, new Color(1f, 0f, 1f, 1f));

@@ -40,8 +40,21 @@ namespace World.Chunks
 
 
         /// <summary>
+        /// Gets the tile at the given pixel-position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public byte GetTile(int x, int y)
+        {
+            Debug.Assert(x >= 0 && x < _chunkSizePixels, $"X position {x} is out of bounds");
+            Debug.Assert(y >= 0 && y < _chunkSizePixels, $"Y position {y} is out of bounds");
+            return _tiles[GetArrayIndex(x, y)];
+        }
+
+
+        /// <summary>
         /// Sets the tile at the given pixel-position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetTile(int x, int y, in TileData tile)
         {
             Debug.Assert(x >= 0 && x < _chunkSizePixels, $"X position {x} is out of bounds");
@@ -56,6 +69,7 @@ namespace World.Chunks
         /// <summary>
         /// Sets the tile at the given pixel-position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte GetAndSetTile(int x, int y, in TileData newTile)
         {
             int index = GetArrayIndex(x, y);
