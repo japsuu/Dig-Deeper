@@ -282,7 +282,7 @@ namespace World.Chunks
         private void CreateChunk(Vector2Int position)
         {
             Chunk chunk = Instantiate(_chunkPrefab, (Vector2)position, Quaternion.identity, transform);
-            chunk.Initialize(Constants.CHUNK_SIZE_PIXELS, Constants.TEXTURE_PPU, position);
+            chunk.Initialize(position);
             _loadedChunksMap.Add(position, chunk);
             _loadedChunks.Add(position);
             
@@ -405,6 +405,15 @@ namespace World.Chunks
             }
             Vector2Int playerChunkPosition = WorldToChunk(DrillController.Instance.transform.position);
             Gizmos.DrawWireSphere((Vector2)(playerChunkPosition + _chunkCenterOffset), _chunkLoadRadius * Constants.CHUNK_SIZE_UNITS);
+        }
+
+
+        public void AddChunkData(Vector2Int chunkPosition, TileData[] data)
+        {
+            if (!_loadedChunksMap.TryGetValue(chunkPosition, out Chunk chunk))
+                return;
+            
+            chunk.OnGenerated(data);
         }
     }
 }

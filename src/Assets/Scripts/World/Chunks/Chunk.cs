@@ -17,20 +17,14 @@ namespace World.Chunks
         private byte[] _tiles;
         private Color[] _pixels;
         private Texture2D _texture;
-        private float _chunkSizeUnits;
-        private int _chunkSizePixels;
-        private int _texturePPU;
         private bool _isTextureDirty;
         private bool _isGenerated;
         
         public Vector2Int Position { get; private set; }
         
         
-        public void Initialize(int chunkSize, int texturePPU, Vector2Int position)
+        public void Initialize(Vector2Int position)
         {
-            _chunkSizePixels = chunkSize;
-            _texturePPU = texturePPU;
-            _chunkSizeUnits = _chunkSizePixels / (float)_texturePPU;
             Position = position;
             
             InitializeRendering();
@@ -45,8 +39,8 @@ namespace World.Chunks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte GetTile(int x, int y)
         {
-            Debug.Assert(x >= 0 && x < _chunkSizePixels, $"X position {x} is out of bounds");
-            Debug.Assert(y >= 0 && y < _chunkSizePixels, $"Y position {y} is out of bounds");
+            Debug.Assert(x >= 0 && x < Constants.CHUNK_SIZE_PIXELS, $"X position {x} is out of bounds");
+            Debug.Assert(y >= 0 && y < Constants.CHUNK_SIZE_PIXELS, $"Y position {y} is out of bounds");
             return _tiles[GetArrayIndex(x, y)];
         }
 
@@ -57,8 +51,8 @@ namespace World.Chunks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetTile(int x, int y, in TileData tile)
         {
-            Debug.Assert(x >= 0 && x < _chunkSizePixels, $"X position {x} is out of bounds");
-            Debug.Assert(y >= 0 && y < _chunkSizePixels, $"Y position {y} is out of bounds");
+            Debug.Assert(x >= 0 && x < Constants.CHUNK_SIZE_PIXELS, $"X position {x} is out of bounds");
+            Debug.Assert(y >= 0 && y < Constants.CHUNK_SIZE_PIXELS, $"Y position {y} is out of bounds");
             int index = GetArrayIndex(x, y);
             _tiles[index] = tile.ID;
             _pixels[index] = tile.Color;
@@ -81,8 +75,15 @@ namespace World.Chunks
         }
         
         
-        public void OnGenerated()
+        public void OnGenerated(TileData[] data)
         {
+            for (int i = 0; i < data.Length; i++)
+            {
+                _tiles[i] = data[i].ID;
+                _pixels[i] = data[i].Color;
+            }
+            
+            _isTextureDirty = true;
             _isGenerated = true;
         }
 
@@ -96,19 +97,19 @@ namespace World.Chunks
 
         private void InitializeData()
         {
-            _tiles = new byte[_chunkSizePixels * _chunkSizePixels];
-            _pixels = new Color[_chunkSizePixels * _chunkSizePixels];
+            _tiles = new byte[Constants.CHUNK_SIZE_PIXELS * Constants.CHUNK_SIZE_PIXELS];
+            _pixels = new Color[Constants.CHUNK_SIZE_PIXELS * Constants.CHUNK_SIZE_PIXELS];
         }
 
 
         private void InitializeRendering()
         {
-            _texture = new Texture2D(_chunkSizePixels, _chunkSizePixels)
+            _texture = new Texture2D(Constants.CHUNK_SIZE_PIXELS, Constants.CHUNK_SIZE_PIXELS)
             {
                 filterMode = FilterMode.Point,
                 wrapMode = TextureWrapMode.Clamp
             };
-            _renderer.sprite = Sprite.Create(_texture, new Rect(0, 0, _chunkSizePixels, _chunkSizePixels), Vector2.zero, _texturePPU);
+            _renderer.sprite = Sprite.Create(_texture, new Rect(0, 0, Constants.CHUNK_SIZE_PIXELS, Constants.CHUNK_SIZE_PIXELS), Vector2.zero, Constants.TEXTURE_PPU);
         }
 
 
@@ -121,16 +122,14 @@ namespace World.Chunks
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int GetArrayIndex(int x, int y)
-        {
-            return y * _chunkSizePixels + x;
-        }
+        public static int GetArrayIndex(int x, int y) => y * Constants.CHUNK_SIZE_PIXELS + x;
 
 
         private void OnDrawGizmos()
         {
-            float size = _chunkSizeUnits;
-            Gizmos.DrawWireCube(transform.position + new Vector3(size / 2f, size / 2f), new Vector3(size, size));
+            Gizmos.DrawWireCube(
+                transform.position + new Vector3(Constants.CHUNK_SIZE_UNITS / 2f, Constants.CHUNK_SIZE_UNITS / 2f),
+                new Vector3(Constants.CHUNK_SIZE_UNITS, Constants.CHUNK_SIZE_UNITS));
         }
     }
 }

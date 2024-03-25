@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Materials;
 using NaughtyAttributes;
 using Thirdparty;
@@ -12,7 +15,21 @@ namespace World.Generation
 {
     public class ChunkGenerator : MonoBehaviour
     {
-        private const int MAX_CHUNKS_GENERATED_PER_FRAME = 3;
+        public class ChunkData
+        {
+            public readonly Vector2Int ChunkPosition;
+            public readonly TileData[] Tiles;
+            
+            
+            public ChunkData(Vector2Int chunkPosition)
+            {
+                ChunkPosition = chunkPosition;
+                Tiles = new TileData[Constants.CHUNK_SIZE_PIXELS * Constants.CHUNK_SIZE_PIXELS];
+            }
+        }
+        
+        private const int MAX_CHUNKS_ENQUEUED_PER_FRAME = 8;
+        private const int MAX_CHUNKS_PROCESSED_PER_FRAME = 3;
 
         // Optimization constants.
         private const int NOISE_SAMPLE_BRICK_SIZE = 4;
@@ -63,12 +80,14 @@ namespace World.Generation
         private FastNoiseLite _pressureNoise;
         private FastNoiseLite _tectonicsNoise;
         private Queue<Chunk> _chunksToGenerate;
+        private ConcurrentQueue<ChunkData> _generatedChunks;
 
 
         public void Initialize(TileDatabase tileDatabase)
         {
             _tileDatabase = tileDatabase;
             _chunksToGenerate = new Queue<Chunk>();
+            _generatedChunks = new ConcurrentQueue<ChunkData>();
             InitializeNoise();
         }
 
@@ -87,26 +106,43 @@ namespace World.Generation
 
         private void ProcessQueues()
         {
-            int chunksGenerated = 0;
-            while (_chunksToGenerate.Count > 0 && chunksGenerated < MAX_CHUNKS_GENERATED_PER_FRAME)
+            int enqueueCount = 0;
+            while (enqueueCount < MAX_CHUNKS_ENQUEUED_PER_FRAME && _chunksToGenerate.TryDequeue(out Chunk data))
             {
-                Chunk chunk = _chunksToGenerate.Dequeue();
-                if (chunk == null)
-                    continue;
-                GenerateChunk(chunk);
-                chunk.OnGenerated();
-                chunksGenerated++;
+                // Queue to thread pool.
+                ThreadPool.QueueUserWorkItem(_ => ProcessChunk(data));
+                
+                enqueueCount++;
+            }
+            
+            int processedCount = 0;
+            while (processedCount < MAX_CHUNKS_PROCESSED_PER_FRAME && _generatedChunks.TryDequeue(out ChunkData data))
+            {
+                ChunkManager.Instance.AddChunkData(data.ChunkPosition, data.Tiles);
+                
+                processedCount++;
             }
         }
 
 
-        private void GenerateChunk(Chunk chunk)
+        private void ProcessChunk(Chunk chunk)
         {
+            if (TryGenerateChunk(chunk, out ChunkData data))
+                _generatedChunks.Enqueue(data);
+        }
+
+
+        private bool TryGenerateChunk(Chunk chunk, out ChunkData data)
+        {
+            data = new ChunkData(chunk.Position);
+            if (chunk == null)
+                return false; // May happen if the chunk was unloaded before generation.
+            
             int chunkXPixels = chunk.Position.x * Constants.TEXTURE_PPU;
             int chunkYPixels = chunk.Position.y * Constants.TEXTURE_PPU;
 
             if (chunkYPixels > _groundLevel)
-                return;
+                return true; // Above ground level, no need to generate anything.
 
             // Divide the chunk in to "bricks" to optimize noise sampling by taking less samples.
             // Each brick corner is sampled for noise, and further values are interpolated from them using trilinear interpolation.
@@ -177,15 +213,19 @@ namespace World.Generation
                             int chunkRelativeX = brickXLocal + pixelX;
                             int chunkRelativeY = brickYLocal + pixelY;
 
-                            GenerateTerrain(chunk, chunkRelativeX, chunkRelativeY, density, temperature, pressure, tectonics);
+                            TileData tile = GenerateTerrain(density, temperature, pressure, tectonics);
+                            data.Tiles[Chunk.GetArrayIndex(chunkRelativeX, chunkRelativeY)] = tile;
                         }
                     }
                 }
             }
+            
+            return true;
         }
 
 
-        private float InterpolateNoise(float c00, float c10, float c01, float c11, float x, float y)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float InterpolateNoise(float c00, float c10, float c01, float c11, float x, float y)
         {
             // Simple bi-linear interpolation.
             float c0 = c00 * (1 - x) + c10 * x;
@@ -195,31 +235,29 @@ namespace World.Generation
         }
 
 
-        private void GenerateTerrain(Chunk chunk, int chunkRelativeX, int chunkRelativeY, float density, float temperature, float pressure, float tectonics)
+        private TileData GenerateTerrain(float density, float temperature, float pressure, float tectonics)
         {
             // Carve caves.
             if (density < _caveFactor)
-                return;
+                return _tileDatabase.AirTile;
 
-            byte tileId = GetTileAt(chunkRelativeX, chunkRelativeY, temperature, pressure, tectonics);
-            TileData tileData = _tileDatabase.TileData[tileId];
-
-            chunk.SetTile(chunkRelativeX, chunkRelativeY, tileData);
+            byte tileId = GetTileAt(temperature, pressure, tectonics);
+            return _tileDatabase.TileData[tileId];
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private byte GetTileAt(int x, int y, float temp, float press, float tect)
+        private byte GetTileAt(float temp, float pressure, float tectonics)
         {
             foreach (MaterialGenerationSettings s in _materialGenerationSettings)
             {
                 if (s.TemperatureThreshold < temp)
                     continue;
 
-                if (s.PressureThreshold < press)
+                if (s.PressureThreshold < pressure)
                     continue;
 
-                if (s.TectonicsThreshold < tect)
+                if (s.TectonicsThreshold < tectonics)
                     continue;
 
                 return s.Material.DynamicId;
@@ -239,7 +277,7 @@ namespace World.Generation
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private float GetNoiseValue(FastNoiseLite fnl, float x, float y) => (fnl.GetNoise(x, y) + 1) / 2;
+        private static float GetNoiseValue(FastNoiseLite fnl, float x, float y) => (fnl.GetNoise(x, y) + 1) / 2;
 
 
 #if UNITY_EDITOR
