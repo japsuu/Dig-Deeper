@@ -26,8 +26,8 @@ namespace UI
         private void OnSliderValueChanged(float value)
         {
             float f = Mathf.Lerp(_minSpeed, _maxSpeed, value);
-            DrillController.Instance.Movement.SetSpeedFactor(f);
-            DrillController.Instance.Rotation.SetSpeedFactor(f);
+            DrillController.Instance.Movement.SetControlFactor(f);
+            DrillController.Instance.Rotation.SetControlFactor(f);
         }
     }
 }

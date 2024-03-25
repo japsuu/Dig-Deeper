@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Dirt
   _color: {r: 0.5943396, g: 0.29510704, b: 0.07008721, a: 1}
-  _hardness: 25
+  _hardness: 0
   _value: 0

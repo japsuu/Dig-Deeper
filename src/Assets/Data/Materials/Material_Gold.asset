@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Gold
   _color: {r: 0.8396226, g: 0.63989455, b: 0.19406372, a: 1}
-  _hardness: 100
+  _hardness: 150
   _value: 5

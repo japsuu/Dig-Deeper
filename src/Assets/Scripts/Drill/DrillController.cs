@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Cinemachine;
 using DG.Tweening;
 using Singletons;
 using UnityEngine;
@@ -13,12 +14,23 @@ namespace Drill
     public class DrillController : SingletonBehaviour<DrillController>  //TODO: Implement a basic state machine for the drill.
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
+
+        [Header("References")]
         
         [SerializeField]
         private DrillHead[] _drillHeads;
         
         [SerializeField]
         private TerrainTrigger _terrainTrigger;
+        
+        [SerializeField]
+        private Transform _lightsRoot;
+        
+        [SerializeField]
+        private Transform _particlesRoot;
+        
+        [SerializeField]
+        private CinemachineImpulseSource _collisionImpulseSource;
         
         [SerializeField]
         private float _rotateTowardsVelocitySpeed = 35f;
@@ -130,12 +142,16 @@ namespace Drill
                 yield break;
             }
             
-            yield return new WaitForSeconds(2f);
+            _collisionImpulseSource.GenerateImpulse();
+            yield return new WaitForSeconds(0.1f);
             
-            Debug.LogWarning("TODO: Turn on the lights");
+            _lightsRoot.gameObject.SetActive(false);
+            yield return new WaitForSeconds(2f);
+            _lightsRoot.gameObject.SetActive(true);
+            
             _rigidbody.velocity = Vector2.zero;
             
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
             EnableControls();
             _isInRecoverySequence = false;
         }
@@ -151,6 +167,7 @@ namespace Drill
             Rotation.SetEnabled(false);
             foreach (DrillHead drillHead in _drillHeads)
                 drillHead.SetEnabled(false);
+            _particlesRoot.gameObject.SetActive(false);
         }
 
 
@@ -162,6 +179,7 @@ namespace Drill
             Rotation.SetEnabled(true);
             foreach (DrillHead drillHead in _drillHeads)
                 drillHead.SetEnabled(true);
+            _particlesRoot.gameObject.SetActive(true);
         }
     }
 }

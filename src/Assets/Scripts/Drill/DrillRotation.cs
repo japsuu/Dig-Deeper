@@ -14,7 +14,10 @@ namespace Drill
         private Vector2 _rotationAngleLimit = new(225f, 315f);
 
         [SerializeField]
-        private float _baseRotationSpeed = 90f;
+        private float _minRotationSpeed = 20f;
+        
+        [SerializeField]
+        private float _maxRotationSpeed = 90f;
         
         [SerializeField]
         private float _rotationStartTweenDuration = 3f;
@@ -22,8 +25,11 @@ namespace Drill
         [SerializeField]
         private float _rotationEndTweenDuration = 2f;
 
+        
         private float _rotationSpeed;
-        private float _rotationSpeedFactor;
+        private float _controlFactor;
+        private float _tweenFactor;
+        private float _terrainHardnessFactor;
 
         public bool IsEnabled { get; private set; }
         
@@ -32,9 +38,9 @@ namespace Drill
         {
             IsEnabled = isEnabled;
             
-            float endSpeed = isEnabled ? _baseRotationSpeed : 0f;
+            float endF = isEnabled ? 1f : 0f;
             float duration = isEnabled ? _rotationStartTweenDuration : _rotationEndTweenDuration;
-            DOTween.To(GetRotationSpeed, SetRotationSpeed, endSpeed, duration);
+            DOTween.To(GetTweenFactor, SetTweenFactor, endF, duration);
         }
         
         
@@ -46,14 +52,16 @@ namespace Drill
         }
         
         
-        public void SetSpeedFactor(float factor)
+        public void SetControlFactor(float factor)
         {
-            _rotationSpeedFactor = factor;
+            _controlFactor = factor;
         }
-
-
-        private float GetRotationSpeed() => _rotationSpeed;
-        private void SetRotationSpeed(float x) => _rotationSpeed = x;
+        
+        
+        public void SetTerrainHardnessFactor(float factor)
+        {
+            _terrainHardnessFactor = factor;
+        }
 
 
         private void Update()
@@ -61,7 +69,9 @@ namespace Drill
             if (!IsEnabled)
                 return;
             
-            float rotation = Input.GetAxis("Horizontal") * _rotationSpeed * _rotationSpeedFactor * Time.deltaTime;
+            _rotationSpeed = Mathf.Lerp(_minRotationSpeed, _maxRotationSpeed, _terrainHardnessFactor) * _controlFactor * _tweenFactor;
+            
+            float rotation = Input.GetAxis("Horizontal") * _rotationSpeed * Time.deltaTime;
             transform.Rotate(Vector3.forward, rotation);
 
             // Clamp the rotation to prevent the player from going back to the surface.
@@ -69,5 +79,9 @@ namespace Drill
             currentAngle = Mathf.Clamp(currentAngle, _rotationAngleLimit.x, _rotationAngleLimit.y);
             transform.rotation = Quaternion.Euler(0f, 0f, currentAngle);
         }
+
+
+        private float GetTweenFactor() => _tweenFactor;
+        private void SetTweenFactor(float x) => _tweenFactor = x;
     }
 }

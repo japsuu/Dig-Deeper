@@ -14,12 +14,30 @@ namespace World.Chunks
         [SerializeField]
         protected int BreakIntervalFrames = 10;   // We do not need to break tiles every frame.
         
+        [SerializeField]
+        public ScriptUpdateMode _scriptUpdateMode = ScriptUpdateMode.Update;
+        
         private int _breakIntervalFrameCounter;
         
         
         protected virtual void Update()
         {
-            BreakTiles();
+            if (_scriptUpdateMode == ScriptUpdateMode.Update)
+                BreakTiles();
+        }
+        
+        
+        protected virtual void FixedUpdate()
+        {
+            if (_scriptUpdateMode == ScriptUpdateMode.FixedUpdate)
+                BreakTiles();
+        }
+        
+        
+        public void ManualUpdate()
+        {
+            if (_scriptUpdateMode == ScriptUpdateMode.Manual)
+                BreakTiles();
         }
 
 

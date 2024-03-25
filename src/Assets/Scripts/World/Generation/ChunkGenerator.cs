@@ -45,6 +45,10 @@ namespace World.Generation
         [SerializeField]
         private int _groundLevel;
 
+        [SerializeField]
+        [Tooltip("The height at which chunk population should start.")]
+        private int _populationLevel = -50;
+
         [FormerlySerializedAs("_caveNoiseSettings")]
         [Header("Noise")]
         [SerializeField]
@@ -118,7 +122,7 @@ namespace World.Generation
             int processedCount = 0;
             while (processedCount < MAX_CHUNKS_PROCESSED_PER_FRAME && _generatedChunks.TryDequeue(out ChunkData data))
             {
-                ChunkManager.Instance.AddChunkData(data.ChunkPosition, data.Tiles);
+                ChunkManager.Instance.AddChunkData(data.ChunkPosition, data.Tiles, data.ChunkPosition.y < _populationLevel);
                 
                 processedCount++;
             }
@@ -141,8 +145,10 @@ namespace World.Generation
             int chunkXPixels = chunk.Position.x * Constants.TEXTURE_PPU;
             int chunkYPixels = chunk.Position.y * Constants.TEXTURE_PPU;
 
-            if (chunkYPixels > _groundLevel)
+            if (chunk.Position.y > _groundLevel)
                 return true; // Above ground level, no need to generate anything.
+            
+            //TODO: Generate surface with varying height.
 
             // Divide the chunk in to "bricks" to optimize noise sampling by taking less samples.
             // Each brick corner is sampled for noise, and further values are interpolated from them using trilinear interpolation.

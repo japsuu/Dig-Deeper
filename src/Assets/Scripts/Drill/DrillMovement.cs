@@ -1,5 +1,7 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
+using World.Chunks;
 
 namespace Drill
 {
@@ -9,7 +11,19 @@ namespace Drill
     public class DrillMovement : MonoBehaviour
     {
         [SerializeField]
-        private float _baseMovementSpeed = 8f;
+        private Transform _hardnessCheckTransform;
+
+        [Header("Speed")]
+        
+        [SerializeField]
+        [Tooltip("The speed moved at when terrain hardness is at minimum.")]
+        private float _minMovementSpeed = 2f;
+
+        [SerializeField]
+        [Tooltip("The speed moved at when terrain hardness is at maximum.")]
+        private float _maxMovementSpeed = 8f;
+        
+        [Header("Tweening")]
 
         [SerializeField]
         private float _movementStartTweenDuration = 2f;
@@ -18,7 +32,9 @@ namespace Drill
         private float _movementEndTweenDuration = 1f;
 
         private float _movementSpeed;
-        private float _movementSpeedFactor;
+        private float _controlFactor;
+        private float _tweenFactor;
+        private float _terrainHardnessFactor;
         private Rigidbody2D _rigidbody;
 
         public bool IsEnabled { get; private set; }
@@ -34,27 +50,45 @@ namespace Drill
         {
             IsEnabled = isEnabled;
 
-            float endSpeed = isEnabled ? _baseMovementSpeed : 0f;
+            float endF = isEnabled ? 1f : 0f;
             float duration = isEnabled ? _movementStartTweenDuration : _movementEndTweenDuration;
-            DOTween.To(GetMovementSpeed, SetMovementSpeed, endSpeed, duration);
+            DOTween.To(GetTweenFactor, SetTweenFactor, endF, duration);
         }
         
         
-        public void SetSpeedFactor(float factor)
+        public void SetControlFactor(float factor)
         {
-            _movementSpeedFactor = factor;
+            _controlFactor = factor;
         }
 
 
-        private float GetMovementSpeed() => _movementSpeed;
+        private void Update()
+        {
+            CalculateTerrainHardness();
+            
+            _movementSpeed = Mathf.Lerp(_minMovementSpeed, _maxMovementSpeed, _terrainHardnessFactor) * _controlFactor * _tweenFactor;
+        }
 
-        private void SetMovementSpeed(float x) => _movementSpeed = x;
+
+        private void CalculateTerrainHardness()
+        {
+            byte hardness = ChunkManager.Instance.GetTerrainHardnessAt(_hardnessCheckTransform.position);
+            
+            float factor = 1f - hardness / 255f;
+            _terrainHardnessFactor = Mathf.Lerp(_terrainHardnessFactor, factor, Time.deltaTime);
+            
+            DrillController.Instance.Rotation.SetTerrainHardnessFactor(_terrainHardnessFactor);
+        }
 
 
         private void FixedUpdate()
         {
             if (IsEnabled)
-                _rigidbody.velocity = transform.right * (_movementSpeed * _movementSpeedFactor);
+                _rigidbody.velocity = transform.right * _movementSpeed;
         }
+
+
+        private float GetTweenFactor() => _tweenFactor;
+        private void SetTweenFactor(float x) => _tweenFactor = x;
     }
 }

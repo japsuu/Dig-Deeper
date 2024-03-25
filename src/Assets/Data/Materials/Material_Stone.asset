@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Stone
   _color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
-  _hardness: 50
+  _hardness: 170
   _value: 0

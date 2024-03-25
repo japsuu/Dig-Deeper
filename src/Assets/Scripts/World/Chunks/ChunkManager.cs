@@ -104,6 +104,35 @@ namespace World.Chunks
         }
         
         
+        public byte GetTerrainHardnessAt(Vector2 position)
+        {
+            if (!GetChunkAt(position, out Chunk chunk))
+                return 0;
+                
+            Vector2Int chunkPosition = chunk.Position;
+            Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, position);
+                
+            UVToTileCoordinates(centerPositionRelativeUV, out int posX, out int posY);
+
+            return chunk.GetHardness(posX, posY);
+        }
+        
+        
+        public Color GetTerrainColorAt(Vector2 position)
+        {
+            if (!GetChunkAt(position, out Chunk chunk))
+                return Color.clear;
+                
+            Vector2Int chunkPosition = chunk.Position;
+            Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, position);
+                
+            UVToTileCoordinates(centerPositionRelativeUV, out int posX, out int posY);
+
+            byte tileId = chunk.GetTile(posX, posY);
+            return _tileDatabase.TileData[tileId].Color;
+        }
+        
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BreakTilesInRange(Span<uint> replacedTiles, Vector2 centerPosition, int radius)
         {
@@ -222,6 +251,7 @@ namespace World.Chunks
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int GetNeighbouringChunks(Vector2 position, IList<Chunk> buffer)
         {
             Vector2Int chunkPosition = WorldToChunk(position);
@@ -241,6 +271,14 @@ namespace World.Chunks
             }
 
             return chunkCount;
+        }
+        
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool GetChunkAt(Vector2 position, out Chunk chunk)
+        {
+            Vector2Int chunkPosition = WorldToChunk(position);
+            return _loadedChunksMap.TryGetValue(chunkPosition, out chunk);
         }
 
 
@@ -408,12 +446,12 @@ namespace World.Chunks
         }
 
 
-        public void AddChunkData(Vector2Int chunkPosition, TileData[] data)
+        public void AddChunkData(Vector2Int chunkPosition, TileData[] data, bool canPopulate)
         {
             if (!_loadedChunksMap.TryGetValue(chunkPosition, out Chunk chunk))
                 return;
             
-            chunk.OnGenerated(data);
+            chunk.OnGenerated(data, canPopulate);
         }
     }
 }

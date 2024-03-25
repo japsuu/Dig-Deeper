@@ -19,8 +19,8 @@ namespace Materials
         private Color _color = Color.white;
 
         [SerializeField]
-        [Tooltip("How hard the material is. 0 = indestructible, 1 = softest, 255 = hardest. Influences the speed of the drill when this material is hit.")]
-        private byte _hardness = 1;
+        [Tooltip("How hard the material is. 0 = softest, 255 = hardest. Influences the speed of the drill when this material is hit.")]
+        private byte _hardness = 0;
 
         [SerializeField]
         [Tooltip("Value in coins, when sold.")]
