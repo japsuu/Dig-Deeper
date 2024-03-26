@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4898512353536648047}
   - component: {fileID: 8434547903384730817}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: pf_Chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3274815621267259183}
   - component: {fileID: 8291404782715060774}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

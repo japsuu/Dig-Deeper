@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
+using Audio;
 using Cinemachine;
 using DG.Tweening;
 using Singletons;
 using UnityEngine;
+using Weapons.Controllers;
 using World.Chunks;
 
 namespace Entities.Drill
@@ -25,9 +27,6 @@ namespace Entities.Drill
         private EntityHealth _health;
         
         [SerializeField]
-        private DrillHead[] _drillHeads;
-        
-        [SerializeField]
         private TerrainTrigger _terrainTrigger;
         
         [SerializeField]
@@ -39,14 +38,29 @@ namespace Entities.Drill
         [SerializeField]
         private CinemachineImpulseSource _collisionImpulseSource;
         
-        [SerializeField]
-        private float _rotateTowardsVelocitySpeed = 35f;
+        [Header("Weapons")]
 
-        [Header("Hit recovery sequence")]
+        [SerializeField]
+        private PlayerWeaponController _leftWeapon;
         
         [SerializeField]
-        private float _minVelocityForHitRecovery = 10f;
+        private PlayerWeaponController _rightWeapon;
 
+        [SerializeField]
+        private KeyCode _leftWeaponActivationKey = KeyCode.Q;
+        
+        [SerializeField]
+        private KeyCode _rightWeaponActivationKey = KeyCode.E;
+
+        [Header("Collision")]
+        
+        [SerializeField]
+        private float _rotateTowardsVelocitySpeed = 35f;
+        
+        [SerializeField]
+        private float _minVelocityForHitRecovery = 14f;
+        
+        private DrillHead[] _drillHeads;
         private Rigidbody2D _rigidbody;
         private bool _hasDetachedFromDock;
         private bool _isInRecoverySequence;
@@ -63,6 +77,7 @@ namespace Entities.Drill
             _rigidbody = GetComponent<Rigidbody2D>();
             Movement = GetComponent<DrillMovement>();
             Rotation = GetComponent<DrillRotation>();
+            _drillHeads = GetComponentsInChildren<DrillHead>();
             Inventory = new DrillInventory();
 
             _rigidbody.simulated = false;
@@ -81,28 +96,9 @@ namespace Entities.Drill
         }
 
 
-        private void OnHealthChanged(HealthChangedArgs healthChangedArgs)
-        {
-            if (healthChangedArgs.IsDamage)
-                Damaged?.Invoke(healthChangedArgs);
-            else
-                Healed?.Invoke(healthChangedArgs);
-        }
-
-
-        private void OnKilled()
-        {
-            DisableControls();
-            
-            Killed?.Invoke();
-            
-            Debug.LogWarning("TODO: Implement drill destruction.");
-        }
-
-
         private void Start()
         {
-            DisableControls();
+            SetMovementControlsEnabled(false);
         }
 
 
@@ -120,6 +116,49 @@ namespace Entities.Drill
             
             if (_isAirborne)
                 Rotation.RotateTowardsVelocity(_rigidbody.velocity, _rotateTowardsVelocitySpeed);
+
+            if (Input.GetKeyUp(_leftWeaponActivationKey))
+            {
+                bool isFiringEnabled = _leftWeapon.IsFiringEnabled;
+                Rotation.SetEnabled(isFiringEnabled);
+                _leftWeapon.SetEnableFiring(!isFiringEnabled);
+
+                if (!isFiringEnabled && _rightWeapon.IsFiringEnabled)
+                    _rightWeapon.SetEnableFiring(false);
+            }
+            
+            if (Input.GetKeyUp(_rightWeaponActivationKey))
+            {
+                bool isFiringEnabled = _rightWeapon.IsFiringEnabled;
+                Rotation.SetEnabled(isFiringEnabled);
+                _rightWeapon.SetEnableFiring(!isFiringEnabled);
+
+                if (!isFiringEnabled && _leftWeapon.IsFiringEnabled)
+                    _leftWeapon.SetEnableFiring(false);
+            }
+        }
+
+
+        private void OnHealthChanged(HealthChangedArgs healthChangedArgs)
+        {
+            if (healthChangedArgs.IsDamage)
+                Damaged?.Invoke(healthChangedArgs);
+            else
+                Healed?.Invoke(healthChangedArgs);
+        }
+
+
+        private void OnKilled()
+        {
+            SetDrillEnabled(false);
+            SetMovementControlsEnabled(false);
+            SetLightsEnabled(false);
+            _leftWeapon.SetEnableFiring(false);
+            _rightWeapon.SetEnableFiring(false);
+            
+            Killed?.Invoke();
+            
+            Debug.LogWarning("TODO: Implement drill destruction.");
         }
 
 
@@ -132,14 +171,6 @@ namespace Entities.Drill
         }
 
 
-        private void EnableFalling()
-        {
-            _rigidbody.gravityScale = 1f;
-            SetRigidbodyDrag(0f);
-            DisableControls();
-        }
-
-
         private void OnEnterAirborne()
         {
             _isAirborne = true;
@@ -147,6 +178,14 @@ namespace Entities.Drill
             {
                 EnableFalling();
             }
+        }
+
+
+        private void EnableFalling()
+        {
+            _rigidbody.gravityScale = 1f;
+            SetRigidbodyDrag(0f);
+            SetMovementControlsEnabled(false);
         }
 
 
@@ -164,52 +203,61 @@ namespace Entities.Drill
             
             // Start increasing the rb linear drag with a tween to slow down the drill.
             yield return DOTween.To(GetRigidbodyDrag, SetRigidbodyDrag, RB_LINEAR_DRAG_MAX, 0.7f).OnComplete(() => SetRigidbodyDrag(0f));
-
-            if (hitVelocity < _minVelocityForHitRecovery)
+            
+            if (hitVelocity >= _minVelocityForHitRecovery)
             {
-                EnableControls();
-                _isInRecoverySequence = false;
-                yield break;
+                _collisionImpulseSource.GenerateImpulse();
+                AudioManager.PlaySound("crash warning");
+                yield return new WaitForSeconds(0.2f);
+            
+                SetLightsEnabled(false);
+                yield return new WaitForSeconds(1.5f);
+                SetLightsEnabled(true);
+                
+                AudioManager.PlaySound("rebooting");
+                _rigidbody.velocity = Vector2.zero;
+            
+                yield return new WaitForSeconds(0.8f);
             }
             
-            _collisionImpulseSource.GenerateImpulse();
-            yield return new WaitForSeconds(0.1f);
+            SetMovementControlsEnabled(true);
+            SetDrillEnabled(true);
             
-            _lightsRoot.gameObject.SetActive(false);
-            yield return new WaitForSeconds(2f);
-            _lightsRoot.gameObject.SetActive(true);
-            
-            _rigidbody.velocity = Vector2.zero;
-            
-            yield return new WaitForSeconds(1.5f);
-            EnableControls();
             _isInRecoverySequence = false;
+        }
+        
+        
+        private void SetMovementControlsEnabled(bool enable)
+        {
+            Movement.SetEnabled(enable);
+            Rotation.SetEnabled(enable);
+        }
+
+
+        private void SetDrillEnabled(bool enable)
+        {
+            if (enable)
+            {
+                foreach (DrillHead drillHead in _drillHeads)
+                    drillHead.SetEnabled(true);
+                _particlesRoot.gameObject.SetActive(true);
+            }
+            else
+            {
+                foreach (DrillHead drillHead in _drillHeads)
+                    drillHead.SetEnabled(false);
+                _particlesRoot.gameObject.SetActive(false);
+            }
+        }
+        
+        
+        private void SetLightsEnabled(bool enable)
+        {
+            _lightsRoot.gameObject.SetActive(enable);
         }
 
 
         private float GetRigidbodyDrag() => _rigidbody.drag;
         private void SetRigidbodyDrag(float x) => _rigidbody.drag = x;
-        
-        
-        private void DisableControls()
-        {
-            Movement.SetEnabled(false);
-            Rotation.SetEnabled(false);
-            foreach (DrillHead drillHead in _drillHeads)
-                drillHead.SetEnabled(false);
-            _particlesRoot.gameObject.SetActive(false);
-        }
-
-
-        private void EnableControls()
-        {
-            SetRigidbodyDrag(0f);
-            
-            Movement.SetEnabled(true);
-            Rotation.SetEnabled(true);
-            foreach (DrillHead drillHead in _drillHeads)
-                drillHead.SetEnabled(true);
-            _particlesRoot.gameObject.SetActive(true);
-        }
     }
 }

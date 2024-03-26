@@ -1,5 +1,4 @@
-﻿using System;
-using Entities.Drill;
+﻿using Entities.Drill;
 using UnityEngine;
 using UnityEngine.UI;
 
