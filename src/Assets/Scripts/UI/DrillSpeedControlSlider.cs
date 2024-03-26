@@ -1,4 +1,5 @@
-﻿using Entities.Drill;
+﻿using System;
+using Entities.Drill;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,28 @@ namespace UI
         {
             _slider.onValueChanged.AddListener(OnSliderValueChanged);
             OnSliderValueChanged(_slider.value);
+        }
+
+
+        private void Update()
+        {
+            CheckKeyboardInput();
+        }
+
+
+        private void CheckKeyboardInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                _slider.value = 0f;
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+                _slider.value = 0.5f;
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+                _slider.value = 1f;
+            
+            if (Input.GetKeyDown(KeyCode.W))
+                _slider.value = Mathf.Clamp01(_slider.value - 0.1f);
+            else if (Input.GetKeyDown(KeyCode.S))
+                _slider.value = Mathf.Clamp01(_slider.value + 0.1f);
         }
 
 
