@@ -1,6 +1,6 @@
 ﻿using World.Chunks;
 
-namespace Drill
+namespace Entities.Drill
 {
     public class DrillHead : TerrainDigger
     {

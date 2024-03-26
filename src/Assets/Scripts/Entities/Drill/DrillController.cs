@@ -6,7 +6,7 @@ using Singletons;
 using UnityEngine;
 using World.Chunks;
 
-namespace Drill
+namespace Entities.Drill
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(DrillMovement))]
@@ -15,7 +15,14 @@ namespace Drill
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
 
+        public event Action<HealthChangedArgs> Healed;
+        public event Action<HealthChangedArgs> Damaged;
+        public event Action Killed;
+
         [Header("References")]
+        
+        [SerializeField]
+        private EntityHealth _health;
         
         [SerializeField]
         private DrillHead[] _drillHeads;
@@ -48,6 +55,7 @@ namespace Drill
         public DrillMovement Movement { get; private set; }
         public DrillRotation Rotation { get; private set; }
         public DrillInventory Inventory { get; private set; }
+        public EntityHealth Health => _health;
 
 
         private void Awake()
@@ -63,10 +71,32 @@ namespace Drill
             _terrainTrigger.ContactStart += () => OnHitGround(Mathf.Abs(_rigidbody.velocity.y));
             _terrainTrigger.ContactEnd += OnEnterAirborne;
             
+            _health.HealthChanged += OnHealthChanged;
+            _health.Killed += OnKilled;
+            
             foreach (DrillHead drillHead in _drillHeads)
                 drillHead.Initialize(Inventory);
 
             Movement.Initialize(_rigidbody);
+        }
+
+
+        private void OnHealthChanged(HealthChangedArgs healthChangedArgs)
+        {
+            if (healthChangedArgs.IsDamage)
+                Damaged?.Invoke(healthChangedArgs);
+            else
+                Healed?.Invoke(healthChangedArgs);
+        }
+
+
+        private void OnKilled()
+        {
+            DisableControls();
+            
+            Killed?.Invoke();
+            
+            Debug.LogWarning("TODO: Implement drill destruction.");
         }
 
 

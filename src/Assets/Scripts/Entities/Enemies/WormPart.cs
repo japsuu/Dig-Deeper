@@ -4,16 +4,23 @@ namespace Entities.Enemies
 {
     public abstract class WormPart : DamageableEntity
     {
+        [Header("References")]
+        
         [SerializeField]
         public SpriteRenderer SpriteRenderer;
 
-        [SerializeField]
-        [Tooltip("Reference to the \"previous\" link in the chain.")]
-        protected WormBody TailLink;
+        [Header("Linking")]
 
         [SerializeField]
         [Tooltip("Changes the attachment radius of the link.")]
         public float LinkRadius = 0.5f;
+        
+        [Header("Damage")]
+
+        [SerializeField]
+        public int _collisionDamage = 10;
+
+        protected WormBody TailLink;
 
         
         protected override void Awake()
@@ -75,6 +82,17 @@ namespace Entities.Enemies
             
             TailLink.transform.position = targetPosition;
             TailLink.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.TryGetComponent(out IDamageable damageable))
+            {
+                if (damageable.Team == Team)
+                    return;
+                damageable.Damage(_collisionDamage);
+            }
         }
 
 

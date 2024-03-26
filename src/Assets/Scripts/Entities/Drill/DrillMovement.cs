@@ -1,9 +1,8 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 using World.Chunks;
 
-namespace Drill
+namespace Entities.Drill
 {
     /// <summary>
     /// Controls the movement of the drill.

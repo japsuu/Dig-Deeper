@@ -3,8 +3,14 @@ using UnityEngine;
 
 namespace Entities
 {
+    /// <summary>
+    /// Base-class for damageable entities.
+    /// </summary>
     public abstract class DamageableEntity : MonoBehaviour, IDamageable
     {
+        [SerializeField]
+        private DamageableTeam _team = DamageableTeam.Neutral;
+        
         [SerializeField]
         private int _maxHealth = 100;
         
@@ -15,6 +21,7 @@ namespace Entities
         
         public int MaxHealth => _maxHealth;
         public float ReceivedDamageMultiplier => _receivedDamageMultiplier;
+        public DamageableTeam Team => _team;
 
 
         protected virtual void Awake()

@@ -175,6 +175,7 @@ GameObject:
   - component: {fileID: 2228731501383945099}
   - component: {fileID: 625738411489524527}
   - component: {fileID: 2122702516457284882}
+  - component: {fileID: 4176194983409999233}
   m_Layer: 0
   m_Name: pf_Worm_Head_Small
   m_TagString: Untagged
@@ -212,11 +213,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ad563d31aa4835a6a2cfcdf2a749c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _team: 0
   _maxHealth: 100
   _receivedDamageMultiplier: 1
   SpriteRenderer: {fileID: 1553001858652348578}
-  TailLink: {fileID: 0}
   LinkRadius: 0.5
+  _collisionDamage: 20
   _terrainDigger: {fileID: 5413400461888868754}
 --- !u!114 &625738411489524527
 MonoBehaviour:
@@ -247,6 +249,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSpeed: 90
   _targetMaxDistanceFromPlayer: 15
+--- !u!58 &4176194983409999233
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5069976810279510657}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1001 &1465386022704306457
 PrefabInstance:
   m_ObjectHideFlags: 0

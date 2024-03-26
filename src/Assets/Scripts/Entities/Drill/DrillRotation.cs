@@ -2,7 +2,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace Drill
+namespace Entities.Drill
 {
     /// <summary>
     /// Controls the rotation of the drill.

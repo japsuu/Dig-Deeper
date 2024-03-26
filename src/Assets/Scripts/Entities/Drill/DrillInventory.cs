@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Drill
+namespace Entities.Drill
 {
     public class DrillInventory
     {
