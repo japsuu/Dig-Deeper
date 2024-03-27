@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -83,5 +84,27 @@ namespace Entities.Drill
 
         private float GetTweenFactor() => _tweenFactor;
         private void SetTweenFactor(float x) => _tweenFactor = x;
+
+
+        private void OnDrawGizmosSelected()
+        {
+            DrawnAngleLimitGizmos();
+        }
+
+
+        private void DrawnAngleLimitGizmos()
+        {
+            Vector3 center = transform.position;
+            Vector3 left = Quaternion.Euler(0f, 0f, _rotationAngleLimit.x) * Vector3.right;
+            Vector3 right = Quaternion.Euler(0f, 0f, _rotationAngleLimit.y) * Vector3.right;
+
+            // Rotate the vectors by the transform's local rotation
+            left = transform.rotation * left;
+            right = transform.rotation * right;
+
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(center, center + left);
+            Gizmos.DrawLine(center, center + right);
+        }
     }
 }

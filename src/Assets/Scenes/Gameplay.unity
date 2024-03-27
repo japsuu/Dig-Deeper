@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24291763}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7876848, w: 0.61607844}
+  m_LocalRotation: {x: 0, y: 0, z: -0.97103024, w: 0.23895669}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -325,6 +325,7 @@ MonoBehaviour:
   BreakRadius: 22
   BreakIntervalFrames: 10
   _scriptUpdateMode: 0
+  _enableLineCasting: 0
 --- !u!1 &77000530
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,8 +778,8 @@ MonoBehaviour:
   _weapon: {fileID: 1431049276}
   _alarmLight: {fileID: 24291765}
   _fireKey: 32
-  _rotationLimit: 22
-  _rotationSpeed: 10
+  _rotationAngleLimit: {x: -45, y: 45}
+  _rotationSpeed: 90
 --- !u!1 &256184564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,7 +1624,7 @@ MonoBehaviour:
   _firePoint: {fileID: 1389116513}
   _projectilePrefab: {fileID: 7250842850620255743, guid: 7fd991c58e312ba429282972397a5932, type: 3}
   _muzzleFlashPrefab: {fileID: 7108666263154958937, guid: 166fd98fcca8197458e6ece0f643545c, type: 3}
-  _fireRateRpm: 120
+  _fireRateRpm: 240
   _muzzleVelocity: 250
 --- !u!1 &586186331
 GameObject:
@@ -1751,8 +1752,8 @@ MonoBehaviour:
   _weapon: {fileID: 574231390}
   _alarmLight: {fileID: 1573469247}
   _fireKey: 32
-  _rotationLimit: 22
-  _rotationSpeed: 10
+  _rotationAngleLimit: {x: -45, y: 45}
+  _rotationSpeed: 90
 --- !u!1 &608861570
 GameObject:
   m_ObjectHideFlags: 0
@@ -2232,6 +2233,7 @@ MonoBehaviour:
   BreakRadius: 10
   BreakIntervalFrames: 10
   _scriptUpdateMode: 0
+  _enableLineCasting: 0
 --- !u!1 &715278089
 GameObject:
   m_ObjectHideFlags: 0
@@ -3822,7 +3824,7 @@ MonoBehaviour:
   _firePoint: {fileID: 1591277259}
   _projectilePrefab: {fileID: 7250842850620255743, guid: 7fd991c58e312ba429282972397a5932, type: 3}
   _muzzleFlashPrefab: {fileID: 7108666263154958937, guid: 166fd98fcca8197458e6ece0f643545c, type: 3}
-  _fireRateRpm: 120
+  _fireRateRpm: 240
   _muzzleVelocity: 250
 --- !u!1 &1440544536
 GameObject:
@@ -4138,7 +4140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573469245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7876848, w: 0.61607844}
+  m_LocalRotation: {x: 0, y: 0, z: -0.97103024, w: 0.23895669}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

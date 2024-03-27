@@ -16,10 +16,21 @@ namespace World.Chunks
         
         [SerializeField]
         public ScriptUpdateMode _scriptUpdateMode = ScriptUpdateMode.Update;
+
+        [SerializeField]
+        [Tooltip("Whether to break all tiles between the current and previous position. More expensive, but smoother.")]
+        private bool _enableLineCasting;
         
+        private Vector3 _previousPosition;
         private int _breakIntervalFrameCounter;
-        
-        
+
+
+        private void Awake()
+        {
+            _previousPosition = transform.position;
+        }
+
+
         protected virtual void Update()
         {
             if (_scriptUpdateMode == ScriptUpdateMode.Update)
@@ -47,7 +58,15 @@ namespace World.Chunks
                 return;
             
             Span<uint> replacedTiles = stackalloc uint[ChunkManager.Instance.RegisteredTileCount];
-            ChunkManager.Instance.BreakTilesInRange(replacedTiles, transform.position, BreakRadius);
+            
+            if (_enableLineCasting)
+            {
+                ChunkManager.Instance.GetAndSetTilesInLine(replacedTiles, _previousPosition, transform.position, BreakRadius);
+            }
+            else
+            {
+                ChunkManager.Instance.GetAndSetTilesInRange(replacedTiles, transform.position, BreakRadius);
+            }
             
             for (int i = 1; i < replacedTiles.Length; i++)  // Start at 1 to skip air.
             {
@@ -55,6 +74,7 @@ namespace World.Chunks
             }
             
             _breakIntervalFrameCounter = 0;
+            _previousPosition = transform.position;
         }
         
         

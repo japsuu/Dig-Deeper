@@ -91,7 +91,7 @@ namespace World.Chunks
                 Vector2Int chunkPosition = chunk.Position;
                 Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, centerPosition);
 
-                UVToTileCoordinates(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
+                WorldToTile(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
 
                 for (int x = -radius; x <= radius; x++)
                 for (int y = -radius; y <= radius; y++)
@@ -120,7 +120,7 @@ namespace World.Chunks
             Vector2Int chunkPosition = chunk.Position;
             Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, position);
 
-            UVToTileCoordinates(centerPositionRelativeUV, out int posX, out int posY);
+            WorldToTile(centerPositionRelativeUV, out int posX, out int posY);
 
             return chunk.GetHardness(posX, posY);
         }
@@ -134,22 +134,24 @@ namespace World.Chunks
             Vector2Int chunkPosition = chunk.Position;
             Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, position);
 
-            UVToTileCoordinates(centerPositionRelativeUV, out int posX, out int posY);
+            WorldToTile(centerPositionRelativeUV, out int posX, out int posY);
 
             byte tileId = chunk.GetTile(posX, posY);
             return _tileDatabase.TileData[tileId].Color;
         }
 
 
+        #region CHUNK MODIFICATION
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BreakTilesInRange(Span<uint> replacedTiles, Vector2 centerPosition, int radius)
+        public void GetAndSetTilesInRange(Span<uint> replacedTiles, Vector2 centerPosition, int radius)
         {
-            GetAndSetTilesInRange(replacedTiles, centerPosition, _tileDatabase.AirTile, radius);
+            GetAndSetTilesInRange(replacedTiles, centerPosition, radius, _tileDatabase.AirTile);
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void GetAndSetTilesInRange(Span<uint> replacedTiles, Vector2 centerPosition, in TileData newTile, int radius, bool circularRadius = true)
+        public void GetAndSetTilesInRange(Span<uint> replacedTiles, Vector2 centerPosition, int radius, in TileData newTile, bool circularRadius = true)
         {
             if (radius > Constants.CHUNK_SIZE_PIXELS / 2 - 1)
             {
@@ -169,7 +171,7 @@ namespace World.Chunks
                 Vector2Int chunkPosition = chunk.Position;
                 Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, centerPosition);
 
-                UVToTileCoordinates(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
+                WorldToTile(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
 
                 for (int x = -radius; x <= radius; x++)
                 for (int y = -radius; y <= radius; y++)
@@ -191,9 +193,9 @@ namespace World.Chunks
             }
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetTilesInRange(Vector2 centerPosition, in TileData newTile, int radius, bool circularRadius = true)
+        public void SetTilesInRange(Vector2 centerPosition, int radius, in TileData newTile, bool circularRadius = true)
         {
             if (radius > Constants.CHUNK_SIZE_PIXELS / 2 - 1)
             {
@@ -213,7 +215,7 @@ namespace World.Chunks
                 Vector2Int chunkPosition = chunk.Position;
                 Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, centerPosition);
 
-                UVToTileCoordinates(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
+                WorldToTile(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
 
                 for (int x = -radius; x <= radius; x++)
                 for (int y = -radius; y <= radius; y++)
@@ -232,12 +234,88 @@ namespace World.Chunks
                 }
             }
         }
+        
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetTilesInRange(Vector2 centerPosition, int radius, bool circularRadius = true)
+        {
+            if (radius > Constants.CHUNK_SIZE_PIXELS / 2 - 1)
+            {
+                Debug.LogError("Radius is too large for the chunk size.");
+                return;
+            }
+
+            int chunkCount = GetNeighbouringChunks(centerPosition, _chunkNeighbourhoodBuffer);
+
+            // Now we can just set the tiles in all of the chunks.
+            for (int i = 0; i < chunkCount; i++)
+            {
+                Chunk chunk = _chunkNeighbourhoodBuffer[i];
+                if (chunk == null)
+                    continue;
+
+                Vector2Int chunkPosition = chunk.Position;
+                Vector2 centerPositionRelativeUV = GetChunkTileUv(chunkPosition, centerPosition);
+
+                WorldToTile(centerPositionRelativeUV, out int centerTileRelativeX, out int centerTileRelativeY);
+
+                for (int x = -radius; x <= radius; x++)
+                for (int y = -radius; y <= radius; y++)
+                {
+                    int tilePosX = centerTileRelativeX + x;
+                    int tilePosY = centerTileRelativeY + y;
+
+                    // Skip tiles outside of this chunk.
+                    if (tilePosX < 0 || tilePosY < 0 || tilePosX >= Constants.CHUNK_SIZE_PIXELS || tilePosY >= Constants.CHUNK_SIZE_PIXELS)
+                        continue;
+
+                    if (circularRadius && x * x + y * y > radius * radius)
+                        continue;
+
+                    chunk.SetTile(tilePosX, tilePosY, _tileDatabase.AirTile);
+                }
+            }
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void GetAndSetTilesInLine(Span<uint> replacedTiles, Vector2 startPosition, Vector2 endPosition, int radius)
+        {
+            GetAndSetTilesInLine(replacedTiles, startPosition, endPosition, radius, _tileDatabase.AirTile);
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void GetAndSetTilesInLine(Span<uint> replacedTiles, Vector2 startPosition, Vector2 endPosition, int radius, in TileData tile)
+        {
+            // Convert the provided world positions to tile (pixel) positions.
+            WorldToTile(startPosition, out int startX, out int startY);
+            WorldToTile(endPosition, out int endX, out int endY);
+
+            // Loop through all the points in pixel-space between the start and end positions.
+            foreach (Vector2Int point in BresenhamLine2(startX, startY, endX, endY))
+            {
+                // Convert the pixel-space point back to world-space.
+                Vector2 worldPosition = new Vector2(point.x / (float)Constants.CHUNK_SIZE_PIXELS, point.y / (float)Constants.CHUNK_SIZE_PIXELS);
+                
+                GetAndSetTilesInRange(replacedTiles, worldPosition, radius, tile);
+            }
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BreakTilesInLine(Vector2 startPosition, Vector2 endPosition, int width)
-        {
-            SetTilesInLine(startPosition, endPosition, width, _tileDatabase.AirTile);
+        public void SetTilesInLine(Vector2 startPosition, Vector2 endPosition, int width)
+        {//TODO: Fixme
+            Vector2Int startChunkPosition = WorldToChunk(startPosition);
+            Vector2Int endChunkPosition = WorldToChunk(endPosition);
+
+            foreach (Vector2Int point in BresenhamLine2(startChunkPosition.x, startChunkPosition.y, endChunkPosition.x, endChunkPosition.y))
+                for (int xOffset = -width; xOffset <= width; xOffset++)
+                for (int yOffset = -width; yOffset <= width; yOffset++)
+                {
+                    Vector2Int offsetPoint = point + new Vector2Int(xOffset, yOffset);
+                    SetTile(offsetPoint, _tileDatabase.AirTile);
+                }
         }
 
 
@@ -257,62 +335,22 @@ namespace World.Chunks
         }
 
 
-        // Faster, but less accurate Bresenham's Line Algorithm.
-        // Modified from: http://ericw.ca/notes/bresenhams-line-algorithm-in-csharp.html
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IEnumerable<Vector2Int> BresenhamLine2(int x1, int y1, int x2, int y2)
-        {
-            bool steep = Math.Abs(y2 - y1) > Math.Abs(x2 - x1);
-            if (steep)
-            {
-                int t = x1;
-                x1 = y1;
-                y1 = t;
-                t = x2;
-                x2 = y2;
-                y2 = t;
-            }
-
-            if (x1 > x2)
-            {
-                int t = x1;
-                x1 = x2;
-                x2 = t;
-                t = y1;
-                y1 = y2;
-                y2 = t;
-            }
-
-            int dx = x2 - x1;
-            int dy = Math.Abs(y2 - y1);
-            int error = dx / 2;
-            int yStep = y1 < y2 ? 1 : -1;
-            int y = y1;
-            for (int x = x1; x <= x2; x++)
-            {
-                yield return new Vector2Int(steep ? y : x, steep ? x : y);
-                error -= dy;
-                if (error >= 0)
-                    continue;
-                y += yStep;
-                error += dx;
-            }
-        }
-
-
         public void SetTile(Vector2 position, in TileData newTile)
         {
             Vector2Int chunkPosition = WorldToChunk(position);
             Vector2 tileUV = GetChunkTileUv(chunkPosition, position);
 
-            UVToTileCoordinates(tileUV, out int tileX, out int tileY);
+            WorldToTile(tileUV, out int tileX, out int tileY);
 
-            SetTile(chunkPosition, tileX, tileY, newTile);
+            SetTileInChunk(chunkPosition, tileX, tileY, newTile);
         }
+
+        #endregion
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void SetTile(Vector2Int chunkPosition, int tileX, int tileY, in TileData newTile)
+        private void SetTileInChunk(Vector2Int chunkPosition, int tileX, int tileY, in TileData newTile)
         {
             if (tileX < 0 || tileY < 0 || tileX >= Constants.CHUNK_SIZE_PIXELS || tileY >= Constants.CHUNK_SIZE_PIXELS)
                 return;
@@ -409,28 +447,15 @@ namespace World.Chunks
         /// </summary>
         /// <returns>A new position that is relative to the chunk grid</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Vector2Int WorldToChunk(Vector2 position) =>
+        private static Vector2Int WorldToChunk(Vector2 position) =>
             new(
                 (int)Math.Floor(position.x) & ~Constants.CHUNK_SIZE_UNITS_BITMASK,
                 (int)Math.Floor(position.y) & ~Constants.CHUNK_SIZE_UNITS_BITMASK
             );
 
-
-        /// <summary>
-        /// World position -> chunk position.
-        /// Example: (36, 74, -5) -> (32, 64, -32)
-        /// </summary>
-        /// <returns>A new position that is relative to the chunk grid</returns>
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Vector2Int WorldToChunk(Vector2Int position) =>
-            new(
-                position.x & ~Constants.CHUNK_SIZE_UNITS_BITMASK,
-                position.y & ~Constants.CHUNK_SIZE_UNITS_BITMASK
-            );
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Vector2 GetChunkTileUv(Vector2Int chunkPosition, Vector2 tilePosition)
+        private static Vector2 GetChunkTileUv(Vector2Int chunkPosition, Vector2 tilePosition)
         {
             Vector2 localPosition = tilePosition - chunkPosition;
             Vector2 uv = localPosition / Constants.CHUNK_SIZE_UNITS;
@@ -439,7 +464,7 @@ namespace World.Chunks
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void UVToTileCoordinates(Vector2 uv, out int x, out int y)
+        private static void WorldToTile(Vector2 uv, out int x, out int y)
         {
             x = Mathf.FloorToInt(uv.x * Constants.CHUNK_SIZE_PIXELS);
             y = Mathf.FloorToInt(uv.y * Constants.CHUNK_SIZE_PIXELS);
@@ -493,6 +518,49 @@ namespace World.Chunks
 
                 if (dj == 0)
                     ++segmentLength;
+            }
+        }
+
+
+        // Faster, but less accurate Bresenham's Line Algorithm.
+        // Modified from: http://ericw.ca/notes/bresenhams-line-algorithm-in-csharp.html
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IEnumerable<Vector2Int> BresenhamLine2(int x1, int y1, int x2, int y2)
+        {
+            bool steep = Math.Abs(y2 - y1) > Math.Abs(x2 - x1);
+            if (steep)
+            {
+                int t = x1;
+                x1 = y1;
+                y1 = t;
+                t = x2;
+                x2 = y2;
+                y2 = t;
+            }
+
+            if (x1 > x2)
+            {
+                int t = x1;
+                x1 = x2;
+                x2 = t;
+                t = y1;
+                y1 = y2;
+                y2 = t;
+            }
+
+            int dx = x2 - x1;
+            int dy = Math.Abs(y2 - y1);
+            int error = dx / 2;
+            int yStep = y1 < y2 ? 1 : -1;
+            int y = y1;
+            for (int x = x1; x <= x2; x++)
+            {
+                yield return new Vector2Int(steep ? y : x, steep ? x : y);
+                error -= dy;
+                if (error >= 0)
+                    continue;
+                y += yStep;
+                error += dx;
             }
         }
 

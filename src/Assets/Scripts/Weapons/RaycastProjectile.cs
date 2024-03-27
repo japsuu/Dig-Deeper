@@ -16,7 +16,7 @@ namespace Weapons
         private const int MAX_RAYCAST_RESULTS = 64;
 
         [SerializeField]
-        private int _weightGrams = 8;
+        private int _weightGrams = 2000;
 
         [SerializeField]
         private int _baseDamage = 35;
@@ -60,13 +60,13 @@ namespace Weapons
             {
                 RaycastHit2D hit = _raycastResults[i];
 
-                if (hit.collider.isTrigger)
-                    continue;
-
                 transform.position = hit.point;
 
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 damageable?.Damage(_baseDamage);
+                
+                if (hit.collider.isTrigger)
+                    continue;
 
                 RaycastProjectileRenderer projectileRenderer = GetComponentInChildren<RaycastProjectileRenderer>();
 

@@ -54,7 +54,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,6 +183,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6205440827717804519}
+  - {fileID: 7565487864818551340}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7250842850620255743
@@ -197,9 +198,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6200ae92abe7433984ceada32e03e128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weightGrams: 8
+  _weightGrams: 2000
   _baseDamage: 35
-  _debugDraw: 1
+  _debugDraw: 0
   _projectileHitLayers:
     serializedVersion: 2
     m_Bits: 1536
@@ -215,5 +216,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ca16bd003e43658d7c2fb8afa98635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lifetime: 5
+  _lifetime: 2
   _destroyEffect: {fileID: 0}
+--- !u!1 &6561618157863950664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7565487864818551340}
+  - component: {fileID: 8126826132143299629}
+  m_Layer: 0
+  m_Name: terrain digger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7565487864818551340
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561618157863950664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6018062953966056126}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8126826132143299629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561618157863950664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8097d434ce84316a3678ae3e02548e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BreakRadius: 2
+  BreakIntervalFrames: 0
+  _scriptUpdateMode: 1
+  _enableLineCasting: 1
