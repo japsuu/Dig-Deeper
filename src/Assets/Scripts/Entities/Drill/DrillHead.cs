@@ -1,4 +1,5 @@
-﻿using World.Chunks;
+﻿using UnityEngine;
+using World.Chunks;
 
 namespace Entities.Drill
 {
@@ -6,6 +7,9 @@ namespace Entities.Drill
     {
         private const int BREAK_INTERVAL_FRAMES_CUTSCENE = 2;
         private const int BREAK_INTERVAL_FRAMES = 8;
+        
+        [SerializeField]
+        private Transform _particlesRoot;
 
         private DrillInventory _inventory;
 
@@ -28,6 +32,9 @@ namespace Entities.Drill
         {
             IsEnabled = isEnabled;
             BreakIntervalFrames = isEnabled ? BREAK_INTERVAL_FRAMES : BREAK_INTERVAL_FRAMES_CUTSCENE;
+            
+            if (_particlesRoot != null)
+                _particlesRoot.gameObject.SetActive(isEnabled);
         }
 
 
