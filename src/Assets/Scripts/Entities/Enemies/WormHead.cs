@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Audio;
+using UnityEngine;
 using World.Chunks;
 
 namespace Entities.Enemies
@@ -28,6 +29,13 @@ namespace Entities.Enemies
 
             if (_rotation.IsFacingTarget)
                 _terrainDigger.ManualUpdate();
+        }
+
+
+        public override void Damage(int amount)
+        {
+            AudioManager.PlaySound("worm hit critical");
+            base.Damage(amount);
         }
 
 

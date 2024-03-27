@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Audio;
+using UnityEngine;
 
 namespace Entities.Enemies
 {
@@ -14,6 +15,14 @@ namespace Entities.Enemies
             head.SetTailLink(TailLink);
             
             Destroy(gameObject);
+        }
+
+
+        public override void Damage(int amount)
+        {
+            AudioManager.PlaySound("worm hit normal");
+            
+            base.Damage(amount);
         }
 
 
