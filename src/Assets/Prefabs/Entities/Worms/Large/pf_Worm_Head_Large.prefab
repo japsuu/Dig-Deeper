@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: 0
+  _deleteProjectileOnHit: 1
   _maxHealth: 200
   _receivedDamageMultiplier: 1
   SpriteRenderer: {fileID: 1553001858652348578}
@@ -233,8 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecb26c150d55480880516995ee436a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roamingMovementSpeed: 10
-  _chasingMovementSpeed: 15
+  _roamingMovementSpeed: 5
+  _chasingMovementSpeed: 10
   _movementSpeedChangeDuration: 2
 --- !u!114 &2122702516457284882
 MonoBehaviour:

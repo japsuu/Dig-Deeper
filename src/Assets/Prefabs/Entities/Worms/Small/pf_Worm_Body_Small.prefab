@@ -164,8 +164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: 0
+  _deleteProjectileOnHit: 1
   _maxHealth: 100
-  _receivedDamageMultiplier: 0.5
+  _receivedDamageMultiplier: 0.75
   SpriteRenderer: {fileID: 8119626514416453442}
   LinkRadius: 0.5
   _collisionDamage: 10
