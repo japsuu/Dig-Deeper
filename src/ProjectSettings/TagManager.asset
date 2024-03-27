@@ -12,10 +12,10 @@ TagManager:
   - Water
   - UI
   - 
-  - 
-  - 
-  - 
-  - 
+  - Terrain
+  - Drill
+  - Enemy
+  - TerrainFeature
   - 
   - 
   - 
@@ -38,6 +38,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2830491027
+    locked: 0
+  - name: Digging enemies
+    uniqueID: 3652196685
+    locked: 0
+  - name: Terrain
+    uniqueID: 4033836113
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Enemies
+    uniqueID: 3680671771
+    locked: 0
+  - name: Player
+    uniqueID: 2279062789
+    locked: 0
+  - name: Overlay
+    uniqueID: 321708697
     locked: 0

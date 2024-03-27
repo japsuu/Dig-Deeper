@@ -1,5 +1,6 @@
 ﻿using Materials;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace World.Generation
 {
@@ -12,25 +13,28 @@ namespace World.Generation
         [SerializeField]
         private MaterialDefinition _material;
 
+        [FormerlySerializedAs("_threshold1")]
         [SerializeField]
         [Tooltip("The threshold below which the material should be generated.")]
         [Range(0f, 1f)]
-        private float _threshold1 = 0.5f;
+        private float _temperatureThreshold = 0.5f;
 
+        [FormerlySerializedAs("_threshold2")]
         [SerializeField]
         [Tooltip("The threshold below which the material should be generated.")]
         [Range(0f, 1f)]
-        private float _threshold2 = 0.5f;
+        private float _pressureThreshold = 0.5f;
 
+        [FormerlySerializedAs("_threshold3")]
         [SerializeField]
         [Tooltip("The threshold below which the material should be generated.")]
         [Range(0f, 1f)]
-        private float _threshold3 = 0.5f;
+        private float _tectonicsThreshold = 0.5f;
         
         
         public MaterialDefinition Material => _material;
-        public float Threshold1 => _threshold1;
-        public float Threshold2 => _threshold2;
-        public float Threshold3 => _threshold3;
+        public float TemperatureThreshold => _temperatureThreshold;
+        public float PressureThreshold => _pressureThreshold;
+        public float TectonicsThreshold => _tectonicsThreshold;
     }
 }
