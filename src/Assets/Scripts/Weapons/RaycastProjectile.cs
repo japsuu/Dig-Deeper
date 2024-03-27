@@ -65,11 +65,16 @@ namespace Weapons
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 damageable?.Damage(_baseDamage);
 
-                bool skipDeletion = (damageable != null && !damageable.DeletesProjectileOnHit);
-                bool isTrigger = hit.collider.isTrigger;
-                
-                if (skipDeletion || isTrigger)
-                    continue;
+                if (damageable == null)
+                {
+                    if (hit.collider.isTrigger)
+                        continue;
+                }
+                else
+                {
+                    if (!damageable.DeletesProjectileOnHit)
+                        continue;
+                }
                 
                 RaycastProjectileRenderer projectileRenderer = GetComponentInChildren<RaycastProjectileRenderer>();
 
