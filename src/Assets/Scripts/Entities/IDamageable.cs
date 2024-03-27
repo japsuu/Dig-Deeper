@@ -8,6 +8,11 @@
         /// </summary>
         public DamageableTeam Team { get; }
         
+        /// <summary>
+        /// Whether a projectile should be deleted upon hitting this entity.
+        /// </summary>
+        public bool DeletesProjectileOnHit { get; }
+        
         
         public void Damage(int amount);
     }

@@ -12,6 +12,9 @@ namespace Entities
         private DamageableTeam _team = DamageableTeam.Neutral;
         
         [SerializeField]
+        private bool _deleteProjectileOnHit = true;
+        
+        [SerializeField]
         private int _maxHealth = 100;
         
         [SerializeField]
@@ -22,6 +25,7 @@ namespace Entities
         public int MaxHealth => _maxHealth;
         public float ReceivedDamageMultiplier => _receivedDamageMultiplier;
         public DamageableTeam Team => _team;
+        public bool DeletesProjectileOnHit => _deleteProjectileOnHit;
 
 
         protected virtual void Awake()

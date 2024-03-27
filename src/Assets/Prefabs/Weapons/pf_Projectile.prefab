@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weightGrams: 2000
-  _baseDamage: 35
+  _baseDamage: 55
   _debugDraw: 0
   _projectileHitLayers:
     serializedVersion: 2

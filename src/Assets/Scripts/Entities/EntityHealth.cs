@@ -24,6 +24,9 @@ namespace Entities
         private DamageableTeam _team = DamageableTeam.Neutral;
 
         [SerializeField]
+        private bool _deleteProjectileOnHit = true;
+
+        [SerializeField]
         private int _maxHealth = 100;
         
         [SerializeField]
@@ -32,6 +35,7 @@ namespace Entities
         public int CurrentHealth { get; private set; }
         public int MaxHealth => _maxHealth;
         public DamageableTeam Team => _team;
+        public bool DeletesProjectileOnHit => _deleteProjectileOnHit;
         public float ReceivedDamageMultiplier => _receivedDamageMultiplier;
         public void SetReceivedDamageMultiplier(float receivedDamageMultiplier) => _receivedDamageMultiplier = receivedDamageMultiplier;
         
