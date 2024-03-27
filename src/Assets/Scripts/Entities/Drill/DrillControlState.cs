@@ -6,16 +6,6 @@
     public enum DrillControlState
     {
         /// <summary>
-        /// The player cannot control any part of the drill.
-        /// </summary>
-        Nothing,
-        
-        /// <summary>
-        /// The player can detach the drill from the station.
-        /// </summary>
-        Detach,
-        
-        /// <summary>
         /// The player can freely move and rotate the drill.
         /// All weapons are disabled.
         /// </summary>

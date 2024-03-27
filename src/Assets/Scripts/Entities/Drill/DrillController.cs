@@ -13,7 +13,7 @@ namespace Entities.Drill
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(DrillMovement))]
     [RequireComponent(typeof(DrillRotation))]
-    public class DrillController : SingletonBehaviour<DrillController>  //TODO: Implement a basic state machine for the drill.
+    public class DrillController : SingletonBehaviour<DrillController>
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
 
@@ -21,50 +21,30 @@ namespace Entities.Drill
         public event Action<HealthChangedArgs> Damaged;
         public event Action Killed;
 
+        
         [Header("References")]
+        [SerializeField] private EntityHealth _health;
+        [SerializeField] private TerrainTrigger _terrainTrigger;
+        [SerializeField] private Transform _lightsRoot;
+        [SerializeField] private CinemachineImpulseSource _collisionImpulseSource;
         
-        [SerializeField]
-        private EntityHealth _health;
-        
-        [SerializeField]
-        private TerrainTrigger _terrainTrigger;
-        
-        [SerializeField]
-        private Transform _lightsRoot;
-        
-        [SerializeField]
-        private Transform _particlesRoot;
-        
-        [SerializeField]
-        private CinemachineImpulseSource _collisionImpulseSource;
         
         [Header("Weapons")]
+        [SerializeField] private PlayerWeaponController _leftWeapon;
+        [SerializeField] private PlayerWeaponController _rightWeapon;
+        [SerializeField] private KeyCode _leftWeaponActivationKey = KeyCode.Q;
+        [SerializeField] private KeyCode _rightWeaponActivationKey = KeyCode.E;
 
-        [SerializeField]
-        private PlayerWeaponController _leftWeapon;
         
-        [SerializeField]
-        private PlayerWeaponController _rightWeapon;
-
-        [SerializeField]
-        private KeyCode _leftWeaponActivationKey = KeyCode.Q;
-        
-        [SerializeField]
-        private KeyCode _rightWeaponActivationKey = KeyCode.E;
-
         [Header("Collision")]
-        
-        [SerializeField]
-        private float _rotateTowardsVelocitySpeed = 35f;
-        
-        [SerializeField]
-        private float _minVelocityForHitRecovery = 14f;
+        [SerializeField] private float _rotateTowardsVelocitySpeed = 35f;
+        [SerializeField] private float _minVelocityForHitRecovery = 14f;
         
         private DrillHead[] _drillHeads;
         private Rigidbody2D _rigidbody;
-        private bool _hasDetachedFromDock;
-        private bool _isInRecoverySequence;
-        private bool _isAirborne;
+        
+        private DrillState _state;                  // In what state the drill currently is.
+        private DrillControlState _controlState;    // What part of the drill the player is currently controlling.
         
         public DrillMovement Movement { get; private set; }
         public DrillRotation Rotation { get; private set; }
@@ -74,69 +54,290 @@ namespace Entities.Drill
 
         private void Awake()
         {
+            _drillHeads = GetComponentsInChildren<DrillHead>();
             _rigidbody = GetComponent<Rigidbody2D>();
             Movement = GetComponent<DrillMovement>();
             Rotation = GetComponent<DrillRotation>();
-            _drillHeads = GetComponentsInChildren<DrillHead>();
             Inventory = new DrillInventory();
 
-            _rigidbody.simulated = false;
-            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            
-            _terrainTrigger.ContactStart += () => OnHitGround(Mathf.Abs(_rigidbody.velocity.y));
-            _terrainTrigger.ContactEnd += OnEnterAirborne;
+            _terrainTrigger.ContactStart += () => ChangeDrillState(DrillState.Crashed);
+            _terrainTrigger.ContactEnd += () => ChangeDrillState(DrillState.Airborne);
             
             _health.HealthChanged += OnHealthChanged;
-            _health.Killed += OnKilled;
+            _health.Killed += () => ChangeDrillState(DrillState.Destroyed);
             
             foreach (DrillHead drillHead in _drillHeads)
                 drillHead.Initialize(Inventory);
 
             Movement.Initialize(_rigidbody);
+            _controlState = DrillControlState.Movement;
         }
 
 
         private void Start()
         {
-            SetMovementControlsEnabled(false);
+            ChangeDrillState(DrillState.Docked, true);
         }
 
 
         private void Update()
         {
-            if (!_hasDetachedFromDock)
+            UpdateDrillState();
+        }
+
+
+        #region DRILL STATE MACHINE
+
+        private void ChangeDrillState(DrillState state, bool force = false)
+        {
+            // Skip state checks and exit callbacks if forced, since the exit callback can potentially change the state.
+            if (!force)
             {
-                if (Input.GetKeyUp(KeyCode.Space))
-                    DetachFromDock();
-                return;
+                if (_state == state)
+                    return;
+                
+                OnDrillExitState(_state);
             }
             
-            if (_isInRecoverySequence)
-                return;
-            
-            if (_isAirborne)
-                Rotation.RotateTowardsVelocity(_rigidbody.velocity, _rotateTowardsVelocitySpeed);
-
-            if (Input.GetKeyUp(_leftWeaponActivationKey))
+            _state = state;
+            OnDrillEnterState(_state);
+        }
+        
+        
+        private void OnDrillEnterState(DrillState state)
+        {
+            switch (state)
             {
-                bool isFiringEnabled = _leftWeapon.IsFiringEnabled;
-                Rotation.SetEnabled(isFiringEnabled);
-                _leftWeapon.SetEnableFiring(!isFiringEnabled);
-
-                if (!isFiringEnabled && _rightWeapon.IsFiringEnabled)
-                    _rightWeapon.SetEnableFiring(false);
-            }
-            
-            if (Input.GetKeyUp(_rightWeaponActivationKey))
-            {
-                bool isFiringEnabled = _rightWeapon.IsFiringEnabled;
-                Rotation.SetEnabled(isFiringEnabled);
-                _rightWeapon.SetEnableFiring(!isFiringEnabled);
-
-                if (!isFiringEnabled && _leftWeapon.IsFiringEnabled)
+                case DrillState.Docked:
+                {
+                    _rigidbody.simulated = false;
+                    
+                    ChangeControlState(DrillControlState.Movement);
+                    break;
+                }
+                case DrillState.Airborne:
+                {
+                    _rigidbody.gravityScale = 1f;
+                    SetRigidbodyDrag(0f);
+                    break;
+                }
+                case DrillState.Crashed:
+                {
+                    float hitVelocity = Mathf.Abs(_rigidbody.velocity.y);
+                    StartCoroutine(CrashSequence(hitVelocity));
+                    break;
+                }
+                case DrillState.Controlled:
+                {
+                    Rotation.SetEnabled(true);
+                    Movement.SetEnabled(true);
+                    SetDrillsEnabled(true);
+                    break;
+                }
+                case DrillState.Destroyed:
+                {
+                    Rotation.SetEnabled(false);
+                    Movement.SetEnabled(false);
+                    SetDrillsEnabled(false);
+                    SetLightsEnabled(false);
                     _leftWeapon.SetEnableFiring(false);
+                    _rightWeapon.SetEnableFiring(false);
+            
+                    Killed?.Invoke();
+            
+                    Debug.LogWarning("TODO: Implement drill destruction.");
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+                }
             }
         }
+        
+        
+        private void UpdateDrillState()
+        {
+            switch (_state)
+            {
+                case DrillState.Docked:
+                {
+                    if (Input.GetKeyUp(KeyCode.Space))
+                        ChangeDrillState(DrillState.Airborne);
+                    break;
+                }
+                case DrillState.Airborne:
+                {
+                    Rotation.RotateTowardsVelocity(_rigidbody.velocity, _rotateTowardsVelocitySpeed);
+                    break;
+                }
+                case DrillState.Crashed:
+                {
+                    break;
+                }
+                case DrillState.Controlled:
+                {
+                    UpdateControlState();
+                    break;
+                }
+                case DrillState.Destroyed:
+                {
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+        
+        
+        private void OnDrillExitState(DrillState state)
+        {
+            switch (state)
+            {
+                case DrillState.Docked:
+                {
+                    _rigidbody.simulated = true;
+                    break;
+                }
+                case DrillState.Airborne:
+                {
+                    _rigidbody.gravityScale = 0f;
+                    break;
+                }
+                case DrillState.Crashed:
+                {
+                    break;
+                }
+                case DrillState.Controlled:
+                {
+                    Rotation.SetEnabled(false);
+                    Movement.SetEnabled(false);
+                    SetDrillsEnabled(false);
+                    break;
+                }
+                case DrillState.Destroyed:
+                {
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region CONTROL STATE MACHINE
+
+        private void ChangeControlState(DrillControlState controlState)
+        {
+            if (_controlState == controlState)
+                return;
+            
+            OnControlExitState(_controlState);
+            _controlState = controlState;
+            OnControlEnterState(_controlState);
+        }
+        
+        
+        private void OnControlEnterState(DrillControlState controlState)
+        {
+            switch (controlState)
+            {
+                case DrillControlState.Movement:
+                {
+                    Rotation.SetEnabled(true);
+                    break;
+                }
+                case DrillControlState.WeaponLeft:
+                {
+                    _leftWeapon.SetEnableFiring(true);
+                    break;
+                }
+                case DrillControlState.WeaponRight:
+                {
+                    _rightWeapon.SetEnableFiring(true);
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException(nameof(controlState), controlState, null);
+                }
+            }
+        }
+        
+        
+        private void UpdateControlState()
+        {
+            switch (_controlState)
+            {
+                case DrillControlState.Movement:
+                {
+                    Rotation.RotateTowardsInput();
+                    
+                    if (Input.GetKeyUp(_leftWeaponActivationKey))
+                        ChangeControlState(DrillControlState.WeaponLeft);
+                    else if (Input.GetKeyUp(_rightWeaponActivationKey))
+                        ChangeControlState(DrillControlState.WeaponRight);
+                    
+                    break;
+                }
+                case DrillControlState.WeaponLeft:
+                {
+                    if (Input.GetKeyUp(_leftWeaponActivationKey))
+                        ChangeControlState(DrillControlState.Movement);
+                    else if (Input.GetKeyUp(_rightWeaponActivationKey))
+                        ChangeControlState(DrillControlState.WeaponRight);
+
+                    break;
+                }
+                case DrillControlState.WeaponRight:
+                {
+                    if (Input.GetKeyUp(_leftWeaponActivationKey))
+                        ChangeControlState(DrillControlState.WeaponLeft);
+                    else if (Input.GetKeyUp(_rightWeaponActivationKey))
+                        ChangeControlState(DrillControlState.Movement);
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+
+        private void OnControlExitState(DrillControlState controlState)
+        {
+            switch (controlState)
+            {
+                case DrillControlState.Movement:
+                {
+                    Rotation.SetEnabled(false);
+                    break;
+                }
+                case DrillControlState.WeaponLeft:
+                {
+                    _leftWeapon.SetEnableFiring(false);
+                    break;
+                }
+                case DrillControlState.WeaponRight:
+                {
+                    _rightWeapon.SetEnableFiring(false);
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException(nameof(controlState), controlState, null);
+                }
+            }
+        }
+
+        #endregion
 
 
         private void OnHealthChanged(HealthChangedArgs healthChangedArgs)
@@ -148,112 +349,59 @@ namespace Entities.Drill
         }
 
 
-        private void OnKilled()
+        private void SetDrillsEnabled(bool enable)
         {
-            SetDrillEnabled(false);
-            SetMovementControlsEnabled(false);
-            SetLightsEnabled(false);
-            _leftWeapon.SetEnableFiring(false);
-            _rightWeapon.SetEnableFiring(false);
-            
-            Killed?.Invoke();
-            
-            Debug.LogWarning("TODO: Implement drill destruction.");
-        }
-
-
-        private void DetachFromDock()
-        {
-            EnableFalling();
-            _rigidbody.simulated = true;
-            _hasDetachedFromDock = true;
-            _isAirborne = true;
-        }
-
-
-        private void OnEnterAirborne()
-        {
-            _isAirborne = true;
-            if (_hasDetachedFromDock)
-            {
-                EnableFalling();
-            }
-        }
-
-
-        private void EnableFalling()
-        {
-            _rigidbody.gravityScale = 1f;
-            SetRigidbodyDrag(0f);
-            SetMovementControlsEnabled(false);
-        }
-
-
-        private void OnHitGround(float hitVelocity)
-        {
-            StartCoroutine(HitRecoverySequence(hitVelocity));
-        }
-        
-        
-        private IEnumerator HitRecoverySequence(float hitVelocity)
-        {
-            _isAirborne = false;
-            _isInRecoverySequence = true;
-            _rigidbody.gravityScale = 0f;
-            
-            // Start increasing the rb linear drag with a tween to slow down the drill.
-            yield return DOTween.To(GetRigidbodyDrag, SetRigidbodyDrag, RB_LINEAR_DRAG_MAX, 0.7f).OnComplete(() => SetRigidbodyDrag(0f));
-            
-            if (hitVelocity >= _minVelocityForHitRecovery)
-            {
-                _collisionImpulseSource.GenerateImpulse();
-                AudioManager.PlaySound("crash warning");
-                yield return new WaitForSeconds(0.2f);
-            
-                SetLightsEnabled(false);
-                yield return new WaitForSeconds(1.5f);
-                SetLightsEnabled(true);
-                
-                AudioManager.PlaySound("rebooting");
-                _rigidbody.velocity = Vector2.zero;
-            
-                yield return new WaitForSeconds(0.8f);
-            }
-            
-            SetMovementControlsEnabled(true);
-            SetDrillEnabled(true);
-            
-            _isInRecoverySequence = false;
-        }
-        
-        
-        private void SetMovementControlsEnabled(bool enable)
-        {
-            Movement.SetEnabled(enable);
-            Rotation.SetEnabled(enable);
-        }
-
-
-        private void SetDrillEnabled(bool enable)
-        {
-            if (enable)
-            {
-                foreach (DrillHead drillHead in _drillHeads)
-                    drillHead.SetEnabled(true);
-                _particlesRoot.gameObject.SetActive(true);
-            }
-            else
-            {
-                foreach (DrillHead drillHead in _drillHeads)
-                    drillHead.SetEnabled(false);
-                _particlesRoot.gameObject.SetActive(false);
-            }
+            foreach (DrillHead drillHead in _drillHeads)
+                drillHead.SetEnabled(enable);
         }
         
         
         private void SetLightsEnabled(bool enable)
         {
             _lightsRoot.gameObject.SetActive(enable);
+        }
+        
+        
+        private IEnumerator CrashSequence(float hitVelocity)
+        {
+            if (hitVelocity >= _minVelocityForHitRecovery)
+            {
+                _collisionImpulseSource.GenerateImpulse();
+                AudioManager.PlaySound("thump large");
+            }
+            
+            // Start increasing the rb linear drag with a tween to slow down the drill.
+            // NOTE: We could also tween the velocity to zero, but that could cause issues if we were to fall through a very thin surface.
+            const float duration = 0.7f;
+            yield return DOTween.To(GetRigidbodyDrag, SetRigidbodyDrag, RB_LINEAR_DRAG_MAX, duration).OnComplete(() =>
+            {
+                SetRigidbodyDrag(0f);
+            });
+            
+            if (hitVelocity >= _minVelocityForHitRecovery)
+                yield return HitRecoverySequence();
+            
+            ChangeDrillState(DrillState.Controlled);
+        }
+
+
+        private IEnumerator HitRecoverySequence()
+        {
+            AudioManager.PlaySound("crash warning");
+            yield return new WaitForSeconds(0.2f);
+            
+            SetDrillsEnabled(false);
+            SetLightsEnabled(false);
+            
+            yield return new WaitForSeconds(1.5f);
+            AudioManager.PlaySound("rebooting");
+            
+            SetDrillsEnabled(true);
+            SetLightsEnabled(true);
+            
+            _rigidbody.velocity = Vector2.zero;
+            
+            yield return new WaitForSeconds(0.8f);
         }
 
 

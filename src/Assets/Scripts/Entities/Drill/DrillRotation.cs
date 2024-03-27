@@ -45,27 +45,19 @@ namespace Entities.Drill
         }
         
         
+        public void SetControlFactor(float factor) => _controlFactor = factor;
+        public void SetTerrainHardnessFactor(float factor) => _terrainHardnessFactor = factor;
+
+
         public void RotateTowardsVelocity(Vector2 velocity, float rotationSpeed)
         {
             float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
-        
-        
-        public void SetControlFactor(float factor)
-        {
-            _controlFactor = factor;
-        }
-        
-        
-        public void SetTerrainHardnessFactor(float factor)
-        {
-            _terrainHardnessFactor = factor;
-        }
 
 
-        private void Update()
+        public void RotateTowardsInput()
         {
             if (!IsEnabled)
                 return;
