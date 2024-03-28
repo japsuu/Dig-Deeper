@@ -34,6 +34,7 @@ namespace Entities.Enemies
         {
             // Worms are afraid of trading stations, so turn away.
             _rotation.EscapeToSurface();
+            Invoke(nameof(DestroyRecursive), 5f);
         }
 
 

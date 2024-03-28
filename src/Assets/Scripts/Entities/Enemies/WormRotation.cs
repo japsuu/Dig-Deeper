@@ -25,7 +25,8 @@ namespace Entities.Enemies
         public void EscapeToSurface()
         {
             // Aim for the surface, away from the player.
-            _targetPlayerOffset = -DrillController.Instance.transform.position.normalized * 200;
+            _targetPlayerOffset = new Vector2(0, 200);
+            _targetPosition = (Vector2)DrillController.Instance.transform.position + _targetPlayerOffset;
         }
 
         
