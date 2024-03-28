@@ -123,15 +123,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: drill
     originalName: 
-    pivot: {x: 5.3333335, y: -3}
+    pivot: {x: 0.5423729, y: -0.1851852}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 12
-      height: 16
+      width: 118
+      height: 54
     spriteID: 61ea937c8e3336c4989aa015a2b7d834
     spriteBone: []
     spriteOutline: []
@@ -154,9 +154,9 @@ ScriptedImporter:
       frameIndex: 0
       cellRect:
         x: 0
-        y: 48
-        width: 12
-        height: 16
+        y: 10
+        width: 118
+        height: 54
       spriteId: 61ea937c8e3336c4989aa015a2b7d834
     linkedCells: []
     parentIndex: -1

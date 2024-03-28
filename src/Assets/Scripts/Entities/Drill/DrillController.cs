@@ -7,6 +7,7 @@ using Singletons;
 using UnityEngine;
 using Weapons.Controllers;
 using World.Chunks;
+using World.Stations;
 
 namespace Entities.Drill
 {
@@ -42,6 +43,7 @@ namespace Entities.Drill
         
         private DrillHead[] _drillHeads;
         private Rigidbody2D _rigidbody;
+        private TradingStation _currentTradingStation;
         
         private DrillState _state;                  // In what state the drill currently is.
         private DrillControlState _controlState;    // What part of the drill the player is currently controlling.
@@ -60,8 +62,8 @@ namespace Entities.Drill
             Rotation = GetComponent<DrillRotation>();
             Inventory = new DrillInventory();
 
-            _terrainTrigger.ContactStart += () => ChangeDrillState(DrillState.Crashed);
-            _terrainTrigger.ContactEnd += () => ChangeDrillState(DrillState.Airborne);
+            _terrainTrigger.ContactStart += OnTerrainContactStart;
+            _terrainTrigger.ContactEnd += OnTerrainContactEnd;
             
             _health.HealthChanged += OnHealthChanged;
             _health.Killed += () => ChangeDrillState(DrillState.Destroyed);
@@ -100,6 +102,7 @@ namespace Entities.Drill
             }
             
             _state = state;
+            print($"State changed to {_state}");
             OnDrillEnterState(_state);
         }
         
@@ -110,7 +113,11 @@ namespace Entities.Drill
             {
                 case DrillState.Docked:
                 {
+                    if (_currentTradingStation != null)
+                        _currentTradingStation.OnDrillEnter();
                     _rigidbody.simulated = false;
+                    _rigidbody.gravityScale = 0f;
+                    _rigidbody.velocity = Vector2.zero;
                     
                     ChangeControlState(DrillControlState.Movement);
                     break;
@@ -148,6 +155,18 @@ namespace Entities.Drill
                     Debug.LogWarning("TODO: Implement drill destruction.");
                     break;
                 }
+                case DrillState.StationInbound:
+                {
+                    _rigidbody.gravityScale = 1f;
+                    SetRigidbodyDrag(0f);
+                    break;
+                }
+                case DrillState.StationOutbound:
+                {
+                    _rigidbody.gravityScale = 1f;
+                    SetRigidbodyDrag(0f);
+                    break;
+                }
                 default:
                 {
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -162,8 +181,11 @@ namespace Entities.Drill
             {
                 case DrillState.Docked:
                 {
-                    if (Input.GetKeyUp(KeyCode.Space))
-                        ChangeDrillState(DrillState.Airborne);
+                    if (Input.GetKeyUp(KeyCode.F))
+                    {
+                        DrillState newState = _currentTradingStation == null ? DrillState.Airborne : DrillState.StationOutbound;
+                        ChangeDrillState(newState);
+                    }
                     break;
                 }
                 case DrillState.Airborne:
@@ -184,6 +206,25 @@ namespace Entities.Drill
                 {
                     break;
                 }
+                case DrillState.StationInbound:
+                {
+                    if (transform.position.y <= _currentTradingStation.transform.position.y)
+                    {
+                        _currentTradingStation.TeleportDrillToStation();
+                        ChangeDrillState(DrillState.Docked);
+                    }
+                    break;
+                }
+                case DrillState.StationOutbound:
+                {
+                    Rotation.RotateTowardsVelocity(_rigidbody.velocity, _rotateTowardsVelocitySpeed);
+                    if (_currentTradingStation.HasDrillExited())
+                    {
+                        DrillState nextState = _terrainTrigger.IsTriggered ? DrillState.Crashed : DrillState.Airborne;
+                        ChangeDrillState(nextState);
+                    }
+                    break;
+                }
                 default:
                 {
                     throw new ArgumentOutOfRangeException();
@@ -198,6 +239,8 @@ namespace Entities.Drill
             {
                 case DrillState.Docked:
                 {
+                    if (_currentTradingStation != null)
+                        _currentTradingStation.OnDrillExit();
                     _rigidbody.simulated = true;
                     break;
                 }
@@ -219,6 +262,17 @@ namespace Entities.Drill
                 }
                 case DrillState.Destroyed:
                 {
+                    break;
+                }
+                case DrillState.StationInbound:
+                {
+                    _rigidbody.gravityScale = 0f;
+                    break;
+                }
+                case DrillState.StationOutbound:
+                {
+                    _currentTradingStation = null;
+                    _rigidbody.gravityScale = 0f;
                     break;
                 }
                 default:
@@ -340,6 +394,25 @@ namespace Entities.Drill
         #endregion
 
 
+        private void OnTerrainContactStart()
+        {
+            if (_state != DrillState.Airborne)
+                return;
+            
+            ChangeDrillState(DrillState.Crashed);
+        }
+
+
+        private void OnTerrainContactEnd()
+        {
+            // Ignore terrain contacts when moving to a station.
+            if (_state != DrillState.Controlled)
+                return;
+            
+            ChangeDrillState(DrillState.Airborne);
+        }
+
+
         private void OnHealthChanged(HealthChangedArgs healthChangedArgs)
         {
             if (healthChangedArgs.IsDamage)
@@ -405,7 +478,27 @@ namespace Entities.Drill
         }
 
 
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (!other.CompareTag("Station"))
+                return;
+            
+            TradingStation station = other.GetComponent<TradingStation>();
+            
+            OnEnterStation(station);
+        }
+
+
         private float GetRigidbodyDrag() => _rigidbody.drag;
         private void SetRigidbodyDrag(float x) => _rigidbody.drag = x;
+
+
+        private void OnEnterStation(TradingStation tradingStation)
+        {
+            _currentTradingStation = tradingStation;
+            
+            // Set the drill to free-fall, and stop when reached the station y-level.
+            ChangeDrillState(DrillState.StationInbound);
+        }
     }
 }

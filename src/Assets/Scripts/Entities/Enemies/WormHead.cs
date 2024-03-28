@@ -1,6 +1,8 @@
 ﻿using Audio;
+using Entities.Drill;
 using UnityEngine;
 using World.Chunks;
+using World.Stations;
 
 namespace Entities.Enemies
 {
@@ -10,6 +12,9 @@ namespace Entities.Enemies
         [SerializeField]
         private TerrainDigger _terrainDigger;
         
+        [SerializeField]
+        private float _despawnDistance = 80f;
+
         private WormRotation _rotation;
         private Vector2 _previousPosition;
 
@@ -20,11 +25,26 @@ namespace Entities.Enemies
             
             _rotation = GetComponent<WormRotation>();
             _terrainDigger._scriptUpdateMode = ScriptUpdateMode.Manual;
+            
+            TradingStationManager.StationCreated += OnTradingStationCreated;
+        }
+
+
+        private void OnTradingStationCreated()
+        {
+            // Worms are afraid of trading stations, so turn away.
+            _rotation.EscapeToSurface();
         }
 
 
         protected override void Update()
         {
+            if (Vector2.Distance(transform.position, DrillController.Instance.transform.position) > _despawnDistance)
+            {
+                DestroyRecursive();
+                return;
+            }
+            
             base.Update();
 
             if (_rotation.IsFacingTarget)

@@ -31,6 +31,16 @@
         /// <summary>
         /// The drill has been destroyed.
         /// </summary>
-        Destroyed
+        Destroyed,
+        
+        /// <summary>
+        /// The drill is free-falling towards a station.
+        /// </summary>
+        StationInbound,
+        
+        /// <summary>
+        /// The drill is free-falling away from a station.
+        /// </summary>
+        StationOutbound,
     }
 }

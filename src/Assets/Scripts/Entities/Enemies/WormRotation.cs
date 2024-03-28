@@ -20,6 +20,13 @@ namespace Entities.Enemies
         private Vector2 _targetPosition;    // Target pos in world space. Updated every frame.
         
         public bool IsFacingTarget { get; private set; }
+        
+        
+        public void EscapeToSurface()
+        {
+            // Aim for the surface, away from the player.
+            _targetPlayerOffset = -DrillController.Instance.transform.position.normalized * 200;
+        }
 
         
         private void Update()

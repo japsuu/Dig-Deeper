@@ -82,6 +82,9 @@ namespace Entities
             CurrentHealth = 0;
             Killed?.Invoke();
         }
+        
+        [Button("Heal to max")]
+        public void HealToMax() => Heal(_maxHealth);
 
 
         private void Awake()

@@ -6,13 +6,13 @@ namespace Audio
     {
         public static void PlaySound(string clip)
         {
-            Debug.Log($"TODO: Play sound: {clip}");
+            Debug.LogWarning($"TODO: Play sound: {clip}");
         }
 
 
         public static void StopSound(string clip)
         {
-            Debug.Log($"TODO: Stop sound: {clip}");
+            Debug.LogWarning($"TODO: Stop sound: {clip}");
         }
     }
 }
