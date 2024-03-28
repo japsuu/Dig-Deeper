@@ -63,7 +63,7 @@ namespace World.Stations
 
         private void Start()
         {
-            Debug.LogWarning("TODO: Draw arrow that points to station");
+            Debug.LogWarning("TODO: Create arrow that points to station");
         }
     }
 }

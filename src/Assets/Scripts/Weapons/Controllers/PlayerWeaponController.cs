@@ -17,7 +17,7 @@ namespace Weapons.Controllers
         private WeaponObject _weapon;
         
         [SerializeField]
-        private RotatingAlarmLight _alarmLight;
+        private GameObject[] _toggleableObjects;
 
         [Header("Settings")]
         
@@ -40,7 +40,8 @@ namespace Weapons.Controllers
         public void SetEnableFiring(bool enable)
         {
             IsFiringEnabled = enable;
-            _alarmLight.SetEnabled(enable);
+            foreach (GameObject go in _toggleableObjects)
+                go.SetActive(enable);
         }
 
 

@@ -102,7 +102,7 @@ namespace Entities.Drill
             }
             
             _state = state;
-            print($"State changed to {_state}");
+            //print($"State changed to {_state}");
             OnDrillEnterState(_state);
         }
         

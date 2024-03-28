@@ -47,6 +47,6 @@ MonoBehaviour:
   _headPrefab: {fileID: 2228731501383945099, guid: 07e767db1bef24b4388f65e2a12f4a4e, type: 3}
   _bodyPrefab: {fileID: 4171568988245089725, guid: ec2b1339a3a4cc046b9bc496e799eacb, type: 3}
   _bodyPartsCount: 30
-  _maxHealth: 100
+  _maxHealth: 50
   _headReceivedDamageMultiplier: 1
   _bodyReceivedDamageMultiplier: 0.5
