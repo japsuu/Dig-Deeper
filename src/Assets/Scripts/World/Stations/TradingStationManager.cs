@@ -13,6 +13,7 @@ namespace World.Stations
     public class TradingStationManager : SingletonBehaviour<TradingStationManager>
     {
         public static event Action StationCreated;
+        public static event Action StationDeleted;
         
         [CanBeNull]
         public static TradingStation StationInstance;
@@ -60,6 +61,7 @@ namespace World.Stations
                 return;
             Destroy(StationInstance.gameObject);
             StationInstance = null;
+            StationDeleted?.Invoke();
         }
     }
 }

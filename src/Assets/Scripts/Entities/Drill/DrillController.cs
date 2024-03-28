@@ -51,6 +51,7 @@ namespace Entities.Drill
         public DrillMovement Movement { get; private set; }
         public DrillRotation Rotation { get; private set; }
         public DrillInventory Inventory { get; private set; }
+        public DrillStats Stats { get; private set; }
         public EntityHealth Health => _health;
 
 
@@ -61,6 +62,7 @@ namespace Entities.Drill
             Movement = GetComponent<DrillMovement>();
             Rotation = GetComponent<DrillRotation>();
             Inventory = new DrillInventory();
+            Stats = new DrillStats();
 
             _terrainTrigger.ContactStart += OnTerrainContactStart;
             _terrainTrigger.ContactEnd += OnTerrainContactEnd;
@@ -69,7 +71,7 @@ namespace Entities.Drill
             _health.Killed += () => ChangeDrillState(DrillState.Destroyed);
             
             foreach (DrillHead drillHead in _drillHeads)
-                drillHead.Initialize(Inventory);
+                drillHead.Initialize(Inventory, Stats);
 
             Movement.Initialize(_rigidbody);
             _controlState = DrillControlState.Movement;

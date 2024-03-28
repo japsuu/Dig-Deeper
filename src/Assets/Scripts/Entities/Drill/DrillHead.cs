@@ -12,6 +12,7 @@ namespace Entities.Drill
         private Transform _particlesRoot;
 
         private DrillInventory _inventory;
+        private DrillStats _stats;
 
         public bool IsEnabled { get; private set; }
 
@@ -22,9 +23,10 @@ namespace Entities.Drill
         }
 
 
-        public void Initialize(DrillInventory inventory)
+        public void Initialize(DrillInventory inventory, DrillStats stats)
         {
             _inventory = inventory;
+            _stats = stats;
         }
         
         
@@ -41,6 +43,7 @@ namespace Entities.Drill
         protected override void OnRemovedMaterial(byte id, uint count)
         {
             _inventory.AddMaterial(id, count);
+            _stats.TilesMined += count;
         }
     }
 }

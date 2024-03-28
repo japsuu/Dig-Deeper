@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Materials;
 
 namespace Entities.Drill
 {
@@ -34,6 +35,23 @@ namespace Entities.Drill
             
             MaterialCountChanged?.Invoke(material, 0);
             return count;
+        }
+
+
+        public float GetTotalValue()
+        {
+            float totalValue = 0;
+            foreach (KeyValuePair<byte, uint> material in _materials)
+            {
+                totalValue += material.Value * TileDatabase.Instance.TileDefinitions[material.Key].Value;
+            }
+            return totalValue;
+        }
+
+
+        public void Clear()
+        {
+            _materials.Clear();
         }
     }
 }

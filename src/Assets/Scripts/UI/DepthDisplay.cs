@@ -22,6 +22,27 @@ namespace UI
         private RectTransform _stationDirectionImageRoot;
 
 
+        private void Awake()
+        {
+            TradingStation.PlayerEnter += OnStationEntered;
+            TradingStationManager.StationCreated += OnStationCreated;
+            TradingStationManager.StationDeleted += OnStationDeleted;
+        }
+
+
+        private void OnDestroy()
+        {
+            TradingStation.PlayerEnter -= OnStationEntered;
+            TradingStationManager.StationCreated -= OnStationCreated;
+            TradingStationManager.StationDeleted -= OnStationDeleted;
+        }
+
+
+        private void OnStationCreated() => DisplayStationDirection(true);
+        private void OnStationEntered(TradingStation station) => DisplayStationDirection(false);
+        private void OnStationDeleted() => DisplayStationDirection(false);
+
+
         private void Update()
         {
             const float stationInterval = Constants.STATION_DEPTH_INTERVAL;
@@ -58,15 +79,8 @@ namespace UI
 
         private void UpdateStationDirection()
         {
-            if (TradingStationManager.StationInstance == null || TradingStationManager.StationInstance.transform.position.y + 10 > DrillController.Instance.transform.position.y)
-            {
-                if (_stationDirectionImageRoot.gameObject.activeSelf)
-                    _stationDirectionImageRoot.gameObject.SetActive(false);
+            if (TradingStationManager.StationInstance == null)
                 return;
-            }
-            
-            if (!_stationDirectionImageRoot.gameObject.activeSelf)
-                _stationDirectionImageRoot.gameObject.SetActive(true);
             
             // Rotate the station direction image to point to the next station.
             Vector2 stationPos = TradingStationManager.StationInstance.transform.position;
@@ -74,6 +88,12 @@ namespace UI
             Vector2 direction = (stationPos - playerPos).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             _stationDirectionImageRoot.localRotation = Quaternion.Euler(0, 0, angle);
+        }
+
+
+        private void DisplayStationDirection(bool display)
+        {
+            _stationDirectionImageRoot.gameObject.SetActive(display);
         }
     }
 }
