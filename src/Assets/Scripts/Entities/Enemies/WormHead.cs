@@ -25,12 +25,24 @@ namespace Entities.Enemies
             
             _rotation = GetComponent<WormRotation>();
             _terrainDigger._scriptUpdateMode = ScriptUpdateMode.Manual;
+
+            if (TradingStation.IsPlayerInStation)
+            {
+                DestroyRecursive();
+                return;
+            }
             
-            TradingStationManager.StationCreated += OnTradingStationCreated;
+            TradingStation.PlayerEnter += OnTradingStationEnter;
         }
 
 
-        private void OnTradingStationCreated()
+        private void OnDestroy()
+        {
+            TradingStation.PlayerEnter -= OnTradingStationEnter;
+        }
+
+
+        private void OnTradingStationEnter(TradingStation s)
         {
             // Worms are afraid of trading stations, so turn away.
             _rotation.EscapeToSurface();

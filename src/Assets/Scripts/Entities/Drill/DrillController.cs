@@ -21,6 +21,7 @@ namespace Entities.Drill
         public event Action<HealthChangedArgs> Healed;
         public event Action<HealthChangedArgs> Damaged;
         public event Action Killed;
+        public event Action FirstImpact;
 
         
         [Header("References")]
@@ -44,6 +45,7 @@ namespace Entities.Drill
         private DrillHead[] _drillHeads;
         private Rigidbody2D _rigidbody;
         private TradingStation _currentTradingStation;
+        private bool _isFirstImpact = true;
         
         private DrillState _state;                  // In what state the drill currently is.
         private DrillControlState _controlState;    // What part of the drill the player is currently controlling.
@@ -132,6 +134,11 @@ namespace Entities.Drill
                 }
                 case DrillState.Crashed:
                 {
+                    if (_isFirstImpact)
+                    {
+                        FirstImpact?.Invoke();
+                        _isFirstImpact = false;
+                    }
                     float hitVelocity = Mathf.Abs(_rigidbody.velocity.y);
                     StartCoroutine(CrashSequence(hitVelocity));
                     break;

@@ -1,5 +1,4 @@
-﻿using System;
-using Entities.Drill;
+﻿using Entities.Drill;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +15,9 @@ namespace UI
         private Image _depthImage;
 
         [SerializeField]
+        private RectTransform _stationProgressRoot;
+
+        [SerializeField]
         private Image _stationProgressImage;
 
         [SerializeField]
@@ -24,7 +26,11 @@ namespace UI
 
         private void Awake()
         {
+            ShowStationLocation(false);
+
+            DrillController.Instance.FirstImpact += OnDrillFirstImpact;
             TradingStation.PlayerEnter += OnStationEntered;
+            TradingStation.PlayerExit += OnStationExited;
             TradingStationManager.StationCreated += OnStationCreated;
             TradingStationManager.StationDeleted += OnStationDeleted;
         }
@@ -32,15 +38,19 @@ namespace UI
 
         private void OnDestroy()
         {
+            if (DrillController.Instance != null)
+                DrillController.Instance.FirstImpact -= OnDrillFirstImpact;
             TradingStation.PlayerEnter -= OnStationEntered;
             TradingStationManager.StationCreated -= OnStationCreated;
             TradingStationManager.StationDeleted -= OnStationDeleted;
         }
 
 
-        private void OnStationCreated() => DisplayStationDirection(true);
-        private void OnStationEntered(TradingStation station) => DisplayStationDirection(false);
-        private void OnStationDeleted() => DisplayStationDirection(false);
+        private void OnDrillFirstImpact() => ShowStationProgress(true);
+        private void OnStationCreated() => ShowStationDirection(true);
+        private void OnStationEntered(TradingStation station) => ShowStationLocation(false);
+        private void OnStationExited(TradingStation station) => ShowStationProgress(true);
+        private void OnStationDeleted() => ShowStationDirection(false);
 
 
         private void Update()
@@ -62,12 +72,19 @@ namespace UI
         private void UpdateDepth(float playerDepth)
         {
             // Rotate depth image.
-            float depthImageRotation = playerDepth < 0 ? 180 : 0;
+            float depthImageRotation = playerDepth < 0 ? 0 : 180;
             _depthImage.rectTransform.localRotation = Quaternion.Euler(0, 0, depthImageRotation);
 
             // Display the depth.
             int depth = Mathf.RoundToInt(playerDepth);
             _text.text = $"{depth:n0}m";
+        }
+
+
+        private void ShowStationLocation(bool show)
+        {
+            ShowStationDirection(show);
+            ShowStationProgress(show);
         }
 
 
@@ -91,9 +108,7 @@ namespace UI
         }
 
 
-        private void DisplayStationDirection(bool display)
-        {
-            _stationDirectionImageRoot.gameObject.SetActive(display);
-        }
+        private void ShowStationDirection(bool display) => _stationDirectionImageRoot.gameObject.SetActive(display);
+        private void ShowStationProgress(bool display) => _stationProgressRoot.gameObject.SetActive(display);
     }
 }

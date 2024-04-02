@@ -14,7 +14,7 @@ namespace Materials
         /// </summary>
         public readonly TileData[] TileData;
         
-        public MaterialDefinition[] TileDefinitions;
+        public readonly MaterialDefinition[] TileDefinitions;
         
         /// <summary>
         /// The number of materials registered in the database.

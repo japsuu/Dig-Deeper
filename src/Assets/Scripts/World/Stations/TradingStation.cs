@@ -1,4 +1,5 @@
 ﻿using System;
+using Audio;
 using Entities.Drill;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace World.Stations
     {
         public static event Action<TradingStation> PlayerEnter;
         public static event Action<TradingStation> PlayerExit;
+        public static bool IsPlayerInStation { get; private set; }
         
         [SerializeField]
         [Tooltip("The position to teleport the drill to when the player enters the station.")]
@@ -26,9 +28,16 @@ namespace World.Stations
         [Tooltip("Components to destroy when the player has entered the station.")]
         private Component[] _deletedComponents;
         
+        [Header("UI")]
+        
         [SerializeField]
         [Tooltip("The name of this station. Used for the UI popup.")]
         private string _name = "Trading Station";
+        
+        [SerializeField]
+        [TextArea]
+        [Tooltip("The description title of this station. Used for the UI popup.")]
+        private string _descriptionTitle = "Trading station says:\n<i>{0}</i>";
         
         [SerializeField]
         [TextArea]
@@ -36,22 +45,24 @@ namespace World.Stations
         private string _description = "It's been a while since I've seen anyone around these parts! I'm always looking for new materials to buy, and happen to have a lot of credits to spare. I'll buy anything you've got, at a fair price!";
         
         [SerializeField]
+        [TextArea]
+        [Tooltip("The info of this station. Used for the UI popup.")]
+        private string _info = "Your drill has been fixed, and ammunition restocked.\n\nBuy rate: {0}%\nPress <b>[E]</b> to sell all materials for <b>{1}</b> credits.\n\nPress <b>[F]</b> to leave.";
+        
+        [SerializeField]
         [Range(0.2f, 2f)]
         private float _buyRate = 1f;
 
         public string Name => _name;
-        public string DescriptionText => GetDescriptionText();
-        public string InfoText => GetInfoText();
-        public float BuyRate => _buyRate;
 
 
         public void OnDrillEnter()
         {
-            Debug.LogWarning($"TODO: Show banner with station name {Name} and buy rate {_buyRate*100}%");
             foreach (Component c in _deletedComponents)
                 Destroy(c);
             
             DrillController.Instance.Health.HealToMax();
+            IsPlayerInStation = true;
             PlayerEnter?.Invoke(this);
         }
         
@@ -73,6 +84,7 @@ namespace World.Stations
             foreach (Collider2D c in GetComponentsInChildren<Collider2D>())
                 c.enabled = false;
             Debug.LogWarning("TODO: Show banner with 'Goodbye!'");
+            IsPlayerInStation = false;
             PlayerExit?.Invoke(this);
         }
         
@@ -83,7 +95,9 @@ namespace World.Stations
             if (sellValue <= 0)
                 return;
             DrillController.Instance.Inventory.Clear();
-            DrillController.Instance.Stats.CreditsEarned += (ulong)sellValue;
+            DrillController.Instance.Stats.AddCredits((ulong)sellValue);
+            AudioManager.PlaySound("SellMaterials");
+            AudioManager.PlaySound("ReceiveCredits");
         }
 
 
@@ -93,21 +107,7 @@ namespace World.Stations
         }
 
 
-        private string GetDescriptionText() =>
-            @$"
-Trading station says:
-<i>{_description}</i>
-";
-
-
-        private string GetInfoText() =>
-            @$"
-Your drill has been fixed, and ammunition restocked.
-
-Buy rate: {_buyRate*100}%
-Press <b>[E]</b> to sell all materials for <b>{CalculateSellValue()}</b> credits.
-
-Press <b>[F]</b> to leave.
-";
+        public string GetDescriptionText() => string.Format(_descriptionTitle, _description);
+        public string GetInfoText() => string.Format(_info, _buyRate * 100, CalculateSellValue());
     }
 }

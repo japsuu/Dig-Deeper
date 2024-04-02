@@ -46,6 +46,9 @@ namespace Entities.Enemies
 
         protected void DestroyRecursive()
         {
+            if (gameObject == null)
+                return;
+            
             if (TailLink != null)
                 TailLink.DestroyRecursive();
             

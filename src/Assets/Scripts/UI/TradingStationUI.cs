@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using World.Stations;
 
@@ -38,7 +37,10 @@ namespace UI
                 return;
             
             if (Input.GetKeyDown(KeyCode.E))
+            {
                 _station.SellPlayerMaterials();
+                RefreshUITexts(_station);
+            }
         }
 
 
@@ -61,12 +63,18 @@ namespace UI
             _station = station;
             ShowUI(true);
             
-            _stationNameText.text = $"Trading Station \"{station.Name}\"";
-            _descriptionText.text = station.DescriptionText;
-            _infoText.text = station.InfoText;
+            RefreshUITexts(station);
         }
 
-        
+
+        private void RefreshUITexts(TradingStation station)
+        {
+            _stationNameText.text = $"Trading Station \"{station.Name}\"";
+            _descriptionText.text = station.GetDescriptionText();
+            _infoText.text = station.GetInfoText();
+        }
+
+
         private void OnPlayerExitStation(TradingStation station)
         {
             _station = null;
