@@ -28,21 +28,21 @@ namespace UI
         {
             ShowStationLocation(false);
 
-            DrillController.Instance.FirstImpact += OnDrillFirstImpact;
-            TradingStation.PlayerEnter += OnStationEntered;
-            TradingStation.PlayerExit += OnStationExited;
-            TradingStationManager.StationCreated += OnStationCreated;
-            TradingStationManager.StationDeleted += OnStationDeleted;
+            EventManager.PlayerDrill.DrillFirstImpact += OnDrillFirstImpact;
+            EventManager.TradingStations.PlayerEnterStation += OnStationEntered;
+            EventManager.TradingStations.PlayerExitStation += OnStationExited;
+            EventManager.TradingStations.StationCreated += OnStationCreated;
+            EventManager.TradingStations.StationDeleted += OnStationDeleted;
         }
 
 
         private void OnDestroy()
         {
-            if (DrillController.Instance != null)
-                DrillController.Instance.FirstImpact -= OnDrillFirstImpact;
-            TradingStation.PlayerEnter -= OnStationEntered;
-            TradingStationManager.StationCreated -= OnStationCreated;
-            TradingStationManager.StationDeleted -= OnStationDeleted;
+            EventManager.PlayerDrill.DrillFirstImpact -= OnDrillFirstImpact;
+            EventManager.TradingStations.PlayerEnterStation -= OnStationEntered;
+            EventManager.TradingStations.PlayerExitStation -= OnStationExited;
+            EventManager.TradingStations.StationCreated -= OnStationCreated;
+            EventManager.TradingStations.StationDeleted -= OnStationDeleted;
         }
 
 

@@ -12,9 +12,6 @@ namespace World.Stations
     /// </summary>
     public class TradingStationManager : SingletonBehaviour<TradingStationManager>
     {
-        public static event Action StationCreated;
-        public static event Action StationDeleted;
-        
         [CanBeNull]
         public static TradingStation StationInstance;
         
@@ -51,7 +48,7 @@ namespace World.Stations
         private void SpawnStation(Vector2 nextStationPos)
         {
             StationInstance = Instantiate(_stationPrefab, nextStationPos, Quaternion.identity);
-            StationCreated?.Invoke();
+            EventManager.TradingStations.OnStationCreated();
         }
 
 
@@ -61,7 +58,7 @@ namespace World.Stations
                 return;
             Destroy(StationInstance.gameObject);
             StationInstance = null;
-            StationDeleted?.Invoke();
+            EventManager.TradingStations.OnStationDeleted();
         }
     }
 }

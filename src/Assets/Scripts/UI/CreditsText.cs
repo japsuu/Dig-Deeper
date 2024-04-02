@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace UI
@@ -17,13 +16,13 @@ namespace UI
         {
             _text.text = string.Format(_format, 0);
 
-            EventManager.CreditsEarnedChanged += OnCreditsEarnedChanged;
+            EventManager.Statistics.CreditsEarnedChanged += OnCreditsEarnedChanged;
         }
 
 
         private void OnDestroy()
         {
-            EventManager.CreditsEarnedChanged -= OnCreditsEarnedChanged;
+            EventManager.Statistics.CreditsEarnedChanged -= OnCreditsEarnedChanged;
         }
 
 

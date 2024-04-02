@@ -12,8 +12,6 @@ namespace World.Stations
     /// </summary>
     public class TradingStation : MonoBehaviour
     {
-        public static event Action<TradingStation> PlayerEnter;
-        public static event Action<TradingStation> PlayerExit;
         public static bool IsPlayerInStation { get; private set; }
         
         [SerializeField]
@@ -63,7 +61,7 @@ namespace World.Stations
             
             DrillController.Instance.Health.HealToMax();
             IsPlayerInStation = true;
-            PlayerEnter?.Invoke(this);
+            EventManager.TradingStations.OnPlayerEnterStation(this);
         }
         
         
@@ -85,7 +83,7 @@ namespace World.Stations
                 c.enabled = false;
             Debug.LogWarning("TODO: Show banner with 'Goodbye!'");
             IsPlayerInStation = false;
-            PlayerExit?.Invoke(this);
+            EventManager.TradingStations.OnPlayerExitStation(this);
         }
         
         

@@ -24,7 +24,7 @@ namespace WeightedRandomSelector {
 
             this.items = items;
             this.CDA = CDA;
-            this.random = new System.Random(seed);
+            random = new System.Random(seed);
         }
         
         /// <summary>

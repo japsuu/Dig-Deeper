@@ -32,13 +32,13 @@ namespace Entities.Enemies
                 return;
             }
             
-            TradingStation.PlayerEnter += OnTradingStationEnter;
+            EventManager.TradingStations.PlayerEnterStation += OnTradingStationEnter;
         }
 
 
         private void OnDestroy()
         {
-            TradingStation.PlayerEnter -= OnTradingStationEnter;
+            EventManager.TradingStations.PlayerEnterStation -= OnTradingStationEnter;
         }
 
 

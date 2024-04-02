@@ -18,11 +18,6 @@ namespace Entities.Drill
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
 
-        public event Action<HealthChangedArgs> Healed;
-        public event Action<HealthChangedArgs> Damaged;
-        public event Action Killed;
-        public event Action FirstImpact;
-
         
         [Header("References")]
         [SerializeField] private EntityHealth _health;
@@ -136,7 +131,7 @@ namespace Entities.Drill
                 {
                     if (_isFirstImpact)
                     {
-                        FirstImpact?.Invoke();
+                        EventManager.PlayerDrill.OnDrillFirstImpact();
                         _isFirstImpact = false;
                     }
                     float hitVelocity = Mathf.Abs(_rigidbody.velocity.y);
@@ -159,7 +154,7 @@ namespace Entities.Drill
                     _leftWeapon.SetEnableFiring(false);
                     _rightWeapon.SetEnableFiring(false);
             
-                    Killed?.Invoke();
+                    EventManager.PlayerDrill.OnDrillKilled();
             
                     Debug.LogWarning("TODO: Implement drill destruction.");
                     break;
@@ -425,9 +420,9 @@ namespace Entities.Drill
         private void OnHealthChanged(HealthChangedArgs healthChangedArgs)
         {
             if (healthChangedArgs.IsDamage)
-                Damaged?.Invoke(healthChangedArgs);
+                EventManager.PlayerDrill.OnDrillDamaged(healthChangedArgs);
             else
-                Healed?.Invoke(healthChangedArgs);
+                EventManager.PlayerDrill.OnDrillHealed(healthChangedArgs);
         }
 
 

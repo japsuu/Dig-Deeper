@@ -9,7 +9,7 @@
         public void AddCredits(ulong amount)
         {
             CreditsEarned += amount;
-            EventManager.OnCreditsEarnedChanged(CreditsEarned);
+            EventManager.Statistics.OnCreditsEarnedChanged(CreditsEarned);
         }
     }
 }

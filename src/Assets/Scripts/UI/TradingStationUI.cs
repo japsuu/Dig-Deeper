@@ -24,10 +24,17 @@ namespace UI
         
         private void Awake()
         {
-            TradingStation.PlayerEnter += OnPlayerEnterStation;
-            TradingStation.PlayerExit += OnPlayerExitStation;
+            EventManager.TradingStations.PlayerEnterStation += OnPlayerEnterStation;
+            EventManager.TradingStations.PlayerExitStation += OnPlayerExitStation;
             
             ShowUI(false);
+        }
+
+
+        private void OnDestroy()
+        {
+            EventManager.TradingStations.PlayerEnterStation -= OnPlayerEnterStation;
+            EventManager.TradingStations.PlayerExitStation -= OnPlayerExitStation;
         }
 
 
@@ -35,19 +42,12 @@ namespace UI
         {
             if (!_isUiActive)
                 return;
+
+            if (!Input.GetKeyDown(KeyCode.E))
+                return;
             
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                _station.SellPlayerMaterials();
-                RefreshUITexts(_station);
-            }
-        }
-
-
-        private void OnDestroy()
-        {
-            TradingStation.PlayerEnter -= OnPlayerEnterStation;
-            TradingStation.PlayerExit -= OnPlayerExitStation;
+            _station.SellPlayerMaterials();
+            RefreshUITexts(_station);
         }
 
 

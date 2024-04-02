@@ -12,7 +12,7 @@ namespace WeightedRandomSelector {
     /// <typeparam name="T">Type of items you wish this selector returns</typeparam>
     public class DynamicRandomSelector<T> : IRandomSelector<T>, IRandomSelectorBuilder<T> {
     
-        System.Random random;
+        Random random;
         
         // internal buffers
         List<T> itemsList;
@@ -30,9 +30,9 @@ namespace WeightedRandomSelector {
         public DynamicRandomSelector(int seed = -1, int expectedNumberOfItems = 32) {
         
             if(seed == -1)
-                random = new System.Random();
+                random = new Random();
             else
-                random = new System.Random(seed);
+                random = new Random(seed);
 
             itemsList   = new List<T>(expectedNumberOfItems);
             weightsList = new List<float>(expectedNumberOfItems);

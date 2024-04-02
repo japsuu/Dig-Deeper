@@ -21,14 +21,21 @@ namespace UI
 
         private void Start()
         {
-            DrillController.Instance.Healed += OnDrillHealed;
-            DrillController.Instance.Damaged += OnDrillDamaged;
+            EventManager.PlayerDrill.DrillHealed += OnDrillHealed;
+            EventManager.PlayerDrill.DrillDamaged += OnDrillDamaged;
 
             _backgroundSlider.maxValue = DrillController.Instance.Health.MaxHealth;
             _healthSlider.maxValue = DrillController.Instance.Health.MaxHealth;
             
             _backgroundSlider.value = DrillController.Instance.Health.CurrentHealth;
             _healthSlider.value = DrillController.Instance.Health.CurrentHealth;
+        }
+
+
+        private void OnDestroy()
+        {
+            EventManager.PlayerDrill.DrillHealed -= OnDrillHealed;
+            EventManager.PlayerDrill.DrillDamaged -= OnDrillDamaged;
         }
 
 

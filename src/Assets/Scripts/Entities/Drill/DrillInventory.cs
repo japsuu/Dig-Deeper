@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Materials;
 
 namespace Entities.Drill
 {
     public class DrillInventory
     {
-        public event Action<byte, uint> MaterialCountChanged;
-        
         private readonly Dictionary<byte, uint> _materials = new();
         
         
@@ -20,7 +17,7 @@ namespace Entities.Drill
                 _materials[material] = count + amount;
             else
                 _materials.Add(material, amount);
-            MaterialCountChanged?.Invoke(material, _materials[material]);
+            EventManager.PlayerInventory.OnMaterialCountChanged(material, _materials[material]);
         }
         
         
@@ -33,7 +30,7 @@ namespace Entities.Drill
             if (!_materials.Remove(material, out uint count))
                 return 0;
             
-            MaterialCountChanged?.Invoke(material, 0);
+            EventManager.PlayerInventory.OnMaterialCountChanged(material, 0);
             return count;
         }
 

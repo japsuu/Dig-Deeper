@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Entities.Drill;
 using Materials;
 using TMPro;
 using UnityEngine;
@@ -32,7 +31,13 @@ namespace UI
                 UpdateText(entry, tileData, 0);
             }
             
-            DrillController.Instance.Inventory.MaterialCountChanged += OnMaterialCountChanged;
+            EventManager.PlayerInventory.MaterialCountChanged += OnMaterialCountChanged;
+        }
+
+
+        private void OnDestroy()
+        {
+            EventManager.PlayerInventory.MaterialCountChanged -= OnMaterialCountChanged;
         }
 
 

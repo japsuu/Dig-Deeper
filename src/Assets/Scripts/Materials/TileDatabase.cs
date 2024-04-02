@@ -5,8 +5,6 @@ namespace Materials
 {
     public class TileDatabase
     {
-        public static event Action OnInitialized;
-        
         public static TileDatabase Instance { get; private set; }
         
         /// <summary>
@@ -29,7 +27,6 @@ namespace Materials
             if (Instance != null)
                 throw new InvalidOperationException("TileDatabase has already been initialized.");
             Instance = new TileDatabase(materials);
-            OnInitialized?.Invoke();
             return Instance;
         }
 
