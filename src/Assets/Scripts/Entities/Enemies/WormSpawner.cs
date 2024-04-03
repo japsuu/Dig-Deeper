@@ -1,4 +1,5 @@
-﻿using NaughtyAttributes;
+﻿using System;
+using NaughtyAttributes;
 using UnityEngine;
 using World.Chunks;
 using World.Population;
@@ -27,6 +28,16 @@ namespace Entities.Enemies
 
         [SerializeField]
         private float _bodyReceivedDamageMultiplier = 0.5f;
+
+        [SerializeField]
+        private bool _spawnOnStart = false;
+
+
+        private void Start()
+        {
+            if (_spawnOnStart)
+                SpawnWorm();
+        }
 
 
         public void SpawnWormDelayed(float delay)

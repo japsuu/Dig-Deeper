@@ -19,6 +19,7 @@ namespace Entities.Enemies
         
         private Vector2 _targetPlayerOffset;
         private Vector2 _targetPosition;    // Target pos in world space. Updated every frame.
+        private float _timeSinceReachedTarget;
         
         public bool IsFacingTarget { get; private set; }
         
@@ -27,7 +28,7 @@ namespace Entities.Enemies
         {
             // Aim for the surface, away from the player.
             _targetPlayerOffset = new Vector2(0, 200);
-            _targetPosition = (Vector2)DrillController.Instance.transform.position + _targetPlayerOffset;
+            _targetPosition = GetPlayerPosition() + _targetPlayerOffset;
         }
 
         
@@ -39,20 +40,23 @@ namespace Entities.Enemies
             
             float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.z, targetAngle);
             IsFacingTarget = Mathf.Abs(angleDifference) < 25;
+            
+            _timeSinceReachedTarget += Time.deltaTime;
         }
 
 
         private float CalculateTargetAngle()
         {
-            Vector2 playerPos = DrillController.Instance.transform.position;
+            Vector2 playerPos = GetPlayerPosition();
             
-            bool hasReachedTarget = Vector2.Distance(transform.position, _targetPosition) < 1;
-            
+            bool hasReachedTarget = Vector2.Distance(transform.position, _targetPosition) < 1 || _timeSinceReachedTarget > 5f;
+
             // If close enough to the target position, select a new target offset.
             if (hasReachedTarget)
             {
                 _targetPlayerOffset = GetRandomOffset();
                 AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_ATTACK);
+                _timeSinceReachedTarget = 0;
             }
             
             _targetPosition = playerPos + _targetPlayerOffset;
@@ -65,6 +69,15 @@ namespace Entities.Enemies
         private Vector2 GetRandomOffset()
         {
             return Random.insideUnitCircle * _targetMaxDistanceFromPlayer;
+        }
+        
+        
+        private static Vector2 GetPlayerPosition()
+        {
+            if (DrillController.Instance == null)
+                return Vector2.zero;
+            
+            return DrillController.Instance.transform.position;
         }
 
 

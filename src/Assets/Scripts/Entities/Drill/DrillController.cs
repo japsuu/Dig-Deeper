@@ -163,10 +163,10 @@ namespace Entities.Drill
                     EventManager.PlayerDrill.OnDrillKilled();
                     AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_EXPLOSION);
             
-                    Debug.LogWarning("TODO: Save score.");
+                    HighScores.SaveHighScore(Stats.CreditsEarned);
                     
                     _onGameStop.Invoke();
-                    
+            
                     SceneChanger.LoadMainMenuScene();
                     break;
                 }

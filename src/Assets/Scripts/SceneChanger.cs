@@ -16,6 +16,6 @@ public static class SceneChanger
     public static void ChangeSceneFaded(int sceneIndexToLoad)
     {
         AudioLayer.StopAllMusic(false);
-        Object.FindObjectOfType<ScreenFader>().EndScene(sceneIndexToLoad);
+        ScreenFader.Instance.EndScene(sceneIndexToLoad);
     }
 }

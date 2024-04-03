@@ -25,7 +25,8 @@ namespace Entities.Enemies
             base.Awake();
             
             _rotation = GetComponent<WormRotation>();
-            _terrainDigger._scriptUpdateMode = ScriptUpdateMode.Manual;
+            if (_terrainDigger != null)
+                _terrainDigger._scriptUpdateMode = ScriptUpdateMode.Manual;
 
             if (TradingStation.IsPlayerInStation)
             {
@@ -59,7 +60,7 @@ namespace Entities.Enemies
 
         protected override void Update()
         {
-            if (Vector2.Distance(transform.position, DrillController.Instance.transform.position) > _despawnDistance)
+            if (DrillController.Instance != null && Vector2.Distance(transform.position, DrillController.Instance.transform.position) > _despawnDistance)
             {
                 DestroyRecursive();
                 return;
@@ -67,7 +68,7 @@ namespace Entities.Enemies
             
             base.Update();
 
-            if (_rotation.IsFacingTarget)
+            if (_rotation.IsFacingTarget && _terrainDigger != null)
                 _terrainDigger.ManualUpdate();
         }
 

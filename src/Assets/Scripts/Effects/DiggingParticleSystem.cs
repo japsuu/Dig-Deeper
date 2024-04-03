@@ -22,6 +22,9 @@ namespace Effects
 
         private void Update()
         {
+            if (ChunkManager.Instance == null)
+                return;
+            
             Color terrainColor = _colorAddition + ChunkManager.Instance.GetTerrainColorAt(transform.position);
             Color terrainColorAlpha = _colorAddition + new Color(terrainColor.r, terrainColor.g, terrainColor.b, 0f);
             _coloringModule.startColor = new ParticleSystem.MinMaxGradient(terrainColor, terrainColorAlpha);
