@@ -25,7 +25,7 @@ MonoBehaviour:
   maxDistance: 0
   priority: 128
   startingPitch: 1
-  pitchShift: 0.05
+  pitchShift: 0.2
   loopMode: 0
   delay: 0
   ignoreTimeScale: 0
