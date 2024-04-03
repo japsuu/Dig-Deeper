@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using DamageNumbersPro;
+using Entities;
 using UnityEngine;
 
 namespace Weapons
@@ -14,6 +15,9 @@ namespace Weapons
     public class RaycastProjectile : MonoBehaviour
     {
         private const int MAX_RAYCAST_RESULTS = 64;
+        
+        [SerializeField]
+        private DamageNumber _damageNumberPrefab;
 
         [SerializeField]
         private int _weightGrams = 2000;
@@ -65,17 +69,19 @@ namespace Weapons
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 damageable?.Damage(_baseDamage);
 
-                if (damageable == null)
+                if (damageable != null)
                 {
-                    if (hit.collider.isTrigger)
+                    _damageNumberPrefab.Spawn(hit.collider.gameObject.transform.position, _baseDamage);
+                    
+                    if (!damageable.DeletesProjectileOnHit)
                         continue;
                 }
                 else
                 {
-                    if (!damageable.DeletesProjectileOnHit)
+                    if (hit.collider.isTrigger)
                         continue;
                 }
-                
+
                 RaycastProjectileRenderer projectileRenderer = GetComponentInChildren<RaycastProjectileRenderer>();
 
                 if (projectileRenderer != null)

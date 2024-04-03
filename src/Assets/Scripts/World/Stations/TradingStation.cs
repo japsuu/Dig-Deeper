@@ -1,5 +1,4 @@
-﻿using System;
-using Audio;
+﻿using Audio;
 using Entities.Drill;
 using UnityEngine;
 
@@ -60,6 +59,7 @@ namespace World.Stations
                 Destroy(c);
             
             DrillController.Instance.Health.HealToMax();
+            DrillController.Instance.MineController.RefillMines();
             IsPlayerInStation = true;
             EventManager.TradingStations.OnPlayerEnterStation(this);
         }

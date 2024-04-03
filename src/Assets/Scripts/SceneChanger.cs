@@ -1,6 +1,5 @@
 ﻿using Audio;
 using UI;
-using UnityEngine;
 
 public static class SceneChanger
 {

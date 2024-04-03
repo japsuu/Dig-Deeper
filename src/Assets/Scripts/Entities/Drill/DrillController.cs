@@ -15,6 +15,7 @@ namespace Entities.Drill
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(DrillMovement))]
     [RequireComponent(typeof(DrillRotation))]
+    [RequireComponent(typeof(PlayerMineController))]
     public class DrillController : SingletonBehaviour<DrillController>
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
@@ -53,6 +54,7 @@ namespace Entities.Drill
         public DrillMovement Movement { get; private set; }
         public DrillRotation Rotation { get; private set; }
         public DrillInventory Inventory { get; private set; }
+        public PlayerMineController MineController { get; private set; }
         public DrillStats Stats { get; private set; }
         public EntityHealth Health => _health;
 
@@ -63,6 +65,7 @@ namespace Entities.Drill
             _rigidbody = GetComponent<Rigidbody2D>();
             Movement = GetComponent<DrillMovement>();
             Rotation = GetComponent<DrillRotation>();
+            MineController = GetComponent<PlayerMineController>();
             Inventory = new DrillInventory();
             Stats = new DrillStats();
 
@@ -364,6 +367,9 @@ namespace Entities.Drill
                         ChangeControlState(DrillControlState.WeaponLeft);
                     else if (Input.GetKeyUp(_rightWeaponActivationKey))
                         ChangeControlState(DrillControlState.WeaponRight);
+
+                    if (Input.GetKey(KeyCode.Space))
+                        MineController.TryLayMine();
                     
                     break;
                 }

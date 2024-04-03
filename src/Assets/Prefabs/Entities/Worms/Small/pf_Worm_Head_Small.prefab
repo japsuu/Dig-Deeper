@@ -222,6 +222,7 @@ MonoBehaviour:
   LinkRadius: 0.5
   _collisionDamage: 20
   _terrainDigger: {fileID: 5413400461888868754}
+  _despawnDistance: 80
 --- !u!114 &625738411489524527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSpeed: 90
   _targetMaxDistanceFromPlayer: 15
+  _playAttackSound: 1
 --- !u!58 &4176194983409999233
 CircleCollider2D:
   m_ObjectHideFlags: 0
