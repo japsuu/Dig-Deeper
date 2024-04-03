@@ -53,7 +53,7 @@ namespace Weapons
             if (_muzzleFlashPrefab != null)
                 Instantiate(_muzzleFlashPrefab, _firePoint.position, _firePoint.rotation);
             
-            AudioManager.PlaySound("fire");
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_CANNON_FIRE);
         }
 
 

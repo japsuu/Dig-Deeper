@@ -5,6 +5,7 @@ using Cinemachine;
 using DG.Tweening;
 using Singletons;
 using UnityEngine;
+using UnityEngine.Events;
 using Weapons.Controllers;
 using World.Chunks;
 using World.Stations;
@@ -17,6 +18,9 @@ namespace Entities.Drill
     public class DrillController : SingletonBehaviour<DrillController>
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
+        
+        [SerializeField] private UnityEvent _onGameStart;
+        [SerializeField] private UnityEvent _onGameStop;
 
         
         [Header("References")]
@@ -125,6 +129,7 @@ namespace Entities.Drill
                 {
                     _rigidbody.gravityScale = 1f;
                     SetRigidbodyDrag(0f);
+                    AudioLayer.PlaySoundLoop(LoopingSoundType.DRILL_FALLING);
                     break;
                 }
                 case DrillState.Crashed:
@@ -143,6 +148,7 @@ namespace Entities.Drill
                     Rotation.SetEnabled(true);
                     Movement.SetEnabled(true);
                     SetDrillsEnabled(true);
+                    AudioLayer.PlaySoundLoop(LoopingSoundType.DRILL_DRILLING);
                     break;
                 }
                 case DrillState.Destroyed:
@@ -155,8 +161,13 @@ namespace Entities.Drill
                     _rightWeapon.SetEnableFiring(false);
             
                     EventManager.PlayerDrill.OnDrillKilled();
+                    AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_EXPLOSION);
             
-                    Debug.LogWarning("TODO: Implement drill destruction.");
+                    Debug.LogWarning("TODO: Save score.");
+                    
+                    _onGameStop.Invoke();
+                    
+                    SceneChanger.LoadMainMenuScene();
                     break;
                 }
                 case DrillState.StationInbound:
@@ -246,11 +257,15 @@ namespace Entities.Drill
                     if (_currentTradingStation != null)
                         _currentTradingStation.OnDrillExit();
                     _rigidbody.simulated = true;
+                    
+                    if(_isFirstImpact)
+                        _onGameStart.Invoke();
                     break;
                 }
                 case DrillState.Airborne:
                 {
                     _rigidbody.gravityScale = 0f;
+                    AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_FALLING);
                     break;
                 }
                 case DrillState.Crashed:
@@ -262,6 +277,7 @@ namespace Entities.Drill
                     Rotation.SetEnabled(false);
                     Movement.SetEnabled(false);
                     SetDrillsEnabled(false);
+                    AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_DRILLING);
                     break;
                 }
                 case DrillState.Destroyed:
@@ -444,7 +460,11 @@ namespace Entities.Drill
             if (hitVelocity >= _minVelocityForHitRecovery)
             {
                 _collisionImpulseSource.GenerateImpulse();
-                AudioManager.PlaySound("thump large");
+                AudioLayer.PlaySoundOneShot(OneShotSoundType.THUMP_LARGE);
+            }
+            else
+            {
+                AudioLayer.PlaySoundOneShot(OneShotSoundType.THUMP_SMALL);
             }
             
             // Start increasing the rb linear drag with a tween to slow down the drill.
@@ -464,15 +484,15 @@ namespace Entities.Drill
 
         private IEnumerator HitRecoverySequence()
         {
-            AudioManager.PlaySound("crash warning");
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_CRASH_WARNING);
             yield return new WaitForSeconds(0.2f);
             
             SetDrillsEnabled(false);
             SetLightsEnabled(false);
             
             yield return new WaitForSeconds(1.5f);
-            AudioManager.PlaySound("rebooting");
-            
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_REBOOTING);
+
             SetDrillsEnabled(true);
             SetLightsEnabled(true);
             

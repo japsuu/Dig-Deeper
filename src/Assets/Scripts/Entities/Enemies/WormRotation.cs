@@ -1,3 +1,4 @@
+using Audio;
 using Entities.Drill;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -49,7 +50,10 @@ namespace Entities.Enemies
             
             // If close enough to the target position, select a new target offset.
             if (hasReachedTarget)
+            {
                 _targetPlayerOffset = GetRandomOffset();
+                AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_ATTACK);
+            }
             
             _targetPosition = playerPos + _targetPlayerOffset;
             

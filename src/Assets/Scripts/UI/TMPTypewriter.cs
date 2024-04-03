@@ -76,7 +76,7 @@ namespace UI
             _targetTextField.text = Write(letter);
             
             // Play sound
-            AudioManager.PlaySound("_typeSound");
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.TYPEWRITER_TYPE);
 
             //set to go to the next
             _index += 1;

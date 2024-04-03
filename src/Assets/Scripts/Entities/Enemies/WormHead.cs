@@ -1,4 +1,5 @@
-﻿using Audio;
+﻿using System;
+using Audio;
 using Entities.Drill;
 using UnityEngine;
 using World.Chunks;
@@ -36,6 +37,12 @@ namespace Entities.Enemies
         }
 
 
+        private void Start()
+        {
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_SPAWN);
+        }
+
+
         private void OnDestroy()
         {
             EventManager.TradingStations.PlayerEnterStation -= OnTradingStationEnter;
@@ -67,7 +74,7 @@ namespace Entities.Enemies
 
         public override void Damage(int amount)
         {
-            AudioManager.PlaySound("worm hit critical");
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_HIT_CRITICAL);
             base.Damage(amount);
         }
 
@@ -76,6 +83,8 @@ namespace Entities.Enemies
         {
             // If the head is killed, the whole worm should be destroyed
             DestroyRecursive();
+            
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_DEATH);
         }
     }
 }

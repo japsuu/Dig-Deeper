@@ -68,6 +68,7 @@ namespace World.Stations
         public void TeleportDrillToStation()
         {
             DrillController.Instance.transform.SetPositionAndRotation(_drillTargetPosition.position, _drillTargetPosition.rotation);
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.STATION_ENTER);
         }
         
         
@@ -94,8 +95,8 @@ namespace World.Stations
                 return;
             DrillController.Instance.Inventory.Clear();
             DrillController.Instance.Stats.AddCredits((ulong)sellValue);
-            AudioManager.PlaySound("SellMaterials");
-            AudioManager.PlaySound("ReceiveCredits");
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.STATION_SELL_MATERIALS);
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.STATION_RECEIVE_CREDITS);
         }
 
 

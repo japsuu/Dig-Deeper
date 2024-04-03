@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2204bf128383ced4f8a374a536984a4c, type: 3}
+  m_Name: AudioLibrary
+  m_EditorClassIdentifier: 
+  soundCategories:
+  - Drill
+  - Ambient
+  - DrillCannons
+  - UI
+  - Worms
+  - Station
+  musicCategories:
+  - 
+  Sounds:
+  - {fileID: 11400000, guid: 8e65aa6b1f5dde84cb4cd26e03cf377f, type: 2}
+  - {fileID: 11400000, guid: f37161776dc790b499e9a22e0e1188e9, type: 2}
+  - {fileID: 11400000, guid: b8ffb81eea2e9df45b2f95e7a1a46bbe, type: 2}
+  - {fileID: 11400000, guid: ecc6fbf0952909747bc7a05128fc4ef2, type: 2}
+  - {fileID: 11400000, guid: 2c1084d5d70a7514bb04a113cfb32545, type: 2}
+  - {fileID: 11400000, guid: 0b846459705301444a9a95b9b488a857, type: 2}
+  - {fileID: 11400000, guid: c4e1a7fae224a9f4386c6156c77aee35, type: 2}
+  - {fileID: 11400000, guid: 1ae32fcda9ddfd34bae3e0431b320474, type: 2}
+  - {fileID: 11400000, guid: 14fa52768e65b4e4eb14db07cb35b75c, type: 2}
+  - {fileID: 11400000, guid: b5ff603272dfc2548b5403aa259d73e6, type: 2}
+  - {fileID: 11400000, guid: 7e571af943d74d64e9025b1faba713ce, type: 2}
+  - {fileID: 11400000, guid: 9350348c84136d84a981528457cb5327, type: 2}
+  - {fileID: 11400000, guid: c72d42469b70c25468a115e9e3ea0896, type: 2}
+  - {fileID: 11400000, guid: a0fdc7eb2b13d034097fdfd1d8903721, type: 2}
+  - {fileID: 11400000, guid: 3d534d838c5d5404ca865fee4be2f7f9, type: 2}
+  - {fileID: 11400000, guid: f06fe38001544e24c95dfbc73e4a6308, type: 2}
+  - {fileID: 11400000, guid: 0479e1d1de6b2ce478eb8a7e237b31fe, type: 2}
+  - {fileID: 11400000, guid: 0ca1708d96d19d341a0dca9be87eaa93, type: 2}
+  - {fileID: 11400000, guid: ca2933bd59b805e4fac7a7749454c246, type: 2}
+  - {fileID: 11400000, guid: b817722d0dbb6734792983dcb72d1709, type: 2}
+  - {fileID: 11400000, guid: 6b2692522e736e74982788ba094532a1, type: 2}
+  - {fileID: 11400000, guid: 3873ad041c2022c4f97055f00c24e523, type: 2}
+  - {fileID: 11400000, guid: 01decbf0692efa14e85877808532a963, type: 2}
+  - {fileID: 11400000, guid: 5538b5ec7e99bc04f94b1f1da6f2ab6e, type: 2}
+  Music:
+  - {fileID: 11400000, guid: fdd8bbd3d09121a4aaa1b44ed7823123, type: 2}
+  - {fileID: 11400000, guid: 09553ebd03595124492b9fc187f73c05, type: 2}
+  - {fileID: 11400000, guid: 6cb2947428490b049b6d13db6ed2d9c6, type: 2}
+  useCustomNames: 1
+  generatedName: AudioLibrary
+  musicEnum: JSAMMusic
+  musicEnumGenerated: JSAMMusic
+  musicNamespace: 
+  musicNamespaceGenerated: 
+  soundEnum: JSAMSound
+  soundEnumGenerated: JSAMSound
+  soundNamespace: 
+  soundNamespaceGenerated: 
+  soundCategoriesToList:
+  - name: Drill
+    files:
+    - {fileID: 11400000, guid: 8e65aa6b1f5dde84cb4cd26e03cf377f, type: 2}
+    - {fileID: 11400000, guid: f37161776dc790b499e9a22e0e1188e9, type: 2}
+    - {fileID: 11400000, guid: b8ffb81eea2e9df45b2f95e7a1a46bbe, type: 2}
+    - {fileID: 11400000, guid: ecc6fbf0952909747bc7a05128fc4ef2, type: 2}
+    - {fileID: 11400000, guid: 2c1084d5d70a7514bb04a113cfb32545, type: 2}
+    - {fileID: 11400000, guid: 0b846459705301444a9a95b9b488a857, type: 2}
+    - {fileID: 11400000, guid: c4e1a7fae224a9f4386c6156c77aee35, type: 2}
+    - {fileID: 11400000, guid: 3873ad041c2022c4f97055f00c24e523, type: 2}
+    - {fileID: 11400000, guid: 01decbf0692efa14e85877808532a963, type: 2}
+    - {fileID: 11400000, guid: 5538b5ec7e99bc04f94b1f1da6f2ab6e, type: 2}
+    foldout: 1
+  - name: Ambient
+    files:
+    - {fileID: 11400000, guid: 1ae32fcda9ddfd34bae3e0431b320474, type: 2}
+    - {fileID: 11400000, guid: 14fa52768e65b4e4eb14db07cb35b75c, type: 2}
+    foldout: 1
+  - name: DrillCannons
+    files:
+    - {fileID: 11400000, guid: b5ff603272dfc2548b5403aa259d73e6, type: 2}
+    - {fileID: 11400000, guid: 7e571af943d74d64e9025b1faba713ce, type: 2}
+    foldout: 1
+  - name: UI
+    files:
+    - {fileID: 11400000, guid: 9350348c84136d84a981528457cb5327, type: 2}
+    - {fileID: 11400000, guid: c72d42469b70c25468a115e9e3ea0896, type: 2}
+    foldout: 1
+  - name: Worms
+    files:
+    - {fileID: 11400000, guid: a0fdc7eb2b13d034097fdfd1d8903721, type: 2}
+    - {fileID: 11400000, guid: 3d534d838c5d5404ca865fee4be2f7f9, type: 2}
+    - {fileID: 11400000, guid: f06fe38001544e24c95dfbc73e4a6308, type: 2}
+    - {fileID: 11400000, guid: 0479e1d1de6b2ce478eb8a7e237b31fe, type: 2}
+    - {fileID: 11400000, guid: 0ca1708d96d19d341a0dca9be87eaa93, type: 2}
+    - {fileID: 11400000, guid: b817722d0dbb6734792983dcb72d1709, type: 2}
+    foldout: 1
+  - name: Station
+    files:
+    - {fileID: 11400000, guid: ca2933bd59b805e4fac7a7749454c246, type: 2}
+    - {fileID: 11400000, guid: 6b2692522e736e74982788ba094532a1, type: 2}
+    foldout: 1
+  musicCategoriesToList:
+  - name: 
+    files:
+    - {fileID: 11400000, guid: fdd8bbd3d09121a4aaa1b44ed7823123, type: 2}
+    - {fileID: 11400000, guid: 09553ebd03595124492b9fc187f73c05, type: 2}
+    - {fileID: 11400000, guid: 6cb2947428490b049b6d13db6ed2d9c6, type: 2}
+    foldout: 1

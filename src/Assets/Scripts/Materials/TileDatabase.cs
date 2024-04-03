@@ -24,8 +24,6 @@ namespace Materials
         
         public static TileDatabase InitializeSingleton(List<MaterialDefinition> materials)
         {
-            if (Instance != null)
-                throw new InvalidOperationException("TileDatabase has already been initialized.");
             Instance = new TileDatabase(materials);
             return Instance;
         }

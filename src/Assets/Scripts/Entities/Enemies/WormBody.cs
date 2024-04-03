@@ -20,7 +20,7 @@ namespace Entities.Enemies
 
         public override void Damage(int amount)
         {
-            AudioManager.PlaySound("worm hit normal");
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_HIT_NORMAL);
             
             base.Damage(amount);
         }

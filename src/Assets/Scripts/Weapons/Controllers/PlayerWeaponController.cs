@@ -73,9 +73,9 @@ namespace Weapons.Controllers
             _weaponRotationRoot.localEulerAngles = localRotation;
 
             if (_previousHorizontalAxis == 0 && axis != 0)
-                AudioManager.PlaySound("loop_weapon_rotate");
+                AudioLayer.PlaySoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
             else if (_previousHorizontalAxis != 0 && axis == 0)
-                AudioManager.StopSound("loop_weapon_rotate");
+                AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
             
             _previousHorizontalAxis = axis;
         }
