@@ -9576,8 +9576,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Game made by Jasper Honkasalo for the <i><u><color=blue><link="https://itch.io/jam/acerola-jam-0">Acerola
-    Jam 0</link></color></u></i>.
+  m_text: 'Game made by Jasper Honkasalo for the <i><u><color=blue><link="https://gamesjobfair.com/unity-gjfs24">GJFS24
+    Unity Challenge</link></color></u></i>.
 
 
 
@@ -9589,14 +9589,9 @@ MonoBehaviour:
     <i><u><color=blue><link="https://github.com/viliwonka/WeightedRandomSelector">ViliWonka</link></color></u></i>
     for the awesome WeightedRandomSelector library.
 
-    <i><u><color=blue><link="https://github.com/bfollington/unity-tooltip-system">TwoPm
-    studios</link></color></u></i> for the awesome UnityTooltip system.
 
-    <i><u><color=blue><link="https://opengameart.org/content/lpc-zombie">BenCreating</link></color></u></i>
-    for the player character sprite.
-
-
-    And most of all, thank YOU for playing!'
+    And most of all, thank
+    YOU for playing!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0c3affc0fe4651e4e8be68c30e9d2a8f, type: 2}
   m_sharedMaterial: {fileID: -6923626653637601784, guid: 0c3affc0fe4651e4e8be68c30e9d2a8f, type: 2}
@@ -10041,32 +10036,26 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'WASD - move,
+  m_text: 'CONTROLS:
 
-    LMB - Fire your left weapon,
+    Q/E - Enter your cannons
 
-    RMB - Fire your right
-    weapon.
+    A/D - Rotate your drill/cannons
 
+    W/S
+    - Change the speed of your drill
 
-    Drag items from the world onto the available slots.
-
-    Attachments
-    can be added to weapons,
-
-    while organs are added to your body.
-
-    Weapons
-    can be changed by dragging one from the world to either of your weapon slots.
+    SPACE - drop a mine / fire your cannons
 
 
-    The
-    attachments on your weapons define how their projectiles act. The attachments
-    are evaluated in the order they are defined, from the "base" of the weapon towards
-    the "barrel".
+    You
+    can only control the drill, or a cannon simultaneously.
 
-    This means for example that the left weapon is evaluated from
-    right to left.'
+    While controlling
+    the drill, you can rotate it and drop mines.
+
+    While controlling a cannon,
+    you can rotate and fire it.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0c3affc0fe4651e4e8be68c30e9d2a8f, type: 2}
   m_sharedMaterial: {fileID: -6923626653637601784, guid: 0c3affc0fe4651e4e8be68c30e9d2a8f, type: 2}
