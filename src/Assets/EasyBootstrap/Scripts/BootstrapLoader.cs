@@ -207,6 +207,8 @@ namespace EasyBootstrap
 
         private static async Task InitializeBootstrapComponents(Scene scene)
         {
+            scene.GetRootGameObjects().ToList().ForEach(Object.DontDestroyOnLoad);
+            
             // Get the bootstraps from the bootstrap scene.
             List<IBootstrappable> bootstraps = GetBootstraps(scene);
 

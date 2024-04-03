@@ -19,7 +19,7 @@ MonoBehaviour:
   loopStart: 0
   loopEnd: 153.6056
   bpm: 120
-  relativeVolume: 0.2
+  relativeVolume: 0.4
   spatialize: 0
   maxDistance: 0
   priority: 128

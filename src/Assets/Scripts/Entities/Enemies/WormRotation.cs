@@ -16,6 +16,9 @@ namespace Entities.Enemies
         
         [SerializeField]
         private float _targetMaxDistanceFromPlayer = 15f;
+
+        [SerializeField]
+        private bool _playAttackSound = true;
         
         private Vector2 _targetPlayerOffset;
         private Vector2 _targetPosition;    // Target pos in world space. Updated every frame.
@@ -55,7 +58,8 @@ namespace Entities.Enemies
             if (hasReachedTarget)
             {
                 _targetPlayerOffset = GetRandomOffset();
-                AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_ATTACK);
+                if (_playAttackSound)
+                    AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_ATTACK);
                 _timeSinceReachedTarget = 0;
             }
             

@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSpeed: 90
   _targetMaxDistanceFromPlayer: 15
+  _playAttackSound: 0
 --- !u!58 &5056655464792765775
 CircleCollider2D:
   m_ObjectHideFlags: 0
