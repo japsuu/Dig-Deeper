@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 1881005629610337296}
   - component: {fileID: 6845728129327821608}
   m_Layer: 0
-  m_Name: pf_TradingStation
+  m_Name: pf_TradingStation_Eve
   m_TagString: Station
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,8 +197,23 @@ MonoBehaviour:
   _leaveHeightReference: {fileID: 5796020153659482719}
   _deletedComponents:
   - {fileID: 6845728129327821608}
-  _name: Trading Station
-  _buyRate: 1
+  _name: Eve
+  _descriptionTitle: 'Trading station says:
+
+    <i>{0}</i>'
+  _description: Howdy, got any materials for sale? I'll make it worth your while.
+  _info: 'Your drill has been fixed, and ammunition restocked.
+
+
+    Buy rate: {0}%
+
+    Press
+    <b>[E]</b> to sell all materials for <b>{1}</b> credits.
+
+
+    Press <b>[F]</b>
+    to leave.'
+  _buyRate: 0.75
 --- !u!61 &6845728129327821608
 BoxCollider2D:
   m_ObjectHideFlags: 0

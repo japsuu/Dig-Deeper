@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Entities.Drill;
 using JetBrains.Annotations;
 using Singletons;
 using UnityEngine;
+using WeightedRandomSelector;
+using WeightedRandomSelector.Interfaces;
 
 namespace World.Stations
 {
@@ -15,8 +18,17 @@ namespace World.Stations
         [CanBeNull]
         public static TradingStation StationInstance;
         
+        [Serializable]
+        private class Entry<T>
+        {
+            public T Object;
+            public float Weight = 100;
+        }
+        
         [SerializeField]
-        private TradingStation _stationPrefab;
+        private List<Entry<TradingStation>> _spawnablePrefabs = new();
+        
+        private IRandomSelector<TradingStation> _randomSelector;
 
 
         private void Update()
@@ -43,11 +55,32 @@ namespace World.Stations
                     DespawnStation();   // Scuffed hack to despawn the station when the player is 20% through it
             }
         }
+        
+        
+        private void Start()
+        {
+            _randomSelector = CreateRandomSelector(_spawnablePrefabs);
+        }
+
+
+        private static IRandomSelector<T> CreateRandomSelector<T>(List<Entry<T>> entries)
+        {
+            DynamicRandomSelector<T> selector = new();
+            
+            foreach (Entry<T> entry in entries)
+            {
+                T o = entry.Object;
+                if (o != null)
+                    selector.Add(o, entry.Weight);
+            }
+
+            return selector.Build();
+        }
 
 
         private void SpawnStation(Vector2 nextStationPos)
         {
-            StationInstance = Instantiate(_stationPrefab, nextStationPos, Quaternion.identity);
+            StationInstance = Instantiate(_randomSelector.SelectRandomItem(), nextStationPos, Quaternion.identity);
             EventManager.TradingStations.OnStationCreated();
         }
 

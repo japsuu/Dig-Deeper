@@ -1,7 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Materials;
+using UI.Settings;
 using UnityEngine;
 using World.Population;
+using Random = UnityEngine.Random;
 
 namespace World.Chunks
 {
@@ -17,7 +20,7 @@ namespace World.Chunks
         [SerializeField]
         [Tooltip("The chance of this chunk calling the population generator to populate this chunk with some special features.")]
         [Range(0f, 1f)]
-        private float _populationChance = 0.2f;
+        private float _populationChance = 0.002f;
         
         // NOTE: Use flattened 2D arrays for better cache locality.
         private byte[] _tiles;              // Tile IDs.
@@ -106,7 +109,7 @@ namespace World.Chunks
             _isTextureDirty = true;
             _isGenerated = true;
             
-            if (canPopulate && Random.value < _populationChance)
+            if (canPopulate && Random.value < _populationChance * GetPopulationModifier())
                 ChunkPopulationManager.Instance.Populate(this);
         }
         
@@ -155,6 +158,18 @@ namespace World.Chunks
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetArrayIndex(int x, int y) => y * Constants.CHUNK_SIZE_PIXELS + x;
+        
+        
+        private static float GetPopulationModifier()
+        {
+            return DifficultySettings.CurrentDifficulty switch
+            {
+                DifficultySettings.Difficulty.Easy => 0.5f,
+                DifficultySettings.Difficulty.Normal => 1f,
+                DifficultySettings.Difficulty.Mayhem => 3f,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
 
 
         private void OnDrawGizmos()

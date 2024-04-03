@@ -12,7 +12,7 @@ namespace UI.Settings
 
         private void Awake()
         {
-            UpdateVolume(0.5f);
+            UpdateVolume(DefaultVolume.DefaultVolumeValue);
         }
 
 

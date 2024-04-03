@@ -44,6 +44,7 @@ namespace Entities.Drill
         private DrillHead[] _drillHeads;
         private Rigidbody2D _rigidbody;
         private TradingStation _currentTradingStation;
+        private Coroutine _activeCrashSequence;
         private bool _isFirstImpact = true;
         
         private DrillState _state;                  // In what state the drill currently is.
@@ -95,6 +96,12 @@ namespace Entities.Drill
 
         private void ChangeDrillState(DrillState state, bool force = false)
         {
+            if (_activeCrashSequence != null)
+            {
+                StopCoroutine(_activeCrashSequence);
+                _activeCrashSequence = null;
+            }
+            
             // Skip state checks and exit callbacks if forced, since the exit callback can potentially change the state.
             if (!force)
             {
@@ -140,7 +147,7 @@ namespace Entities.Drill
                         _isFirstImpact = false;
                     }
                     float hitVelocity = Mathf.Abs(_rigidbody.velocity.y);
-                    StartCoroutine(CrashSequence(hitVelocity));
+                    _activeCrashSequence = StartCoroutine(CrashSequence(hitVelocity));
                     break;
                 }
                 case DrillState.Controlled:
@@ -425,6 +432,12 @@ namespace Entities.Drill
 
         private void OnTerrainContactEnd()
         {
+            if (_activeCrashSequence != null)
+            {
+                StopCoroutine(_activeCrashSequence);
+                _activeCrashSequence = null;
+            }
+
             // Ignore terrain contacts when moving to a station.
             if (_state != DrillState.Controlled)
                 return;
@@ -478,6 +491,7 @@ namespace Entities.Drill
             if (hitVelocity >= _minVelocityForHitRecovery)
                 yield return HitRecoverySequence();
             
+            _activeCrashSequence = null;
             ChangeDrillState(DrillState.Controlled);
         }
 

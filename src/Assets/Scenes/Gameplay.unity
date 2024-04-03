@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24291763}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.9506274, w: -0.31033477}
+  m_LocalRotation: {x: 0, y: 0, z: 0.86872876, w: -0.49528825}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4224,7 +4224,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37224b9baa354fd792bf9841efff809b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stationPrefab: {fileID: 1881005629610337296, guid: cbd1f5bb29c4b3e4792d4a1e3d54be8f, type: 3}
+  _spawnablePrefabs:
+  - Object: {fileID: 1881005629610337296, guid: 1d99030f896ef7a48aad008724e207f0, type: 3}
+    Weight: 85
+  - Object: {fileID: 1881005629610337296, guid: 38aa4ea44aacead44a10f7bb81decc0a, type: 3}
+    Weight: 75
+  - Object: {fileID: 1881005629610337296, guid: cbd1f5bb29c4b3e4792d4a1e3d54be8f, type: 3}
+    Weight: 100
+  - Object: {fileID: 1881005629610337296, guid: 1d00682ac9d2e9a4b997f993885f7956, type: 3}
+    Weight: 75
 --- !u!4 &1064483084
 Transform:
   m_ObjectHideFlags: 0
@@ -5337,7 +5345,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573469245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.9506274, w: -0.31033477}
+  m_LocalRotation: {x: 0, y: 0, z: 0.86872876, w: -0.49528825}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
