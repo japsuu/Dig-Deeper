@@ -498,6 +498,12 @@ namespace Entities.Drill
             }
             
             LogVerbose($"Drill crashed with velocity: {hitVelocity}");
+
+            if (hitVelocity < 10f)
+            {
+                _activeCrashSequence = null;
+                ChangeDrillState(DrillState.Controlled);
+            }
             
             // Start increasing the rb linear drag with a while loop to slow down the drill.
             const float duration = 0.7f;
@@ -518,12 +524,15 @@ namespace Entities.Drill
                 ChangeDrillState(DrillState.Airborne);
                 yield break;
             }
-            
+
+            _rigidbody.velocity = Vector2.zero;
+
             if (hitVelocity >= _minVelocityForHitRecovery)
             {
-                _activeCrashSequence = StartCoroutine(HitRecoverySequence());
+                _activeCrashSequence = StartCoroutine(CrashRecoverySequence());
+                LogVerbose($"Enter {nameof(CrashRecoverySequence)}");
                 yield return _activeCrashSequence;
-                LogVerbose($"Exit {nameof(HitRecoverySequence)}");
+                LogVerbose($"Exit {nameof(CrashRecoverySequence)}");
             }
             
             _activeCrashSequence = null;
@@ -531,24 +540,23 @@ namespace Entities.Drill
         }
 
 
-        private IEnumerator HitRecoverySequence()
+        private IEnumerator CrashRecoverySequence()
         {
-            LogVerbose($"Enter {nameof(HitRecoverySequence)}");
             AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_CRASH_WARNING);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             
             SetDrillsEnabled(false);
             SetLightsEnabled(false);
             
-            yield return new WaitForSeconds(1.5f);
             AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_REBOOTING);
+            yield return new WaitForSeconds(1f);
 
             SetDrillsEnabled(true);
             SetLightsEnabled(true);
             
             _rigidbody.velocity = Vector2.zero;
             
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(0.6f);
         }
 
 
