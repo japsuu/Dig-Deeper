@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JSAM;
+using UnityEngine;
 
 namespace UI.Settings
 {
@@ -10,9 +11,9 @@ namespace UI.Settings
         public static float DefaultVolumeValue { get; private set; }
 
 
-        private void Awake()
+        private void Start()
         {
-            AudioListener.volume = _defaultVolume;
+            AudioManager.MasterVolume = _defaultVolume;
             DefaultVolumeValue = _defaultVolume;
         }
     }

@@ -109,6 +109,7 @@ namespace Entities.Drill
             {
                 StopCoroutine(_activeCrashSequence);
                 _activeCrashSequence = null;
+                LogVerbose("Force stopped active crash sequence.");
             }
             
             // Skip state checks and exit callbacks if forced, since the exit callback can potentially change the state.
@@ -121,8 +122,7 @@ namespace Entities.Drill
             }
             
             _state = state;
-            if (_enableVerboseLogging)
-                Debug.Log($"DrillState changed to {_state}");
+            LogVerbose($"DrillState changed to {_state}");
             OnDrillEnterState(_state);
         }
         
@@ -449,6 +449,7 @@ namespace Entities.Drill
             {
                 StopCoroutine(_activeCrashSequence);
                 _activeCrashSequence = null;
+                LogVerbose("Terrain contact lost, force stopped active crash sequence.");
             }
 
             // Ignore terrain contacts when moving to a station.
