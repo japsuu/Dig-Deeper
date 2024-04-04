@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24291763}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.060061984, w: -0.9981947}
+  m_LocalRotation: {x: 0, y: 0, z: -0.43093875, w: 0.9023812}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1443,7 +1443,7 @@ MonoBehaviour:
   _leftWeaponActivationKey: 113
   _rightWeaponActivationKey: 101
   _rotateTowardsVelocitySpeed: 35
-  _minVelocityForHitRecovery: 18
+  _minVelocityForHitRecovery: 16
   _enableVerboseLogging: 1
   _state: 0
   _controlState: 0
@@ -5896,7 +5896,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573469245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.060061984, w: -0.9981947}
+  m_LocalRotation: {x: 0, y: 0, z: -0.43093875, w: 0.9023812}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

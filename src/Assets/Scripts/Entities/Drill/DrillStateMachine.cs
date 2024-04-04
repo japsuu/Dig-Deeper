@@ -22,7 +22,7 @@ namespace Entities.Drill
     [RequireComponent(typeof(DrillMineController))]
     public class DrillStateMachine : SingletonBehaviour<DrillStateMachine>
     {
-        private const float RB_LINEAR_DRAG_MAX = 15f;
+        private const float RB_LINEAR_DRAG_MAX = 2f;
         
         [SerializeField] private UnityEvent _onGameStart;
         [SerializeField] private UnityEvent _onGameStop;
@@ -55,9 +55,9 @@ namespace Entities.Drill
         private DrillHead[] _drillHeads;
         private Rigidbody2D _rigidbody;
         private TradingStation _currentTradingStation;
-        private Coroutine _activeCrashSequence;
         private bool _isFirstImpact = true;
-        
+        private Coroutine _crashRecoverySequence;
+
         public EntityHealth Health => _health;
         public DrillStats Stats { get; private set; }
         public DrillMovement Movement { get; private set; }
@@ -109,13 +109,6 @@ namespace Entities.Drill
 
         private void ChangeDrillState(DrillState state, bool force = false)
         {
-            if (_activeCrashSequence != null)
-            {
-                StopCoroutine(_activeCrashSequence);
-                _activeCrashSequence = null;
-                LogVerbose("Force stopped active crash sequence.");
-            }
-            
             // Skip state checks and exit callbacks if forced, since the exit callback can potentially change the state.
             if (!force)
             {
@@ -155,13 +148,31 @@ namespace Entities.Drill
                 }
                 case DrillState.Crashed:
                 {
+                    // Slow down the drill by increasing its linear drag.
+                    SetRigidbodyDrag(RB_LINEAR_DRAG_MAX);
+                    
                     if (_isFirstImpact)
                     {
                         EventManager.PlayerDrill.OnDrillFirstImpact();
                         _isFirstImpact = false;
                     }
                     float hitVelocity = Mathf.Abs(_rigidbody.velocity.y);
-                    _activeCrashSequence = StartCoroutine(CrashSequence(hitVelocity));
+                    
+                    if (hitVelocity >= _minVelocityForHitRecovery)
+                    {
+                        _collisionImpulseSource.GenerateImpulse();
+                        AudioLayer.PlaySoundOneShot(OneShotSoundType.THUMP_LARGE);
+                    }
+                    else
+                    {
+                        AudioLayer.PlaySoundOneShot(OneShotSoundType.THUMP_SMALL);
+                    }
+            
+                    LogVerbose($"Drill crashed with velocity: {hitVelocity}");
+                    
+                    if (hitVelocity >= _minVelocityForHitRecovery)
+                        _crashRecoverySequence = StartCoroutine(CrashRecoverySequence());
+                    
                     break;
                 }
                 case DrillState.Controlled:
@@ -232,6 +243,22 @@ namespace Entities.Drill
                 }
                 case DrillState.Crashed:
                 {
+                    if (_crashRecoverySequence == null && _rigidbody.velocity.magnitude <= Movement.MaxMovementSpeed)
+                        ChangeDrillState(DrillState.Controlled);
+                    
+                    // If the drill is no longer in contact with the terrain, exit the crash sequence.
+                    // This can happen if the drill falls through a thin terrain piece.
+                    if (!_terrainTrigger.IsTriggered)
+                    {
+                        LogVerbose("Exit crash sequence, drill is airborne.");
+                        StopCoroutine(_crashRecoverySequence);
+                        _crashRecoverySequence = null;
+                        // Clean up the coroutine.
+                        SetDrillsEnabled(true);
+                        SetLightsEnabled(true);
+                        
+                        ChangeDrillState(DrillState.Airborne);
+                    }
                     break;
                 }
                 case DrillState.Controlled:
@@ -287,6 +314,7 @@ namespace Entities.Drill
                 case DrillState.Airborne:
                 {
                     _rigidbody.gravityScale = 0f;
+                    SetRigidbodyDrag(0f);
                     AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_FALLING);
                     break;
                 }
@@ -453,13 +481,32 @@ namespace Entities.Drill
 
         private void OnTerrainContactEnd()
         {
-            // Ignore terrain contacts when e.g. moving to a station.
             if (_state != DrillState.Controlled)
                 return;
             
             LogVerbose("Terrain contact ended.");
 
             ChangeDrillState(DrillState.Airborne);
+        }
+
+
+        private IEnumerator CrashRecoverySequence()
+        {
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_CRASH_WARNING);
+            yield return new WaitForSeconds(0.1f);
+            
+            SetDrillsEnabled(false);
+            SetLightsEnabled(false);
+            
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_REBOOTING);
+            yield return new WaitForSeconds(1f);
+
+            SetDrillsEnabled(true);
+            SetLightsEnabled(true);
+            
+            yield return new WaitForSeconds(0.6f);
+            ChangeDrillState(DrillState.Controlled);
+            _crashRecoverySequence = null;
         }
 
 
@@ -482,81 +529,6 @@ namespace Entities.Drill
         private void SetLightsEnabled(bool enable)
         {
             _lightsRoot.gameObject.SetActive(enable);
-        }
-        
-        
-        private IEnumerator CrashSequence(float hitVelocity)
-        {
-            if (hitVelocity >= _minVelocityForHitRecovery)
-            {
-                _collisionImpulseSource.GenerateImpulse();
-                AudioLayer.PlaySoundOneShot(OneShotSoundType.THUMP_LARGE);
-            }
-            else
-            {
-                AudioLayer.PlaySoundOneShot(OneShotSoundType.THUMP_SMALL);
-            }
-            
-            LogVerbose($"Drill crashed with velocity: {hitVelocity}");
-
-            if (hitVelocity < 10f)
-            {
-                _activeCrashSequence = null;
-                ChangeDrillState(DrillState.Controlled);
-            }
-            
-            // Start increasing the rb linear drag with a while loop to slow down the drill.
-            const float duration = 0.7f;
-            float currentDrag = GetRigidbodyDrag();
-            while (currentDrag < RB_LINEAR_DRAG_MAX && _terrainTrigger.IsTriggered)
-            {
-                currentDrag += Time.deltaTime * (RB_LINEAR_DRAG_MAX / duration);
-                SetRigidbodyDrag(Mathf.Min(currentDrag, RB_LINEAR_DRAG_MAX));
-                
-                yield return null;
-            }
-
-            SetRigidbodyDrag(0f);
-
-            if (!_terrainTrigger.IsTriggered)
-            {
-                LogVerbose("Exit crash sequence, drill is airborne.");
-                ChangeDrillState(DrillState.Airborne);
-                yield break;
-            }
-
-            _rigidbody.velocity = Vector2.zero;
-
-            if (hitVelocity >= _minVelocityForHitRecovery)
-            {
-                _activeCrashSequence = StartCoroutine(CrashRecoverySequence());
-                LogVerbose($"Enter {nameof(CrashRecoverySequence)}");
-                yield return _activeCrashSequence;
-                LogVerbose($"Exit {nameof(CrashRecoverySequence)}");
-            }
-            
-            _activeCrashSequence = null;
-            ChangeDrillState(DrillState.Controlled);
-        }
-
-
-        private IEnumerator CrashRecoverySequence()
-        {
-            AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_CRASH_WARNING);
-            yield return new WaitForSeconds(0.1f);
-            
-            SetDrillsEnabled(false);
-            SetLightsEnabled(false);
-            
-            AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_REBOOTING);
-            yield return new WaitForSeconds(1f);
-
-            SetDrillsEnabled(true);
-            SetLightsEnabled(true);
-            
-            _rigidbody.velocity = Vector2.zero;
-            
-            yield return new WaitForSeconds(0.6f);
         }
 
 

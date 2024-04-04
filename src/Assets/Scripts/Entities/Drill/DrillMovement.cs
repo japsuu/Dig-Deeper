@@ -33,6 +33,7 @@ namespace Entities.Drill
         private float _terrainHardnessFactor;
         private Rigidbody2D _rigidbody;
 
+        public float MaxMovementSpeed => _maxMovementSpeed;
         public bool IsEnabled { get; private set; }
 
 
