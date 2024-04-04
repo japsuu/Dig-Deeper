@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Audio;
+using Cameras;
 using Cinemachine;
 using DG.Tweening;
 using NaughtyAttributes;
@@ -166,6 +167,7 @@ namespace Entities.Drill
                     Movement.SetEnabled(true);
                     SetDrillsEnabled(true);
                     AudioLayer.PlaySoundLoop(LoopingSoundType.DRILL_DRILLING);
+                    CameraController.Instance.SetNoiseAmplitude(1f);
                     break;
                 }
                 case DrillState.Destroyed:
@@ -295,6 +297,7 @@ namespace Entities.Drill
                     Movement.SetEnabled(false);
                     SetDrillsEnabled(false);
                     AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_DRILLING);
+                    CameraController.Instance.SetNoiseAmplitude(0f);
                     break;
                 }
                 case DrillState.Destroyed:

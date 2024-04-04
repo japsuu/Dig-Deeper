@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Cameras
 {
+    [DefaultExecutionOrder(-1)]
     public class CameraController : SingletonBehaviour<CameraController>
     {
         [SerializeField]
@@ -14,13 +15,24 @@ namespace Cameras
         private CinemachineVirtualCamera _virtualCamera;
         
         public Camera MainCamera { get; private set; }
+        public CinemachineVirtualCamera VirtualCamera => _virtualCamera;
+        public CinemachineBasicMultiChannelPerlin VirtualCameraNoise { get; private set; }
+        
+        
+        public void SetNoiseAmplitude(float amplitude)
+        {
+            VirtualCameraNoise.m_AmplitudeGain = amplitude;
+        }
 
 
         private void Awake()
         {
             MainCamera = Camera.main;
+            VirtualCameraNoise = _virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             
             SceneManager.sceneLoaded += OnSceneLoaded;
+            
+            SetNoiseAmplitude(0f);
         }
 
 
@@ -30,6 +42,8 @@ namespace Cameras
             GameObject player = GameObject.FindGameObjectWithTag(_cameraTargetTag);
             if (player != null)
                 _virtualCamera.Follow = player.transform;
+            
+            SetNoiseAmplitude(0f);
         }
     }
 }
