@@ -329,6 +329,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 364258898}
   m_CullTransparentMesh: 1
+--- !u!1 &377136098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 377136100}
+  - component: {fileID: 377136099}
+  m_Layer: 0
+  m_Name: Damage Number System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &377136099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377136098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0575d5acb4ec49a68f10f0bb1cc05073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageNumberPrefab: {fileID: 4469886475144172435, guid: 3c7327df2d973a542aedcb96195e690a, type: 3}
+  _damageNumberPlayerPrefab: {fileID: 4469886475144172435, guid: 71a8f1ca26f60934aa9ee51063580c83, type: 3}
+--- !u!4 &377136100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377136098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &809114192
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +949,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -957,3 +1003,4 @@ SceneRoots:
   - {fileID: 7675630316316216525}
   - {fileID: 809114194}
   - {fileID: 1950121197823002228}
+  - {fileID: 377136100}

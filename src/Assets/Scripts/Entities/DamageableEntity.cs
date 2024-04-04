@@ -1,5 +1,6 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
+using World;
 
 namespace Entities
 {
@@ -53,6 +54,8 @@ namespace Entities
         {
             int damage = Mathf.CeilToInt(amount * _receivedDamageMultiplier);
             _currentHealth -= damage;
+            
+            DamageNumberSystem.Instance.SpawnDamageNumber(transform.position, damage);
             
             if (_currentHealth > 0)
                 return;

@@ -15,9 +15,6 @@ namespace Weapons
     public class RaycastProjectile : MonoBehaviour
     {
         private const int MAX_RAYCAST_RESULTS = 64;
-        
-        [SerializeField]
-        private DamageNumber _damageNumberPrefab;
 
         [SerializeField]
         private int _weightGrams = 2000;
@@ -71,8 +68,6 @@ namespace Weapons
 
                 if (damageable != null)
                 {
-                    _damageNumberPrefab.Spawn(hit.collider.gameObject.transform.position, _baseDamage);
-                    
                     if (!damageable.DeletesProjectileOnHit)
                         continue;
                 }

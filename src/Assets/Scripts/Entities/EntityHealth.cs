@@ -1,6 +1,7 @@
 ﻿using System;
 using NaughtyAttributes;
 using UnityEngine;
+using World;
 
 namespace Entities
 {
@@ -67,6 +68,8 @@ namespace Entities
             int damage = Mathf.CeilToInt(amount * _receivedDamageMultiplier);
             CurrentHealth -= damage;
             
+            DamageNumberSystem.Instance.SpawnDamageNumber(transform.position, damage, true);
+
             HealthChanged?.Invoke(new HealthChangedArgs(-amount, CurrentHealth));
             
             if (CurrentHealth > 0)
