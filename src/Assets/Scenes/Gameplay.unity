@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24291763}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.26630628, w: -0.9638885}
+  m_LocalRotation: {x: 0, y: 0, z: -0.572247, w: -0.82008135}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 30575844}
   - component: {fileID: 30575843}
   - component: {fileID: 30575845}
+  - component: {fileID: 30575846}
   m_Layer: 5
   m_Name: Credits Display
   m_TagString: Untagged
@@ -262,6 +263,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 985902003}
   _format: 'Credits: {0}'
+--- !u!114 &30575846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30575841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f99a9e0f405bff84884c4884261df263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipStyle: {fileID: 11486272, guid: 170422fe7ead9004e84d1216259b87cc, type: 3}
+  parameterizedTextFields:
+  - name: BodyText
+    placeholder: '%BodyText%'
+    value: Gain credits by selling materials to trading stations.
+  dynamicImageFields: []
+  dynamicSectionFields: []
+  isRemotelyActivated: 0
+  backgroundTint: {r: 1, g: 1, b: 1, a: 1}
+  shouldOverridePosition: 0
+  overridePositionType: 0
+  overridePositionVector: {x: 0, y: 0, z: 0}
+  overridePositionTransform: {fileID: 0}
+  tipPosition: 0
+  minTextWidth: 100
+  maxTextWidth: 200
+  staysOpen: 0
+  neverRotate: 0
+  isBlocking: 0
 --- !u!1 &44926912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,6 +1136,7 @@ GameObject:
   - component: {fileID: 300476274}
   - component: {fileID: 300476276}
   - component: {fileID: 300476275}
+  - component: {fileID: 300476277}
   m_Layer: 5
   m_Name: station direction image
   m_TagString: Untagged
@@ -1168,6 +1201,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300476273}
   m_CullTransparentMesh: 1
+--- !u!114 &300476277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300476273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f99a9e0f405bff84884c4884261df263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipStyle: {fileID: 11486272, guid: 170422fe7ead9004e84d1216259b87cc, type: 3}
+  parameterizedTextFields:
+  - name: BodyText
+    placeholder: '%BodyText%'
+    value: Direction to the nearest trading station.
+  dynamicImageFields: []
+  dynamicSectionFields: []
+  isRemotelyActivated: 0
+  backgroundTint: {r: 1, g: 1, b: 1, a: 1}
+  shouldOverridePosition: 0
+  overridePositionType: 0
+  overridePositionVector: {x: 0, y: 0, z: 0}
+  overridePositionTransform: {fileID: 0}
+  tipPosition: 0
+  minTextWidth: 100
+  maxTextWidth: 200
+  staysOpen: 0
+  neverRotate: 0
+  isBlocking: 0
 --- !u!1 &302843713
 GameObject:
   m_ObjectHideFlags: 0
@@ -4421,7 +4485,7 @@ MonoBehaviour:
   - Object: {fileID: 7726983688417277118, guid: eb2dc64e202533647b401307cbab28f6, type: 3}
     Weight: 25
   - Object: {fileID: 6212861362333341095, guid: e9accf20ec83b6f4aa18066b47c0e519, type: 3}
-    Weight: 100
+    Weight: 200
   - Object: {fileID: 6218825211672691799, guid: 711c0453749655d4bbbab192fd9f9309, type: 3}
     Weight: 75
 --- !u!4 &1046063229
@@ -4786,6 +4850,7 @@ GameObject:
   - component: {fileID: 1167377775}
   - component: {fileID: 1167377774}
   - component: {fileID: 1167377773}
+  - component: {fileID: 1167377776}
   m_Layer: 5
   m_Name: Mines Display
   m_TagString: Untagged
@@ -4865,6 +4930,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167377771}
   m_CullTransparentMesh: 1
+--- !u!114 &1167377776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167377771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f99a9e0f405bff84884c4884261df263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipStyle: {fileID: 11486272, guid: 170422fe7ead9004e84d1216259b87cc, type: 3}
+  parameterizedTextFields:
+  - name: BodyText
+    placeholder: '%BodyText%'
+    value: 'Drop mines with [SPACE].
+
+      Refilled at the next station.'
+  dynamicImageFields: []
+  dynamicSectionFields: []
+  isRemotelyActivated: 0
+  backgroundTint: {r: 1, g: 1, b: 1, a: 1}
+  shouldOverridePosition: 0
+  overridePositionType: 0
+  overridePositionVector: {x: 0, y: 0, z: 0}
+  overridePositionTransform: {fileID: 0}
+  tipPosition: 0
+  minTextWidth: 100
+  maxTextWidth: 200
+  staysOpen: 0
+  neverRotate: 0
+  isBlocking: 0
 --- !u!1 &1179363085
 GameObject:
   m_ObjectHideFlags: 0
@@ -5781,7 +5879,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573469245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.26630628, w: -0.9638885}
+  m_LocalRotation: {x: 0, y: 0, z: -0.572247, w: -0.82008135}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
