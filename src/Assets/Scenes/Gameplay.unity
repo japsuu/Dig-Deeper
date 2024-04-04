@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 24291764}
   - component: {fileID: 24291765}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: alarm light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24291763}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.48111105, w: -0.87665963}
+  m_LocalRotation: {x: 0, y: 0, z: 0.060061984, w: -0.9981947}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -378,7 +378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 47083757}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera Target
   m_TagString: CameraTarget
   m_Icon: {fileID: 0}
@@ -516,7 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 66980188}
   - component: {fileID: 66980189}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,9 +550,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8808e6d41830486e86bf9a43d273eee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scriptUpdateMode: 0
   BreakRadius: 22
   BreakIntervalFrames: 10
-  _scriptUpdateMode: 0
   _enableLineCasting: 0
   _particlesRoot: {fileID: 0}
 --- !u!1 &77000530
@@ -565,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 77000531}
   - component: {fileID: 77000532}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 93225207}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 128045451}
   - component: {fileID: 128045452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -838,7 +838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 148247715}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -871,7 +871,7 @@ GameObject:
   m_Component:
   - component: {fileID: 166069547}
   - component: {fileID: 166069548}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -953,7 +953,7 @@ GameObject:
   m_Component:
   - component: {fileID: 246457330}
   - component: {fileID: 246457331}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon Station L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1242,7 +1242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 302843714}
   - component: {fileID: 302843715}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1333,7 +1333,7 @@ GameObject:
   - component: {fileID: 333712320}
   - component: {fileID: 333712319}
   - component: {fileID: 333712321}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player Drill
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1443,7 +1443,7 @@ MonoBehaviour:
   _leftWeaponActivationKey: 113
   _rightWeaponActivationKey: 101
   _rotateTowardsVelocitySpeed: 35
-  _minVelocityForHitRecovery: 14
+  _minVelocityForHitRecovery: 18
   _enableVerboseLogging: 1
   _state: 0
   _controlState: 0
@@ -1847,7 +1847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 405966790}
   - component: {fileID: 405966791}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light 2D (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1929,7 +1929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 488206441}
   - component: {fileID: 488206442}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light 2D (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2010,7 +2010,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 563150896}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: weapon rotation root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2044,7 +2044,7 @@ GameObject:
   - component: {fileID: 574231389}
   - component: {fileID: 574231390}
   - component: {fileID: 574231391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2414,7 +2414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 607224284}
   - component: {fileID: 607224285}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon Station R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2751,7 +2751,7 @@ GameObject:
   m_Component:
   - component: {fileID: 633756721}
   - component: {fileID: 633756722}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2967,7 +2967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 694495535}
   - component: {fileID: 694495536}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3001,9 +3001,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8808e6d41830486e86bf9a43d273eee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scriptUpdateMode: 0
   BreakRadius: 10
   BreakIntervalFrames: 10
-  _scriptUpdateMode: 0
   _enableLineCasting: 0
   _particlesRoot: {fileID: 778123961}
 --- !u!1 &715278089
@@ -3242,7 +3242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 778123961}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3484,7 +3484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 846399172}
   - component: {fileID: 846399173}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3567,7 +3567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 872929045}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3601,7 +3601,7 @@ GameObject:
   m_Component:
   - component: {fileID: 885273602}
   - component: {fileID: 885273603}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4257,9 +4257,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1431049275}
     m_Modifications:
+    - target: {fileID: 841575624262304250, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2987541488761649412, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
       propertyPath: m_Name
       value: pf_DottedLine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2987541488761649412, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4659904098220856534, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4319,9 +4327,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 574231389}
     m_Modifications:
+    - target: {fileID: 841575624262304250, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2987541488761649412, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
       propertyPath: m_Name
       value: pf_DottedLine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2987541488761649412, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4659904098220856534, guid: 2160110f53da1cb4a9ce72278dbb1349, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4513,7 +4529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1059584312}
   - component: {fileID: 1059584313}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: terrain trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4529,7 +4545,7 @@ Transform:
   m_GameObject: {fileID: 1059584311}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.71, y: 0, z: 0}
+  m_LocalPosition: {x: 1.903, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4547,8 +4563,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e30cde0e2c9f415e8e9739abebae9f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scriptUpdateMode: 0
   CheckRadius: 13
-  CheckIntervalFrames: 4
+  IsTriggered: 0
 --- !u!1 &1064483082
 GameObject:
   m_ObjectHideFlags: 0
@@ -4611,7 +4628,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1105657874}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: weapon rotation root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5378,7 +5395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1389116513}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fire point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5411,7 +5428,7 @@ GameObject:
   - component: {fileID: 1431049275}
   - component: {fileID: 1431049276}
   - component: {fileID: 1431049277}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5746,7 +5763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1457772275}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: weapons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5780,7 +5797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1485881410}
   - component: {fileID: 1485881411}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5864,7 +5881,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1573469246}
   - component: {fileID: 1573469247}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: alarm light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5879,7 +5896,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573469245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.48111105, w: -0.87665963}
+  m_LocalRotation: {x: 0, y: 0, z: 0.060061984, w: -0.9981947}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6000,7 +6017,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1591277259}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fire point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6235,7 +6252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1690282710}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6387,7 +6404,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1768342142}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6611,7 +6628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1829207613}
   - component: {fileID: 1829207614}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6699,7 +6716,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1841151323}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mine Lay Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7036,7 +7053,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2000168534}
   - component: {fileID: 2000168535}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7119,7 +7136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2014099018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: terrain hardness check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7390,7 +7407,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2133135410}
   - component: {fileID: 2133135409}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7479,7 +7496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2136618106}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drills
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7566,6 +7583,10 @@ PrefabInstance:
     - target: {fileID: 6813136645019618282, guid: d8f315fa3d64df14995ff4149c0aaa49, type: 3}
       propertyPath: m_Name
       value: pf_Particles_Digging
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813136645019618282, guid: d8f315fa3d64df14995ff4149c0aaa49, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
