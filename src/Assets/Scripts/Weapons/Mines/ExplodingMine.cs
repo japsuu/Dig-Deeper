@@ -1,5 +1,4 @@
-﻿using System;
-using Entities;
+﻿using Entities;
 using UnityEngine;
 
 namespace Weapons.Mines
@@ -8,7 +7,7 @@ namespace Weapons.Mines
     {
         [SerializeField] private GameObject _explosionEffect;
 
-        [SerializeField] private float _explosionRadius;
+        [SerializeField] private float _explosionRadius = 5f;
         [SerializeField] private float _explosionDamage = 60f;
 
         [SerializeField]

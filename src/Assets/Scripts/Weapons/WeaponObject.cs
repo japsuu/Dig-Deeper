@@ -1,4 +1,5 @@
 ﻿using Audio;
+using Cinemachine;
 using Effects;
 using UnityEngine;
 
@@ -19,6 +20,9 @@ namespace Weapons
 
         [SerializeField]
         private OneShotParticleSystem _muzzleFlashPrefab;
+        
+        [SerializeField]
+        private CinemachineImpulseSource _fireImpulseSource;
 
         [Header("Settings")]
         
@@ -54,6 +58,9 @@ namespace Weapons
                 Instantiate(_muzzleFlashPrefab, _firePoint.position, _firePoint.rotation);
             
             AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_CANNON_FIRE);
+            
+            if (_fireImpulseSource != null)
+                _fireImpulseSource.GenerateImpulse();
         }
 
 

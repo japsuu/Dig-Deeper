@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Materials;
 using UI.Settings;
 using UnityEngine;
@@ -109,7 +108,7 @@ namespace World.Chunks
             _isTextureDirty = true;
             _isGenerated = true;
             
-            if (canPopulate && Random.value < _populationChance * GetPopulationModifier())
+            if (canPopulate && Random.value < _populationChance * DifficultySettings.GetChunkPopulationModifier())
                 ChunkPopulationManager.Instance.Populate(this);
         }
         
@@ -158,18 +157,6 @@ namespace World.Chunks
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetArrayIndex(int x, int y) => y * Constants.CHUNK_SIZE_PIXELS + x;
-        
-        
-        private static float GetPopulationModifier()
-        {
-            return DifficultySettings.CurrentDifficulty switch
-            {
-                DifficultySettings.Difficulty.Easy => 0.5f,
-                DifficultySettings.Difficulty.Normal => 1f,
-                DifficultySettings.Difficulty.Mayhem => 3f,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-        }
 
 
         private void OnDrawGizmos()

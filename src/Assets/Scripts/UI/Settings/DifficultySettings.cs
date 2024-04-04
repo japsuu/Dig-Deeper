@@ -45,26 +45,26 @@ namespace UI.Settings
         }
 
 
-        public static float GetLevelPower()
+        public static float GetReceivedDamageMultiplier()
         {
             return CurrentDifficulty switch
             {
-                Difficulty.Easy => 1f,
-                Difficulty.Normal => 1.5f,
-                Difficulty.Mayhem => 3f,
-                _ => 1.5f
+                Difficulty.Easy => 0.5f,
+                Difficulty.Normal => 1f,
+                Difficulty.Mayhem => 1.5f,
+                _ => 1f
             };
         }
-
-
-        public static int GetInitialEnemyCount()
+        
+        
+        public static float GetChunkPopulationModifier()
         {
             return CurrentDifficulty switch
             {
-                Difficulty.Easy => 1,
-                Difficulty.Normal => 2,
-                Difficulty.Mayhem => 5,
-                _ => 2
+                Difficulty.Easy => 0.5f,
+                Difficulty.Normal => 1f,
+                Difficulty.Mayhem => 3f,
+                _ => 1f
             };
         }
     }

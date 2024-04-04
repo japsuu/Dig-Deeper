@@ -3,7 +3,9 @@ using System.Collections;
 using Audio;
 using Cinemachine;
 using DG.Tweening;
+using NaughtyAttributes;
 using Singletons;
+using UI.Settings;
 using UnityEngine;
 using UnityEngine.Events;
 using Weapons.Controllers;
@@ -15,7 +17,7 @@ namespace Entities.Drill
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(DrillMovement))]
     [RequireComponent(typeof(DrillRotation))]
-    [RequireComponent(typeof(PlayerMineController))]
+    [RequireComponent(typeof(DrillMineController))]
     public class DrillController : SingletonBehaviour<DrillController>
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
@@ -41,6 +43,12 @@ namespace Entities.Drill
         [Header("Collision")]
         [SerializeField] private float _rotateTowardsVelocitySpeed = 35f;
         [SerializeField] private float _minVelocityForHitRecovery = 14f;
+
+        
+        [Header("Debug")]
+        [SerializeField] private bool _enableVerboseLogging;
+        [SerializeField, ReadOnly] private DrillState _state;                  // In what state the drill currently is.
+        [SerializeField, ReadOnly] private DrillControlState _controlState;    // What part of the drill the player is currently controlling.
         
         private DrillHead[] _drillHeads;
         private Rigidbody2D _rigidbody;
@@ -48,15 +56,12 @@ namespace Entities.Drill
         private Coroutine _activeCrashSequence;
         private bool _isFirstImpact = true;
         
-        private DrillState _state;                  // In what state the drill currently is.
-        private DrillControlState _controlState;    // What part of the drill the player is currently controlling.
-        
+        public EntityHealth Health => _health;
+        public DrillStats Stats { get; private set; }
         public DrillMovement Movement { get; private set; }
         public DrillRotation Rotation { get; private set; }
         public DrillInventory Inventory { get; private set; }
-        public PlayerMineController MineController { get; private set; }
-        public DrillStats Stats { get; private set; }
-        public EntityHealth Health => _health;
+        public DrillMineController MineController { get; private set; }
 
 
         private void Awake()
@@ -65,7 +70,7 @@ namespace Entities.Drill
             _rigidbody = GetComponent<Rigidbody2D>();
             Movement = GetComponent<DrillMovement>();
             Rotation = GetComponent<DrillRotation>();
-            MineController = GetComponent<PlayerMineController>();
+            MineController = GetComponent<DrillMineController>();
             Inventory = new DrillInventory();
             Stats = new DrillStats();
 
@@ -74,6 +79,7 @@ namespace Entities.Drill
             
             _health.HealthChanged += OnHealthChanged;
             _health.Killed += () => ChangeDrillState(DrillState.Destroyed);
+            _health.SetReceivedDamageMultiplier(DifficultySettings.GetReceivedDamageMultiplier());
             
             foreach (DrillHead drillHead in _drillHeads)
                 drillHead.Initialize(Inventory, Stats);
@@ -115,7 +121,8 @@ namespace Entities.Drill
             }
             
             _state = state;
-            //print($"State changed to {_state}");
+            if (_enableVerboseLogging)
+                Debug.Log($"DrillState changed to {_state}");
             OnDrillEnterState(_state);
         }
         
@@ -486,6 +493,8 @@ namespace Entities.Drill
                 AudioLayer.PlaySoundOneShot(OneShotSoundType.THUMP_SMALL);
             }
             
+            LogVerbose($"Drill crashed with velocity: {hitVelocity}");
+            
             // Start increasing the rb linear drag with a tween to slow down the drill.
             // NOTE: We could also tween the velocity to zero, but that could cause issues if we were to fall through a very thin surface.
             const float duration = 0.7f;
@@ -495,7 +504,11 @@ namespace Entities.Drill
             });
             
             if (hitVelocity >= _minVelocityForHitRecovery)
-                yield return HitRecoverySequence();
+            {
+                _activeCrashSequence = StartCoroutine(HitRecoverySequence());
+                yield return _activeCrashSequence;
+                LogVerbose($"Exit {nameof(HitRecoverySequence)}");
+            }
             
             _activeCrashSequence = null;
             ChangeDrillState(DrillState.Controlled);
@@ -504,6 +517,7 @@ namespace Entities.Drill
 
         private IEnumerator HitRecoverySequence()
         {
+            LogVerbose($"Enter {nameof(HitRecoverySequence)}");
             AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_CRASH_WARNING);
             yield return new WaitForSeconds(0.2f);
             
@@ -543,6 +557,13 @@ namespace Entities.Drill
             
             // Set the drill to free-fall, and stop when reached the station y-level.
             ChangeDrillState(DrillState.StationInbound);
+        }
+        
+        
+        private void LogVerbose(string message)
+        {
+            if (_enableVerboseLogging)
+                Debug.Log(message);
         }
     }
 }

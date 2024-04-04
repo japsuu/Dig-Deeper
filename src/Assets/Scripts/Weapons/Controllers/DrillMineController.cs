@@ -4,7 +4,7 @@ using Weapons.Mines;
 
 namespace Weapons.Controllers
 {
-    public class PlayerMineController : MonoBehaviour
+    public class DrillMineController : MonoBehaviour
     {
         public static event Action<int> MineCountChanged;
         

@@ -32,7 +32,17 @@ namespace Weapons.Controllers
         private float _rotationSpeed = 10f;
 
         private float _previousHorizontalAxis;
-        public bool IsFiringEnabled { get; private set; }
+        private bool _isFiringEnabled;
+
+        public bool IsFiringEnabled
+        {
+            get => _isFiringEnabled;
+            private set
+            {
+                _isFiringEnabled = value;
+                AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
+            }
+        }
         
         
         public void SetEnableFiring(bool enable)

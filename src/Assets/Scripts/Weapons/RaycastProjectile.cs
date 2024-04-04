@@ -1,5 +1,4 @@
-﻿using DamageNumbersPro;
-using Entities;
+﻿using Entities;
 using UnityEngine;
 
 namespace Weapons
@@ -16,18 +15,15 @@ namespace Weapons
     {
         private const int MAX_RAYCAST_RESULTS = 64;
 
-        [SerializeField]
-        private int _weightGrams = 2000;
+        [SerializeField] private int _weightGrams = 2000;
+        [SerializeField] private int _baseDamage = 55;
+        [SerializeField] private bool _explodesOnImpact = true;
+        [SerializeField] private float _explosionRadius = 5f;
+        [SerializeField] private AnimationCurve _explosionDamageFalloff;
+        [SerializeField] private bool _debugDraw;
+        [SerializeField] private LayerMask _projectileHitLayers;
 
-        [SerializeField]
-        private int _baseDamage = 35;
-
-        [SerializeField]
-        private bool _debugDraw;
-
-        [SerializeField]
-        private LayerMask _projectileHitLayers;
-
+        private readonly Collider2D[] _explosionNearbyColliders = new Collider2D[16];
         private bool _awaitingDestruction;
         private RaycastHit2D[] _raycastResults;
         private float _muzzleVelocity;
@@ -57,17 +53,21 @@ namespace Weapons
             if (size == MAX_RAYCAST_RESULTS)
                 Debug.LogWarning($"{nameof(MAX_RAYCAST_RESULTS)} hit, the value probably needs to be raised for hit detection to work correctly!", this);
 
-            for (int i = 0; i < size; i++)
+            for (int raycastHitIndex = 0; raycastHitIndex < size; raycastHitIndex++)
             {
-                RaycastHit2D hit = _raycastResults[i];
+                RaycastHit2D hit = _raycastResults[raycastHitIndex];
 
                 transform.position = hit.point;
 
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-                damageable?.Damage(_baseDamage);
 
                 if (damageable != null)
                 {
+                    if (_explodesOnImpact)
+                        Explode(hit);
+                    else
+                        damageable.Damage(_baseDamage);
+                    
                     if (!damageable.DeletesProjectileOnHit)
                         continue;
                 }
@@ -95,6 +95,32 @@ namespace Weapons
                 Debug.DrawLine(debugDrawCachedPos, transform.position, Color.blue, 2f);
             }
 #endif
+        }
+
+
+        private void Explode(RaycastHit2D hit)
+        {
+            int count = Physics2D.OverlapCircleNonAlloc(hit.collider.gameObject.transform.position, _explosionRadius, _explosionNearbyColliders);
+            for (int explosionHitIndex = 0; explosionHitIndex < count; explosionHitIndex++)
+            {
+                GameObject go = _explosionNearbyColliders[explosionHitIndex].gameObject;
+                
+                // Skip self.
+                if(go == gameObject)
+                    continue;
+
+                if (!go.TryGetComponent(out IDamageable damageable))
+                    continue;
+
+                // Determine where shrapnel hit the damageable.
+                Vector2 hitPosition = _explosionNearbyColliders[explosionHitIndex].ClosestPoint(transform.position);
+
+                // Calculate damage based on distance and damage falloff.
+                float distance = Vector2.Distance(hitPosition, transform.position);
+                float damageFactor = _explosionDamageFalloff.Evaluate(distance / _explosionRadius);
+                int damageAmount = Mathf.RoundToInt(_baseDamage * damageFactor);
+                damageable.Damage(damageAmount);
+            }
         }
     }
 }

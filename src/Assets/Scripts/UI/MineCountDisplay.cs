@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using Weapons.Controllers;
 
@@ -13,13 +12,13 @@ namespace UI
 
         private void Awake()
         {
-            PlayerMineController.MineCountChanged += OnMineCountChanged;
+            DrillMineController.MineCountChanged += OnMineCountChanged;
         }
 
 
         private void OnDestroy()
         {
-            PlayerMineController.MineCountChanged -= OnMineCountChanged;
+            DrillMineController.MineCountChanged -= OnMineCountChanged;
         }
 
 

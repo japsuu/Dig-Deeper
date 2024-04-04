@@ -5,12 +5,16 @@ namespace Entities.Enemies
 {
     public class WormBody : WormPart
     {
+        private bool _hasBeenKilled;    // This object may be set as head the same frame it is destroyed.
+        
         [HideInInspector]
         public WormHead HeadRef;
         
         
         public void SetAsHead()
         {
+            if (_hasBeenKilled)
+                return;
             WormHead head = Instantiate(HeadRef, transform.position, Quaternion.identity);
             head.SetTailLink(TailLink);
             
@@ -28,6 +32,7 @@ namespace Entities.Enemies
 
         protected override void OnKilled()
         {
+            _hasBeenKilled = true;
             if (TailLink != null)
                 TailLink.SetAsHead();
             
