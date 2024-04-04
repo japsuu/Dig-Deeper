@@ -1,5 +1,8 @@
 ﻿namespace Entities
 {
+    /// <summary>
+    /// Represents a damageable entity.
+    /// </summary>
     public interface IDamageable
     {
         /// <summary>

@@ -1,7 +1,5 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
-using World.Chunks;
-using World.Population;
 
 namespace Entities.Enemies
 {

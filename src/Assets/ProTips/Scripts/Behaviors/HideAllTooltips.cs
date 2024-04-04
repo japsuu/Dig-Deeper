@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using ProTips.Scripts.Managers;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace ModelShark
+namespace ProTips.Scripts.Behaviors
 {
     /// <summary>Purpose of this script is to hide all open tooltips with the push of a button. Put this script on a Button UI object.</summary>
     [RequireComponent(typeof(Button))]

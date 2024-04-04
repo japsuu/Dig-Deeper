@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 namespace Cameras
 {
+    /// <summary>
+    /// Keeps track of the current camera and provides access to the virtual camera.
+    /// </summary>
     [DefaultExecutionOrder(-1)]
     public class CameraController : SingletonBehaviour<CameraController>
     {

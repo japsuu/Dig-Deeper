@@ -26,7 +26,7 @@ namespace UI
         }
 
 
-        private void OnCreditsEarnedChanged(ulong newCredits)
+        private void OnCreditsEarnedChanged(int newCredits)
         {
             _text.text = string.Format(_format, newCredits.ToString("n0"));
         }

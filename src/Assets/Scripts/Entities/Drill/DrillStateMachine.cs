@@ -6,7 +6,6 @@ using Cinemachine;
 using DG.Tweening;
 using NaughtyAttributes;
 using Singletons;
-using UI.Settings;
 using UnityEngine;
 using UnityEngine.Events;
 using Weapons.Controllers;
@@ -19,7 +18,7 @@ namespace Entities.Drill
     [RequireComponent(typeof(DrillMovement))]
     [RequireComponent(typeof(DrillRotation))]
     [RequireComponent(typeof(DrillMineController))]
-    public class DrillController : SingletonBehaviour<DrillController>
+    public class DrillStateMachine : SingletonBehaviour<DrillStateMachine>
     {
         private const float RB_LINEAR_DRAG_MAX = 15f;
         
@@ -35,8 +34,8 @@ namespace Entities.Drill
         
         
         [Header("Weapons")]
-        [SerializeField] private PlayerWeaponController _leftWeapon;
-        [SerializeField] private PlayerWeaponController _rightWeapon;
+        [SerializeField] private DrillWeaponController _leftWeapon;
+        [SerializeField] private DrillWeaponController _rightWeapon;
         [SerializeField] private KeyCode _leftWeaponActivationKey = KeyCode.Q;
         [SerializeField] private KeyCode _rightWeaponActivationKey = KeyCode.E;
 
@@ -80,7 +79,7 @@ namespace Entities.Drill
             
             _health.HealthChanged += OnHealthChanged;
             _health.Killed += () => ChangeDrillState(DrillState.Destroyed);
-            _health.SetReceivedDamageMultiplier(DifficultySettings.GetReceivedDamageMultiplier());
+            _health.SetReceivedDamageMultiplier(Difficulty.GetReceivedDamageMultiplier());
             
             foreach (DrillHead drillHead in _drillHeads)
                 drillHead.Initialize(Inventory, Stats);
@@ -182,7 +181,7 @@ namespace Entities.Drill
                     EventManager.PlayerDrill.OnDrillKilled();
                     AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_EXPLOSION);
             
-                    HighScores.SaveHighScore(Stats.CreditsEarned);
+                    HighScores.SaveHighScores(Stats.CreditsEarned, Mathf.RoundToInt(-transform.position.y));
                     
                     _onGameStop.Invoke();
             

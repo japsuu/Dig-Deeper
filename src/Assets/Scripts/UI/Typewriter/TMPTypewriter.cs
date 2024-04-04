@@ -3,15 +3,15 @@ using Audio;
 using TMPro;
 using UnityEngine;
 
-namespace UI
+namespace UI.Typewriter
 {
+    /// <summary>
+    /// Writes text to a text field letter by letter with a typewriter effect.
+    /// </summary>
     public class TMPTypewriter : MonoBehaviour
     {
         private const string FIRST_SKIP_TEXT = "Press [SPACE] to skip";
         private const string SECOND_SKIP_TEXT = "Press [SPACE] to continue";
-
-        // [SerializeField]
-        // private AudioLibrarySounds _typeSound;
         
         [SerializeField]
         [TextArea]
@@ -28,7 +28,7 @@ namespace UI
         private TMP_Text _targetTextField;
 
         [SerializeField]
-        private PauseInfo _pauseInfo;
+        private TypeWriterPauseInfo _pauseInfo;
         
         private int _index;
         private string _textFieldText = "";

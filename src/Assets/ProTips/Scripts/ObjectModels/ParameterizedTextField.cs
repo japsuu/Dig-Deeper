@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ModelShark
+namespace ProTips.Scripts.ObjectModels
 {
     [Serializable]
     public class ParameterizedTextField

@@ -1,32 +1,35 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Keeps track of the player's high scores, and saves/loads them through PlayerPrefs.
+/// </summary>
 public static class HighScores
 {
-    private const string HIGHSCORE_KEY = "HighScore";
+    private const string CREDITS_EARNED_KEY = "CreditsEarned";
+    private const string DEPTH_KEY = "DepthReached";
         
-        
-    public static void SaveHighScore(ulong creditsEarned)
+    
+    public static void SaveHighScores(int creditsEarned, int depth)
     {
-        int score = (int)creditsEarned; //TODO: Fix potential overflow
-        if (score > GetHighScore())
-            PlayerPrefs.SetInt(HIGHSCORE_KEY, score);
+        (int highestCredits, int highestDepth) = GetHighScores();
+        
+        if (creditsEarned > highestCredits)
+            PlayerPrefs.SetInt(CREDITS_EARNED_KEY, creditsEarned);
+        
+        if (depth > highestDepth)
+            PlayerPrefs.SetInt(DEPTH_KEY, depth);
     }
         
         
-    public static int GetHighScore()
+    public static (int, int) GetHighScores()
     {
-        return PlayerPrefs.GetInt(HIGHSCORE_KEY, 0);
+        return (PlayerPrefs.GetInt(CREDITS_EARNED_KEY, 0), PlayerPrefs.GetInt(DEPTH_KEY, 0));
     }
 
 
-    public static void ResetHighScore()
+    public static void ResetHighScores()
     {
-        PlayerPrefs.SetInt(HIGHSCORE_KEY, 0);
-    }
-        
-        
-    public static bool IsNewHighScore(int score)
-    {
-        return score > GetHighScore();
+        PlayerPrefs.SetInt(CREDITS_EARNED_KEY, 0);
+        PlayerPrefs.SetInt(DEPTH_KEY, 0);
     }
 }

@@ -1,7 +1,7 @@
-﻿using EasyBootstrap.Logging;
+﻿using EasyBootstrap.Scripts.Logging;
 using UnityEngine;
 
-namespace EasyBootstrap.Singletons
+namespace EasyBootstrap.Scripts.Singletons
 {
     public abstract class SingletonScriptableObject<T> : ScriptableObject where T : ScriptableObject
     {

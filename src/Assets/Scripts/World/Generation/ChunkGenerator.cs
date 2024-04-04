@@ -12,6 +12,9 @@ using World.Chunks;
 
 namespace World.Generation
 {
+    /// <summary>
+    /// Threaded generator that processes chunks in the background.
+    /// </summary>
     public class ChunkGenerator : MonoBehaviour
     {
         public class ChunkData
@@ -31,6 +34,7 @@ namespace World.Generation
         private const int MAX_CHUNKS_PROCESSED_PER_FRAME = 3;
 
         // Optimization constants.
+        // A chunk is divided into "bricks" to optimize noise sampling by taking less samples.
         private const int NOISE_SAMPLE_BRICK_SIZE = 4;
         private const int BRICK_COUNT_X = Constants.CHUNK_SIZE_PIXELS / NOISE_SAMPLE_BRICK_SIZE;
         private const int BRICK_COUNT_Y = Constants.CHUNK_SIZE_PIXELS / NOISE_SAMPLE_BRICK_SIZE;
@@ -104,6 +108,15 @@ namespace World.Generation
         private void Update()
         {
             ProcessQueues();
+        }
+
+
+        private void InitializeNoise()
+        {
+            _caveNoise = _densityNoiseSettings.GetNoise();
+            _temperatureNoise = _temperatureSettings.GetNoise();
+            _pressureNoise = _pressureSettings.GetNoise();
+            _tectonicsNoise = _tectonicsSettings.GetNoise();
         }
 
 
@@ -240,6 +253,7 @@ namespace World.Generation
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private TileData GenerateTerrain(float density, float temperature, float pressure, float tectonics)
         {
             // Carve caves.
@@ -269,15 +283,6 @@ namespace World.Generation
             }
 
             return _baseGroundMaterial.DynamicId;
-        }
-
-
-        private void InitializeNoise()
-        {
-            _caveNoise = _densityNoiseSettings.GetNoise();
-            _temperatureNoise = _temperatureSettings.GetNoise();
-            _pressureNoise = _pressureSettings.GetNoise();
-            _tectonicsNoise = _tectonicsSettings.GetNoise();
         }
 
 

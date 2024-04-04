@@ -1,3 +1,5 @@
+namespace Audio
+{
     public enum JSAMSound {
         Drill_Thump_Small,
         Drill_Thump_Large,
@@ -29,3 +31,4 @@
         Music_Gameplay,
         Intro_Background_Loop
     }
+}

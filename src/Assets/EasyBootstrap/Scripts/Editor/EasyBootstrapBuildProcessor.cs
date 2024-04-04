@@ -1,4 +1,5 @@
-﻿using UnityEditor.Build;
+﻿using EasyBootstrap.Scripts;
+using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
 namespace EasyBootstrap.Editor

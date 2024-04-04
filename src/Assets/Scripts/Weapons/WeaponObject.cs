@@ -1,7 +1,7 @@
 ﻿using Audio;
 using Cinemachine;
-using Effects;
 using UnityEngine;
+using Utilities.Effects;
 
 namespace Weapons
 {
@@ -11,21 +11,13 @@ namespace Weapons
     public class WeaponObject : MonoBehaviour
     {
         [Header("References")]
+        [SerializeField] private Transform _firePoint;
+        [SerializeField] private RaycastProjectile _projectilePrefab;
+        [SerializeField] private OneShotParticleSystem _muzzleFlashPrefab;
+        [SerializeField] private CinemachineImpulseSource _fireImpulseSource;
 
-        [SerializeField]
-        private Transform _firePoint;
-
-        [SerializeField]
-        private RaycastProjectile _projectilePrefab;
-
-        [SerializeField]
-        private OneShotParticleSystem _muzzleFlashPrefab;
         
-        [SerializeField]
-        private CinemachineImpulseSource _fireImpulseSource;
-
         [Header("Settings")]
-        
         [SerializeField]
         [Tooltip("The rounds per minute of the weapon.")]
         private float _fireRateRpm = 120f;

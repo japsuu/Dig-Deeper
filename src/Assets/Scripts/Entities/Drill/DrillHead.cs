@@ -3,10 +3,13 @@ using World.Chunks;
 
 namespace Entities.Drill
 {
+    /// <summary>
+    /// Breaks terrain tiles and collects the materials into a <see cref="DrillInventory"/>.
+    /// </summary>
     public class DrillHead : TerrainDigger
     {
-        private const int BREAK_INTERVAL_FRAMES_CUTSCENE = 2;
-        private const int BREAK_INTERVAL_FRAMES = 8;
+        private const int BREAK_INTERVAL_FRAMES_AIRBORNE = 2;   // Higher interval when airborne, since the drill may be moving faster
+        private const int BREAK_INTERVAL_FRAMES_NORMAL = 8;
         
         [SerializeField]
         private Transform _particlesRoot;
@@ -19,7 +22,7 @@ namespace Entities.Drill
 
         private void Awake()
         {
-            BreakIntervalFrames = BREAK_INTERVAL_FRAMES_CUTSCENE;
+            BreakIntervalFrames = BREAK_INTERVAL_FRAMES_AIRBORNE;
         }
 
 
@@ -33,7 +36,7 @@ namespace Entities.Drill
         public void SetEnabled(bool isEnabled)
         {
             IsEnabled = isEnabled;
-            BreakIntervalFrames = isEnabled ? BREAK_INTERVAL_FRAMES : BREAK_INTERVAL_FRAMES_CUTSCENE;
+            BreakIntervalFrames = isEnabled ? BREAK_INTERVAL_FRAMES_NORMAL : BREAK_INTERVAL_FRAMES_AIRBORNE;
             
             if (_particlesRoot != null)
                 _particlesRoot.gameObject.SetActive(isEnabled);
@@ -43,7 +46,7 @@ namespace Entities.Drill
         protected override void OnRemovedMaterial(byte id, uint count)
         {
             _inventory.AddMaterial(id, count);
-            _stats.TilesMined += count;
+            _stats.TilesMined += (int)count;
         }
     }
 }

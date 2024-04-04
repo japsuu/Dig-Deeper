@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace World
+namespace Utilities
 {
     [ExecuteInEditMode]
-    public class RotatingAlarmLight : MonoBehaviour
+    public class RotatingObject : MonoBehaviour
     {
         [SerializeField]
-        private GameObject _lightRoot;
+        private GameObject _root;
         
         public float speed = 6f;
         
@@ -14,7 +14,7 @@ namespace World
         public void SetEnabled(bool enable)
         {
             enabled = enable;
-            _lightRoot.SetActive(enable);
+            _root.SetActive(enable);
         }
 
         

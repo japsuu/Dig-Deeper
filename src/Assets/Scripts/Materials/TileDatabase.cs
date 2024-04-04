@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Materials
 {
+    /// <summary>
+    /// Contains references to all tile materials in the game.
+    /// </summary>
     public class TileDatabase
     {
         public static TileDatabase Instance { get; private set; }

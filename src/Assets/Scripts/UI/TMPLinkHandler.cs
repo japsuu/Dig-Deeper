@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
+    /// <summary>
+    /// Handles clicking on links in a TMP text.
+    /// </summary>
     [RequireComponent(typeof(TMP_Text))]
     public class TMPLinkHandler : MonoBehaviour, IPointerClickHandler
     {

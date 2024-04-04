@@ -2,6 +2,9 @@
 
 namespace Entities.Enemies
 {
+    /// <summary>
+    /// Base class for worm parts.
+    /// </summary>
     public abstract class WormPart : DamageableEntity
     {
         [Header("References")]

@@ -13,6 +13,7 @@ namespace World.Stations
     {
         public static bool IsPlayerInStation { get; private set; }
         
+        [Header("References")]
         [SerializeField]
         [Tooltip("The position to teleport the drill to when the player enters the station.")]
         private Transform _drillTargetPosition;
@@ -25,8 +26,8 @@ namespace World.Stations
         [Tooltip("Components to destroy when the player has entered the station.")]
         private Component[] _deletedComponents;
         
-        [Header("UI")]
         
+        [Header("UI")]
         [SerializeField]
         [Tooltip("The name of this station. Used for the UI popup.")]
         private string _name = "Trading Station";
@@ -46,11 +47,14 @@ namespace World.Stations
         [Tooltip("The info of this station. Used for the UI popup.")]
         private string _info = "Your drill has been fixed, and ammunition restocked.\n\nBuy rate: {0}%\nPress <b>[E]</b> to sell all materials for <b>{1}</b> credits.\n\nPress <b>[F]</b> to leave.";
         
+        [Header("Settings")]
         [SerializeField]
         [Range(0.2f, 2f)]
         private float _buyRate = 1f;
 
         public string Name => _name;
+        public string GetDescriptionText() => string.Format(_descriptionTitle, _description);
+        public string GetInfoText() => string.Format(_info, _buyRate * 100, CalculateSellValue());
 
 
         public void OnDrillEnter()
@@ -58,8 +62,8 @@ namespace World.Stations
             foreach (Component c in _deletedComponents)
                 Destroy(c);
             
-            DrillController.Instance.Health.HealToMax();
-            DrillController.Instance.MineController.RefillMines();
+            DrillStateMachine.Instance.Health.HealToMax();
+            DrillStateMachine.Instance.MineController.RefillMines();
             IsPlayerInStation = true;
             EventManager.TradingStations.OnPlayerEnterStation(this);
         }
@@ -67,14 +71,14 @@ namespace World.Stations
         
         public void TeleportDrillToStation()
         {
-            DrillController.Instance.transform.SetPositionAndRotation(_drillTargetPosition.position, _drillTargetPosition.rotation);
+            DrillStateMachine.Instance.transform.SetPositionAndRotation(_drillTargetPosition.position, _drillTargetPosition.rotation);
             AudioLayer.PlaySoundOneShot(OneShotSoundType.STATION_ENTER);
         }
         
         
         public bool HasDrillExited()
         {
-            return DrillController.Instance.transform.position.y < _leaveHeightReference.position.y;
+            return DrillStateMachine.Instance.transform.position.y < _leaveHeightReference.position.y;
         }
 
 
@@ -93,20 +97,13 @@ namespace World.Stations
             int sellValue = CalculateSellValue();
             if (sellValue <= 0)
                 return;
-            DrillController.Instance.Inventory.Clear();
-            DrillController.Instance.Stats.AddCredits((ulong)sellValue);
+            DrillStateMachine.Instance.Inventory.Clear();
+            DrillStateMachine.Instance.Stats.AddCredits(sellValue);
             AudioLayer.PlaySoundOneShot(OneShotSoundType.STATION_SELL_MATERIALS);
             AudioLayer.PlaySoundOneShot(OneShotSoundType.STATION_RECEIVE_CREDITS);
         }
 
 
-        private int CalculateSellValue()
-        {
-            return Mathf.RoundToInt(DrillController.Instance.Inventory.GetTotalValue() * _buyRate);
-        }
-
-
-        public string GetDescriptionText() => string.Format(_descriptionTitle, _description);
-        public string GetInfoText() => string.Format(_info, _buyRate * 100, CalculateSellValue());
+        private int CalculateSellValue() => Mathf.RoundToInt(DrillStateMachine.Instance.Inventory.GetTotalValue() * _buyRate);
     }
 }

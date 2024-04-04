@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using ProTips.Scripts.Behaviors;
+using ProTips.Scripts.Enums;
+using ProTips.Scripts.Managers;
+using ProTips.Scripts.ObjectModels;
+using UnityEngine;
 using UnityEngine.UI;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
-namespace ModelShark
+namespace ProTips.Scripts.Extensions
 {
     public static class TooltipExtensions
     {

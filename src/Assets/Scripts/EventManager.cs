@@ -12,11 +12,11 @@ public static class EventManager
     /// </summary>
     public static class Statistics
     {
-        public static event Action<ulong> TilesMinedChanged;
-        public static event Action<ulong> CreditsEarnedChanged;
+        public static event Action<int> TilesMinedChanged;
+        public static event Action<int> CreditsEarnedChanged;
 
-        public static void OnTilesMinedChanged(ulong tilesMined) => TilesMinedChanged?.Invoke(tilesMined);
-        public static void OnCreditsEarnedChanged(ulong creditsEarned) => CreditsEarnedChanged?.Invoke(creditsEarned);
+        public static void OnTilesMinedChanged(int tilesMined) => TilesMinedChanged?.Invoke(tilesMined);
+        public static void OnCreditsEarnedChanged(int creditsEarned) => CreditsEarnedChanged?.Invoke(creditsEarned);
     }
 
     /// <summary>

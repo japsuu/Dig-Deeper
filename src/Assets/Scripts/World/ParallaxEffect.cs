@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace World
 {
+    /// <summary>
+    /// Simple vertical parallax effect based on camera height.
+    /// </summary>
     public class ParallaxEffect : MonoBehaviour
     {
         [SerializeField]

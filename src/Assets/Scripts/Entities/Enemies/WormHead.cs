@@ -59,7 +59,7 @@ namespace Entities.Enemies
 
         protected override void Update()
         {
-            if (DrillController.Instance != null && Vector2.Distance(transform.position, DrillController.Instance.transform.position) > _despawnDistance)
+            if (DrillStateMachine.Instance != null && Vector2.Distance(transform.position, DrillStateMachine.Instance.transform.position) > _despawnDistance)
             {
                 DestroyRecursive();
                 return;

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ModelShark
+namespace ProTips.Scripts.ObjectModels
 {
     [Serializable]
     public class DynamicImageField

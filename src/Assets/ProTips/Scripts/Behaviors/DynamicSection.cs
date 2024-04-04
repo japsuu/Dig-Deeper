@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ModelShark
+namespace ProTips.Scripts.Behaviors
 {
     public class DynamicSection : MonoBehaviour
     {

@@ -13,9 +13,9 @@ namespace World
         private DamageNumber _damageNumberPlayerPrefab;
         
         
-        public void SpawnDamageNumber(Vector3 position, int damage, bool playerDamage = false)
+        public void SpawnDamageNumber(Vector3 position, int damage, bool isPlayerDamage = false)
         {
-            DamageNumber prefab = playerDamage ? _damageNumberPlayerPrefab : _damageNumberPrefab;
+            DamageNumber prefab = isPlayerDamage ? _damageNumberPlayerPrefab : _damageNumberPrefab;
             prefab.Spawn(position, damage);
         }
     }

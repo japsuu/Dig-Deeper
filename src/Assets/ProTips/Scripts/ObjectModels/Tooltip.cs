@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ProTips.Scripts.Behaviors;
+using ProTips.Scripts.Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-namespace ModelShark
+namespace ProTips.Scripts.ObjectModels
 {
     public class Tooltip
     {

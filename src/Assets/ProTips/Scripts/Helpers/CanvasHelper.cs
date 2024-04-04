@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ModelShark
+namespace ProTips.Scripts.Helpers
 {
     public static class CanvasHelper
     {

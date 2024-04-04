@@ -12,7 +12,6 @@ namespace Materials
         public readonly byte ID;        // 1 byte
         public readonly Color Color;    // 16 bytes
         public readonly byte Hardness;  // 1 byte
-        public readonly byte Value;     // 1 byte
         
         // We cannot cache the definition from the constructor, as tiles initialized from an array are initialized with the default parameterless constructor.
         public MaterialDefinition Definition => TileDatabase.Instance.TileDefinitions[ID];
@@ -23,7 +22,6 @@ namespace Materials
             ID = definition.DynamicId;
             Color = definition.Color;
             Hardness = definition.Hardness;
-            Value = definition.Value;
         }
     }
 }

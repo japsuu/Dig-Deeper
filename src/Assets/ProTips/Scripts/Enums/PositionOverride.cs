@@ -1,5 +1,5 @@
 ﻿
-namespace ModelShark
+namespace ProTips.Scripts.Enums
 {
     public enum PositionOverride
     {

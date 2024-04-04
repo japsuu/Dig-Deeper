@@ -2,7 +2,7 @@
 using UnityEngine;
 using World.Stations;
 
-namespace UI
+namespace UI.HUD
 {
     public class TradingStationUI : MonoBehaviour
     {

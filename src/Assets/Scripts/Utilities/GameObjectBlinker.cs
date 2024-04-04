@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-namespace Weapons.Mines
+namespace Utilities
 {
-    public class BlinkingLight : MonoBehaviour
+    public class GameObjectBlinker : MonoBehaviour
     {
         [SerializeField]
-        private GameObject _light;
+        private GameObject _object;
         
         [SerializeField]
         private float _blinkInterval = 1f;
@@ -24,13 +24,13 @@ namespace Weapons.Mines
             
             if (_blinkOffTimer <= 0)
             {
-                _light.SetActive(true);
+                _object.SetActive(true);
                 _blinkOnTimer = _blinkLength;
                 _blinkOffTimer = _blinkInterval;
             }
             else if (_blinkOnTimer <= 0)
             {
-                _light.SetActive(false);
+                _object.SetActive(false);
             }
         }
     }

@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MathHelpers;
 using Singletons;
 using UnityEngine;
-using WeightedRandomSelector;
 using WeightedRandomSelector.Interfaces;
 using World.Chunks;
 
 namespace World.Population
 {
+    /// <summary>
+    /// Manages populating chunks with special objects.
+    /// </summary>
     public class ChunkPopulationManager : SingletonBehaviour<ChunkPopulationManager>
     {
-        [Serializable]
-        private class Entry<T>
-        {
-            public T Object;
-            public float Weight = 100;
-        }
-        
         [SerializeField]
-        private List<Entry<GameObject>> _spawnablePrefabs = new();
+        private List<RandomSelectorEntry<GameObject>> _spawnablePrefabs = new();
         
         private IRandomSelector<GameObject> _randomSelector;
 
@@ -34,22 +29,7 @@ namespace World.Population
         
         private void Start()
         {
-            _randomSelector = CreateRandomSelector(_spawnablePrefabs);
-        }
-
-
-        private static IRandomSelector<T> CreateRandomSelector<T>(List<Entry<T>> entries)
-        {
-            DynamicRandomSelector<T> selector = new();
-            
-            foreach (Entry<T> entry in entries)
-            {
-                T o = entry.Object;
-                if (o != null)
-                    selector.Add(o, entry.Weight);
-            }
-
-            return selector.Build();
+            _randomSelector = RandomSelectorBuilder.Build(_spawnablePrefabs);
         }
     }
 }

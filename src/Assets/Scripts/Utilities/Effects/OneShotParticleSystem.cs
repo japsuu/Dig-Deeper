@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Effects
+namespace Utilities.Effects
 {
     /// <summary>
     /// Attach to gameObject to destroy when a child particle system is finished playing.

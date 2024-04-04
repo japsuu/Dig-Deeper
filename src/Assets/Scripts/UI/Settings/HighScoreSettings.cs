@@ -17,7 +17,7 @@ namespace UI.Settings
         
         private void ResetHighScore()
         {
-            HighScores.ResetHighScore();
+            HighScores.ResetHighScores();
         }
     }
 }

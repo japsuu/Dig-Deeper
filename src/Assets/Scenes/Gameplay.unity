@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24291763}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.572247, w: -0.82008135}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9835682, w: -0.18053713}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e649a4b4124ebf92553a217666fbd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lightRoot: {fileID: 1768342141}
+  _root: {fileID: 1768342141}
   speed: 6
 --- !u!1 &30575841
 GameObject:
@@ -993,8 +993,8 @@ MonoBehaviour:
   _weaponRotationRoot: {fileID: 1105657874}
   _weapon: {fileID: 1431049276}
   _toggleableObjects:
-  - {fileID: 24291763}
   - {fileID: 1927194954}
+  _alarmLight: {fileID: 24291765}
   _fireKey: 32
   _rotationAngleLimit: {x: -75, y: 75}
   _rotationSpeed: 160
@@ -2454,8 +2454,8 @@ MonoBehaviour:
   _weaponRotationRoot: {fileID: 563150896}
   _weapon: {fileID: 574231390}
   _toggleableObjects:
-  - {fileID: 1573469245}
   - {fileID: 1837493676}
+  _alarmLight: {fileID: 1573469247}
   _fireKey: 32
   _rotationAngleLimit: {x: -75, y: 75}
   _rotationSpeed: 160
@@ -5879,7 +5879,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573469245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.572247, w: -0.82008135}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9835682, w: -0.18053713}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5900,7 +5900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e649a4b4124ebf92553a217666fbd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lightRoot: {fileID: 872929044}
+  _root: {fileID: 872929044}
   speed: 6
 --- !u!1 &1580822840
 GameObject:

@@ -78,10 +78,10 @@ namespace Entities.Enemies
         
         private static Vector2 GetPlayerPosition()
         {
-            if (DrillController.Instance == null)
+            if (DrillStateMachine.Instance == null)
                 return Vector2.zero;
             
-            return DrillController.Instance.transform.position;
+            return DrillStateMachine.Instance.transform.position;
         }
 
 

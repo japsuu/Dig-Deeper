@@ -1,12 +1,15 @@
 ﻿namespace Entities.Drill
 {
+    /// <summary>
+    /// Statistics of the current player drill.
+    /// </summary>
     public class DrillStats
     {
-        public ulong TilesMined;
-        public ulong CreditsEarned { get; private set; }
+        public int TilesMined;
+        public int CreditsEarned { get; private set; }
         
         
-        public void AddCredits(ulong amount)
+        public void AddCredits(int amount)
         {
             CreditsEarned += amount;
             EventManager.Statistics.OnCreditsEarnedChanged(CreditsEarned);

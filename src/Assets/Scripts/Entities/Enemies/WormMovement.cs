@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Entities.Enemies
 {
+    /// <summary>
+    /// Moves a worm forward and changes its speed based on its state.
+    /// </summary>
     [RequireComponent(typeof(WormRotation))]
     public class WormMovement : MonoBehaviour
     {

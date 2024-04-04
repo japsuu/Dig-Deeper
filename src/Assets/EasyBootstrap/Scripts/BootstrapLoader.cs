@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using EasyBootstrap.Logging;
+using EasyBootstrap.Scripts.Logging;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
-namespace EasyBootstrap
+namespace EasyBootstrap.Scripts
 {
     /// <summary>
     /// Makes sure bootstrap scene(s) get loaded first, no matter what scene the game is started in.

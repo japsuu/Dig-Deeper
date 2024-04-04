@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using World.Chunks;
 
-namespace Effects
+namespace Utilities.Effects
 {
+    /// <summary>
+    /// Particle system that changes color based on the terrain color at its position.
+    /// </summary>
     public class DiggingParticleSystem : MonoBehaviour
     {
         [SerializeField]

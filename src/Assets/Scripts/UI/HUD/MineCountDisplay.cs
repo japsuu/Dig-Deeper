@@ -2,7 +2,7 @@
 using UnityEngine;
 using Weapons.Controllers;
 
-namespace UI
+namespace UI.HUD
 {
     public class MineCountDisplay : MonoBehaviour
     {

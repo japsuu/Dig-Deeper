@@ -9,11 +9,11 @@ namespace Entities.Drill
     /// </summary>
     public class DrillMovement : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField]
         private Transform _hardnessCheckTransform;
 
         [Header("Speed")]
-        
         [SerializeField]
         [Tooltip("The speed moved at when terrain hardness is at minimum.")]
         private float _minMovementSpeed = 2f;
@@ -22,13 +22,10 @@ namespace Entities.Drill
         [Tooltip("The speed moved at when terrain hardness is at maximum.")]
         private float _maxMovementSpeed = 8f;
         
+        
         [Header("Tweening")]
-
-        [SerializeField]
-        private float _movementStartTweenDuration = 2f;
-
-        [SerializeField]
-        private float _movementEndTweenDuration = 1f;
+        [SerializeField] private float _movementStartTweenDuration = 2f;
+        [SerializeField] private float _movementEndTweenDuration = 1f;
 
         private float _movementSpeed;
         private float _controlFactor;
@@ -76,7 +73,7 @@ namespace Entities.Drill
             float factor = 1f - hardness / 255f;
             _terrainHardnessFactor = Mathf.Lerp(_terrainHardnessFactor, factor, Time.deltaTime);
             
-            DrillController.Instance.Rotation.SetTerrainHardnessFactor(_terrainHardnessFactor);
+            DrillStateMachine.Instance.Rotation.SetTerrainHardnessFactor(_terrainHardnessFactor);
         }
 
 

@@ -3,6 +3,9 @@ using Materials;
 
 namespace Entities.Drill
 {
+    /// <summary>
+    /// Keeps track of what tile materials the player has collected.
+    /// </summary>
     public class DrillInventory
     {
         private readonly Dictionary<byte, uint> _materials = new();

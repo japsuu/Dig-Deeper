@@ -1,13 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ProTips.Scripts.Behaviors;
+using ProTips.Scripts.Enums;
+using ProTips.Scripts.Extensions;
+using ProTips.Scripts.Helpers;
+using ProTips.Scripts.ObjectModels;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable ForCanBeConvertedToForeach
 // ReSharper disable LoopCanBeConvertedToQuery
 
-namespace ModelShark
+namespace ProTips.Scripts.Managers
 {
     /// <summary>Singleton game object that manages showing, hiding, and resizing tooltips.</summary>
     /// <remarks>Put this script on a game object in your scene (but only once) in order to use ProTips.</remarks>

@@ -1,4 +1,4 @@
-﻿namespace EasyBootstrap
+﻿namespace EasyBootstrap.Scripts
 {
     public enum BuildPostBootstrapHandlingType
     {

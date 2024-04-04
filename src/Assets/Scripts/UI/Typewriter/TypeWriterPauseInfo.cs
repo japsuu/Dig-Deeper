@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace UI
+namespace UI.Typewriter
 {
     [Serializable]
-    public class PauseInfo
+    public class TypeWriterPauseInfo
     {
         public float DotPause = 1f;
         public float CommaPause = 0.5f;

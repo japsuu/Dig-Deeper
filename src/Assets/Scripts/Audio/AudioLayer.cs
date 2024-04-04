@@ -2,35 +2,10 @@
 
 namespace Audio
 {
-    public enum OneShotSoundType
-    {
-        STATION_SELL_MATERIALS,
-        STATION_RECEIVE_CREDITS,
-        STATION_ENTER,
-        DRILL_CANNON_FIRE,
-        TYPEWRITER_TYPE,
-        WORM_HIT_NORMAL,
-        WORM_HIT_CRITICAL,
-        WORM_SPAWN,
-        WORM_DEATH,
-        WORM_ATTACK,
-        THUMP_SMALL,
-        THUMP_LARGE,
-        DRILL_CRASH_WARNING,
-        DRILL_REBOOTING,
-        DRILL_EXPLOSION,
-        UI_BUTTON_CLICK,
-        UI_BUTTON_HOVER,
-    }
-    
-    public enum LoopingSoundType
-    {
-        DRILL_CANNON_ROTATE,
-        DRILL_DRILLING,
-        DRILL_FALLING,
-        WORM_DIGGING,
-    }
-    
+    /// <summary>
+    /// Wrapper around the JSAM AudioManager.
+    /// Exists because JSAM enum names might change if audio files are renamed.
+    /// </summary>
     public static class AudioLayer
     {
         public static void PlaySoundOneShot(OneShotSoundType clip)

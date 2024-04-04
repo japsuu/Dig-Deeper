@@ -7,52 +7,32 @@ namespace UI
     public class MainMenuManager : MonoBehaviour
     {
         [Header("High Scores")]
+        [SerializeField] private TMP_Text _highScoreText;
         
-        [SerializeField]
-        private TMP_Text _highScoreText;
         
         [Header("Play")]
-
-        [SerializeField]
-        private Button _playButton;
+        [SerializeField] private Button _playButton;
+        
         
         [Header("Settings")]
+        [SerializeField] private Button _openSettingsButton;
+        [SerializeField] private Button _closeSettingsButton;
+        [SerializeField] private RectTransform _settingsPanel;
         
-        [SerializeField]
-        private Button _openSettingsButton;
-        
-        [SerializeField]
-        private Button _closeSettingsButton;
-        
-        [SerializeField]
-        private RectTransform _settingsPanel;
         
         [Header("Help")]
+        [SerializeField] private Button _openHelpButton;
+        [SerializeField] private Button _closeHelpButton;
+        [SerializeField] private RectTransform _helpPanel;
         
-        [SerializeField]
-        private Button _openHelpButton;
-        
-        [SerializeField]
-        private Button _closeHelpButton;
-        
-        [SerializeField]
-        private RectTransform _helpPanel;
         
         [Header("Credits")]
-        
-        [SerializeField]
-        private Button _openCreditsButton;
-        
-        [SerializeField]
-        private Button _closeCreditsButton;
-        
-        [SerializeField]
-        private RectTransform _creditsPanel;
+        [SerializeField] private Button _openCreditsButton;
+        [SerializeField] private Button _closeCreditsButton;
+        [SerializeField] private RectTransform _creditsPanel;
         
         [Header("Exit")]
-        
-        [SerializeField]
-        private Button _exitButton;
+        [SerializeField] private Button _exitButton;
 
 
         private void Start()
@@ -72,7 +52,7 @@ namespace UI
             _helpPanel.gameObject.SetActive(false);
             _creditsPanel.gameObject.SetActive(false);
 
-            _highScoreText.text = "Your Highscore: " + HighScores.GetHighScore();
+            _highScoreText.text = "Your Highscore: " + HighScores.GetHighScores();
         }
 
 
@@ -94,7 +74,7 @@ namespace UI
         private void Update()
         {
             if (Time.time % HIGH_SCORE_REFRESH_RATE < 0.1f)
-                _highScoreText.text = "High Score: " + HighScores.GetHighScore();
+                _highScoreText.text = "High Score: " + HighScores.GetHighScores();
         }
     }
 }

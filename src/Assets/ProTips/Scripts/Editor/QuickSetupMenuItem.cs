@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using ProTips.Scripts.Managers;
+using UnityEditor;
 using UnityEngine;
 
 namespace ModelShark

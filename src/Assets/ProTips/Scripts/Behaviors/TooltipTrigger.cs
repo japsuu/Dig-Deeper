@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using ProTips.Scripts.Enums;
+using ProTips.Scripts.Extensions;
+using ProTips.Scripts.Managers;
+using ProTips.Scripts.ObjectModels;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ModelShark
+namespace ProTips.Scripts.Behaviors
 {
     public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IPointerDownHandler, IPointerUpHandler
     {

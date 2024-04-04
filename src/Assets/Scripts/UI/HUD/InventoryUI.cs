@@ -3,7 +3,7 @@ using Materials;
 using TMPro;
 using UnityEngine;
 
-namespace UI
+namespace UI.HUD
 {
     public class InventoryUI : MonoBehaviour
     {

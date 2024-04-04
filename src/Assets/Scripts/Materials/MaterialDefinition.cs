@@ -3,7 +3,7 @@
 namespace Materials
 {
     /// <summary>
-    /// Defines the base properties of a material.
+    /// Defines the base properties of a tile material.
     /// Is an editor-friendly representation of a material.
     /// Converted to TileData at runtime.
     /// </summary>

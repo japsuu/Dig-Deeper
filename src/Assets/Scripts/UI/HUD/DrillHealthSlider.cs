@@ -6,7 +6,7 @@ using Entities.Drill;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.HUD
 {
     public class DrillHealthSlider : MonoBehaviour
     {
@@ -24,11 +24,11 @@ namespace UI
             EventManager.PlayerDrill.DrillHealed += OnDrillHealed;
             EventManager.PlayerDrill.DrillDamaged += OnDrillDamaged;
 
-            _backgroundSlider.maxValue = DrillController.Instance.Health.MaxHealth;
-            _healthSlider.maxValue = DrillController.Instance.Health.MaxHealth;
+            _backgroundSlider.maxValue = DrillStateMachine.Instance.Health.MaxHealth;
+            _healthSlider.maxValue = DrillStateMachine.Instance.Health.MaxHealth;
             
-            _backgroundSlider.value = DrillController.Instance.Health.CurrentHealth;
-            _healthSlider.value = DrillController.Instance.Health.CurrentHealth;
+            _backgroundSlider.value = DrillStateMachine.Instance.Health.CurrentHealth;
+            _healthSlider.value = DrillStateMachine.Instance.Health.CurrentHealth;
         }
 
 

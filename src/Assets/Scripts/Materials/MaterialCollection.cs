@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Materials
 {
+    /// <summary>
+    /// Collection of tile material references.
+    /// </summary>
     [CreateAssetMenu(menuName = "DigDeeper/Materials/Create MaterialCollection", fileName = "MaterialCollection", order = 0)]
     public class MaterialCollection : ScriptableObject
     {

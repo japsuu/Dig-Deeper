@@ -11,8 +11,8 @@ namespace World.Chunks
 {
     /// <summary>
     /// Manages chunk loading/unloading.
+    /// TODO: Refactor this gargantuan class into smaller parts.
     /// TODO: Handle origin shifting if the player digs too deep, or just seamlessly teleport them to the top of the map.
-    /// TODO: Refactor this class to smaller parts.
     /// </summary>
     [RequireComponent(typeof(ChunkManager))]
     public class ChunkManager : SingletonBehaviour<ChunkManager>
@@ -63,7 +63,7 @@ namespace World.Chunks
 
         private void Update()
         {
-            _playerChunkPosition = WorldToChunk(DrillController.Instance.transform.position);
+            _playerChunkPosition = WorldToChunk(DrillStateMachine.Instance.transform.position);
             UnloadChunks();
             LoadChunks();
         }
@@ -568,13 +568,13 @@ namespace World.Chunks
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            if (DrillController.Instance == null)
+            if (DrillStateMachine.Instance == null)
             {
                 Gizmos.DrawWireSphere(Vector3.zero, _chunkLoadRadius * Constants.CHUNK_SIZE_PIXELS / (float)Constants.TEXTURE_PPU);
                 return;
             }
 
-            Vector2Int playerChunkPosition = WorldToChunk(DrillController.Instance.transform.position);
+            Vector2Int playerChunkPosition = WorldToChunk(DrillStateMachine.Instance.transform.position);
             Gizmos.DrawWireSphere((Vector2)(playerChunkPosition + _chunkCenterOffset), _chunkLoadRadius * Constants.CHUNK_SIZE_UNITS);
         }
     }

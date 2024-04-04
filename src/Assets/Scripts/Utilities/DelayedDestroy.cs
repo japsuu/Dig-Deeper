@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace World
+namespace Utilities
 {
     /// <summary>
     /// Destroys the object after a certain amount of time.

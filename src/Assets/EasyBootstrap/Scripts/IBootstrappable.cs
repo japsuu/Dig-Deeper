@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace EasyBootstrap
+namespace EasyBootstrap.Scripts
 {
     /// <summary>
     /// Object placed in a bootstrap scene.

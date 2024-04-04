@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97721ce6171f41259cc69655ff76f2fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _light: {fileID: 1601828027381106332}
+  _object: {fileID: 1601828027381106332}
   _blinkInterval: 1
   _blinkLength: 0.2
 --- !u!50 &7956421609915202144

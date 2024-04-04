@@ -1,4 +1,6 @@
-﻿namespace ModelShark
+﻿using ProTips.Scripts.Enums;
+
+namespace ProTips.Scripts.ObjectModels
 {
     /// <summary>This helper class determines which way to flip/position a tooltip that would overflow its bounding rect.</summary>
     public class TooltipOverflow

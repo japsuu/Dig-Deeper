@@ -1,10 +1,13 @@
 ﻿using Audio;
 using UI;
 
+/// <summary>
+/// Allows for changing scenes with a fade effect.
+/// </summary>
 public static class SceneChanger
 {
-    public const int MAIN_MENU_SCENE_INDEX = 1;
-    public const int GAMEPLAY_SCENE_INDEX = 2;
+    private const int MAIN_MENU_SCENE_INDEX = 1;
+    private const int GAMEPLAY_SCENE_INDEX = 2;
 
 
     public static void LoadMainMenuScene() => ChangeSceneFaded(MAIN_MENU_SCENE_INDEX);

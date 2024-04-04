@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using World.Stations;
 
-namespace UI
+namespace UI.HUD
 {
     public class DepthDisplay : MonoBehaviour
     {
@@ -57,7 +57,7 @@ namespace UI
         {
             const float stationInterval = Constants.STATION_DEPTH_INTERVAL;
             
-            float playerDepth = -DrillController.Instance.transform.position.y;
+            float playerDepth = -DrillStateMachine.Instance.transform.position.y;
             float depthProgress = playerDepth % stationInterval;
             float stationProgress = depthProgress / stationInterval;
 
@@ -101,7 +101,7 @@ namespace UI
             
             // Rotate the station direction image to point to the next station.
             Vector2 stationPos = TradingStationManager.StationInstance.transform.position;
-            Vector2 playerPos = DrillController.Instance.transform.position;
+            Vector2 playerPos = DrillStateMachine.Instance.transform.position;
             Vector2 direction = (stationPos - playerPos).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             _stationDirectionImageRoot.localRotation = Quaternion.Euler(0, 0, angle);

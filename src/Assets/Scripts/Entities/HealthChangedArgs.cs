@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public struct HealthChangedArgs
+    public readonly struct HealthChangedArgs
     {
         public readonly int ChangeAmount;
         public readonly int NewHealth;

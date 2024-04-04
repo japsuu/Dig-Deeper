@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace EasyBootstrap.Logging
+namespace EasyBootstrap.Scripts.Logging
 {
     public static class EasyBootstrapLogger
     {

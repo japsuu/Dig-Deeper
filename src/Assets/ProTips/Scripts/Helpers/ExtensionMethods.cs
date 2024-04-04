@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using ProTips.Scripts.Behaviors;
+using ProTips.Scripts.ObjectModels;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ModelShark
+namespace ProTips.Scripts.Helpers
 {
     public static class ExtensionMethods
     {

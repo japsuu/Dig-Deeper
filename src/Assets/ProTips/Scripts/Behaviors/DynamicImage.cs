@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace ModelShark
+namespace ProTips.Scripts.Behaviors
 {
     public class DynamicImage : MonoBehaviour
     {

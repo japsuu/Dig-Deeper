@@ -5,7 +5,6 @@ namespace Weapons
 {
     /// <summary>
     /// Renders a "tracer" for a bullet.
-    /// TODO: Fix : Doesn't render at all, when a projectile flies only a short distance.
     /// </summary>
     [RequireComponent(typeof(LineRenderer))]
     public class RaycastProjectileRenderer : MonoBehaviour

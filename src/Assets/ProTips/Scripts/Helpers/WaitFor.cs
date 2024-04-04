@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace ModelShark
+namespace ProTips.Scripts.Helpers
 {
     public static class WaitFor
     {

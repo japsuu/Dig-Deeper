@@ -21,17 +21,10 @@ namespace Entities
         /// </summary>
         public event Action Killed;
         
-        [SerializeField]
-        private DamageableTeam _team = DamageableTeam.Neutral;
-
-        [SerializeField]
-        private bool _deleteProjectileOnHit = true;
-
-        [SerializeField]
-        private int _maxHealth = 100;
-        
-        [SerializeField]
-        private float _receivedDamageMultiplier = 1f;
+        [SerializeField] private DamageableTeam _team = DamageableTeam.Neutral;
+        [SerializeField] private bool _deleteProjectileOnHit = true;
+        [SerializeField] private int _maxHealth = 100;
+        [SerializeField] private float _receivedDamageMultiplier = 1f;
         
         public int CurrentHealth { get; private set; }
         public int MaxHealth => _maxHealth;

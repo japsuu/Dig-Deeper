@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Entities.Drill;
 using JetBrains.Annotations;
+using MathHelpers;
 using Singletons;
 using UnityEngine;
-using WeightedRandomSelector;
 using WeightedRandomSelector.Interfaces;
 
 namespace World.Stations
@@ -18,24 +17,23 @@ namespace World.Stations
         [CanBeNull]
         public static TradingStation StationInstance;
         
-        [Serializable]
-        private class Entry<T>
-        {
-            public T Object;
-            public float Weight = 100;
-        }
-        
         [SerializeField]
-        private List<Entry<TradingStation>> _spawnablePrefabs = new();
+        private List<RandomSelectorEntry<TradingStation>> _spawnablePrefabs = new();
         
         private IRandomSelector<TradingStation> _randomSelector;
+        
+        
+        private void Start()
+        {
+            _randomSelector = RandomSelectorBuilder.Build(_spawnablePrefabs);
+        }
 
 
         private void Update()
         {
             const float stationInterval = Constants.STATION_DEPTH_INTERVAL;
 
-            Vector2 playerPosition = DrillController.Instance.transform.position;
+            Vector2 playerPosition = DrillStateMachine.Instance.transform.position;
             float playerDepth = -playerPosition.y;
             float depthProgress = playerDepth % stationInterval;
             float stationProgress = depthProgress / stationInterval;
@@ -54,27 +52,6 @@ namespace World.Stations
                 if (stationProgress >= 0.2f && stationProgress < 0.3f)
                     DespawnStation();   // Scuffed hack to despawn the station when the player is 20% through it
             }
-        }
-        
-        
-        private void Start()
-        {
-            _randomSelector = CreateRandomSelector(_spawnablePrefabs);
-        }
-
-
-        private static IRandomSelector<T> CreateRandomSelector<T>(List<Entry<T>> entries)
-        {
-            DynamicRandomSelector<T> selector = new();
-            
-            foreach (Entry<T> entry in entries)
-            {
-                T o = entry.Object;
-                if (o != null)
-                    selector.Add(o, entry.Weight);
-            }
-
-            return selector.Build();
         }
 
 

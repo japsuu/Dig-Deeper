@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using EasyBootstrap.Logging;
+using EasyBootstrap.Scripts;
+using EasyBootstrap.Scripts.Logging;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using EasyBootstrap.Singletons;
+using EasyBootstrap.Scripts.Singletons;
 using UnityEngine;
 
-namespace EasyBootstrap
+namespace EasyBootstrap.Scripts
 {
     /// <summary>
     /// Placed in the first loaded scene (main bootstrap scene),

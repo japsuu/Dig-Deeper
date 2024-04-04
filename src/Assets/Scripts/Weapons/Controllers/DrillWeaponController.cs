@@ -1,24 +1,22 @@
 ﻿using Audio;
 using NaughtyAttributes;
 using UnityEngine;
+using Utilities;
 
 namespace Weapons.Controllers
 {
-    public class PlayerWeaponController : MonoBehaviour
+    /// <summary>
+    /// Controls a single weapon and it's rotation.
+    /// </summary>
+    public class DrillWeaponController : MonoBehaviour
     {
         [Header("References")]
-        
-        [SerializeField]
-        private Transform _weaponRotationRoot;
-        
-        [SerializeField]
-        private WeaponObject _weapon;
-        
-        [SerializeField]
-        private GameObject[] _toggleableObjects;
+        [SerializeField] private Transform _weaponRotationRoot;
+        [SerializeField] private WeaponObject _weapon;
+        [SerializeField] private GameObject[] _toggleableObjects;
+        [SerializeField] private RotatingObject _alarmLight;
 
         [Header("Settings")]
-        
         [SerializeField]
         private KeyCode _fireKey = KeyCode.Space;
         
@@ -33,23 +31,15 @@ namespace Weapons.Controllers
 
         private float _previousHorizontalAxis;
         private bool _isFiringEnabled;
-
-        public bool IsFiringEnabled
-        {
-            get => _isFiringEnabled;
-            private set
-            {
-                _isFiringEnabled = value;
-                AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
-            }
-        }
         
         
         public void SetEnableFiring(bool enable)
         {
-            IsFiringEnabled = enable;
+            _isFiringEnabled = enable;
+            AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
             foreach (GameObject go in _toggleableObjects)
                 go.SetActive(enable);
+            _alarmLight.SetEnabled(enable);
         }
 
 
@@ -61,7 +51,7 @@ namespace Weapons.Controllers
 
         private void Update()
         {
-            if (!IsFiringEnabled)
+            if (!_isFiringEnabled)
                 return;
             
             RotateWeapon();
