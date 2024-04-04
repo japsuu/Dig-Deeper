@@ -14,7 +14,8 @@ namespace World
             if (_collisionMask != (_collisionMask | (1 << other.gameObject.layer)))
                 return;
 
-            if (!other.TryGetComponent(out EntityHealth health))
+            EntityHealth health = other.gameObject.GetComponentInChildren<EntityHealth>();
+            if (health == null)
                 return;
             
             health.Heal(_healAmount);

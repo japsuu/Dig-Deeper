@@ -6,16 +6,13 @@ namespace World.Chunks
     /// <summary>
     /// Component that removes terrain tiles in a radius around it.
     /// </summary>
-    public class TerrainDigger : MonoBehaviour
+    public class TerrainDigger : CustomBehaviour
     {
         [SerializeField]
         protected int BreakRadius = 10;
         
         [SerializeField]
         protected int BreakIntervalFrames = 10;   // We do not need to break tiles every frame.
-        
-        [SerializeField]
-        public ScriptUpdateMode _scriptUpdateMode = ScriptUpdateMode.Update;
 
         [SerializeField]
         [Tooltip("Whether to break all tiles between the current and previous position. More expensive, but smoother.")]
@@ -31,28 +28,13 @@ namespace World.Chunks
         }
 
 
-        protected virtual void Update()
+        protected override void InternalUpdate()
         {
-            if (_scriptUpdateMode == ScriptUpdateMode.Update)
-                BreakTiles();
-        }
-        
-        
-        protected virtual void FixedUpdate()
-        {
-            if (_scriptUpdateMode == ScriptUpdateMode.FixedUpdate)
-                BreakTiles();
-        }
-        
-        
-        public void ManualUpdate()
-        {
-            if (_scriptUpdateMode == ScriptUpdateMode.Manual)
-                BreakTiles();
+            BreakTiles();
         }
 
 
-        protected virtual void BreakTiles()
+        private void BreakTiles()
         {
             if (_breakIntervalFrameCounter++ < BreakIntervalFrames)
                 return;

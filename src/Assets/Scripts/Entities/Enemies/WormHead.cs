@@ -25,7 +25,7 @@ namespace Entities.Enemies
             
             _rotation = GetComponent<WormRotation>();
             if (_terrainDigger != null)
-                _terrainDigger._scriptUpdateMode = ScriptUpdateMode.Manual;
+                _terrainDigger.SetUpdateMode(ScriptUpdateMode.Manual);
 
             if (TradingStation.IsPlayerInStation)
             {

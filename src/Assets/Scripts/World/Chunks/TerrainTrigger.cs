@@ -1,4 +1,5 @@
 ﻿using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace World.Chunks
@@ -6,7 +7,7 @@ namespace World.Chunks
     /// <summary>
     /// Component that detects terrain tiles in a radius around it.
     /// </summary>
-    public class TerrainTrigger : MonoBehaviour
+    public class TerrainTrigger : CustomBehaviour
     {
         public event Action ContactStart;
         public event Action ContactEnd;
@@ -14,38 +15,27 @@ namespace World.Chunks
         [SerializeField]
         protected int CheckRadius = 5;
         
-        [SerializeField]
-        protected int CheckIntervalFrames = 4;   // We do not need to check tiles every frame.
-        
-        private int _checkIntervalFrameCounter;
-        
-        public bool IsTriggered { get; private set; }
-        
-        
-        protected virtual void LateUpdate()
+        [SerializeField, ReadOnly]
+        public bool IsTriggered;
+
+
+        private void UpdateTrigger()
         {
-            CheckTiles();
+            bool triggered = ChunkManager.Instance.ContainsNonAirTilesInRange( transform.position, CheckRadius);
+            bool triggerStart = triggered && !IsTriggered;
+            bool triggerStop = !triggered && IsTriggered;
+            IsTriggered = triggered;
+            
+            if (triggerStart)
+                ContactStart?.Invoke();
+            else if (triggerStop)
+                ContactEnd?.Invoke();
         }
 
 
-        protected virtual void CheckTiles()
+        protected override void InternalUpdate()
         {
-            if (_checkIntervalFrameCounter++ < CheckIntervalFrames)
-                return;
-            
-            bool triggered = ChunkManager.Instance.ContainsNonAirTilesInRange( transform.position, CheckRadius);
-            if (triggered && !IsTriggered)
-            {
-                ContactStart?.Invoke();
-                IsTriggered = true;
-            }
-            else if (!triggered && IsTriggered)
-            {
-                ContactEnd?.Invoke();
-                IsTriggered = false;
-            }
-            
-            _checkIntervalFrameCounter = 0;
+            UpdateTrigger();
         }
 
 

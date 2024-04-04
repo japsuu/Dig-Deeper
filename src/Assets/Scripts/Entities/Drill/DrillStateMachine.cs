@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using Audio;
 using Cameras;
 using Cinemachine;
@@ -11,6 +12,7 @@ using UnityEngine.Events;
 using Weapons.Controllers;
 using World.Chunks;
 using World.Stations;
+using Debug = UnityEngine.Debug;
 
 namespace Entities.Drill
 {
@@ -76,6 +78,7 @@ namespace Entities.Drill
 
             _terrainTrigger.ContactStart += OnTerrainContactStart;
             _terrainTrigger.ContactEnd += OnTerrainContactEnd;
+            _terrainTrigger.SetUpdateMode(ScriptUpdateMode.Manual);
             
             _health.HealthChanged += OnHealthChanged;
             _health.Killed += () => ChangeDrillState(DrillState.Destroyed);
@@ -97,6 +100,7 @@ namespace Entities.Drill
 
         private void Update()
         {
+            _terrainTrigger.ManualUpdate();
             UpdateDrillState();
         }
 
@@ -441,23 +445,20 @@ namespace Entities.Drill
             if (_state != DrillState.Airborne)
                 return;
             
+            LogVerbose("Terrain contact started.");
+            
             ChangeDrillState(DrillState.Crashed);
         }
 
 
         private void OnTerrainContactEnd()
         {
-            if (_activeCrashSequence != null)
-            {
-                StopCoroutine(_activeCrashSequence);
-                _activeCrashSequence = null;
-                LogVerbose("Terrain contact lost, force stopped active crash sequence.");
-            }
-
-            // Ignore terrain contacts when moving to a station.
+            // Ignore terrain contacts when e.g. moving to a station.
             if (_state != DrillState.Controlled)
                 return;
             
+            LogVerbose("Terrain contact ended.");
+
             ChangeDrillState(DrillState.Airborne);
         }
 
@@ -498,13 +499,25 @@ namespace Entities.Drill
             
             LogVerbose($"Drill crashed with velocity: {hitVelocity}");
             
-            // Start increasing the rb linear drag with a tween to slow down the drill.
-            // NOTE: We could also tween the velocity to zero, but that could cause issues if we were to fall through a very thin surface.
+            // Start increasing the rb linear drag with a while loop to slow down the drill.
             const float duration = 0.7f;
-            yield return DOTween.To(GetRigidbodyDrag, SetRigidbodyDrag, RB_LINEAR_DRAG_MAX, duration).OnComplete(() =>
+            float currentDrag = GetRigidbodyDrag();
+            while (currentDrag < RB_LINEAR_DRAG_MAX && _terrainTrigger.IsTriggered)
             {
-                SetRigidbodyDrag(0f);
-            });
+                currentDrag += Time.deltaTime * (RB_LINEAR_DRAG_MAX / duration);
+                SetRigidbodyDrag(Mathf.Min(currentDrag, RB_LINEAR_DRAG_MAX));
+                
+                yield return null;
+            }
+
+            SetRigidbodyDrag(0f);
+
+            if (!_terrainTrigger.IsTriggered)
+            {
+                LogVerbose("Exit crash sequence, drill is airborne.");
+                ChangeDrillState(DrillState.Airborne);
+                yield break;
+            }
             
             if (hitVelocity >= _minVelocityForHitRecovery)
             {
@@ -563,6 +576,8 @@ namespace Entities.Drill
         }
         
         
+        [Conditional("UNITY_EDITOR")]
+        [HideInCallstack]
         private void LogVerbose(string message)
         {
             if (_enableVerboseLogging)
