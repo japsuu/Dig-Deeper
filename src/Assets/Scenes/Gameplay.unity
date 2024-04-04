@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24291763}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.53354067, w: -0.8457745}
+  m_LocalRotation: {x: 0, y: 0, z: -0.26630628, w: -0.9638885}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4414,12 +4414,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnablePrefabs:
-  - Object: {fileID: 5072624608574698946, guid: cfcc81be1b30f3a4f99fa64d03732c17, type: 3}
+  - Object: {fileID: 7726983688417277118, guid: cfcc81be1b30f3a4f99fa64d03732c17, type: 3}
     Weight: 100
-  - Object: {fileID: 5072624608574698946, guid: 6979c006ca6c46f42a79f60c50b39e63, type: 3}
+  - Object: {fileID: 7726983688417277118, guid: 6979c006ca6c46f42a79f60c50b39e63, type: 3}
     Weight: 50
-  - Object: {fileID: 5072624608574698946, guid: eb2dc64e202533647b401307cbab28f6, type: 3}
+  - Object: {fileID: 7726983688417277118, guid: eb2dc64e202533647b401307cbab28f6, type: 3}
     Weight: 25
+  - Object: {fileID: 6212861362333341095, guid: e9accf20ec83b6f4aa18066b47c0e519, type: 3}
+    Weight: 100
+  - Object: {fileID: 6218825211672691799, guid: 711c0453749655d4bbbab192fd9f9309, type: 3}
+    Weight: 75
 --- !u!4 &1046063229
 Transform:
   m_ObjectHideFlags: 0
@@ -5777,7 +5781,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573469245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.53354067, w: -0.8457745}
+  m_LocalRotation: {x: 0, y: 0, z: -0.26630628, w: -0.9638885}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

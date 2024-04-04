@@ -8,7 +8,7 @@ namespace Entities.Enemies
     /// <summary>
     /// Creates a single worm entity.
     /// </summary>
-    public class WormSpawner : ChunkPopulator
+    public class WormSpawner : MonoBehaviour
     {
         [SerializeField]
         private WormHead _headPrefab;
@@ -29,7 +29,7 @@ namespace Entities.Enemies
         private float _bodyReceivedDamageMultiplier = 0.5f;
 
         [SerializeField]
-        private bool _spawnOnStart = false;
+        private bool _spawnOnStart = true;
 
 
         private void Start()
@@ -71,12 +71,6 @@ namespace Entities.Enemies
                 Destroy(gameObject);
 
             return head;
-        }
-
-
-        protected override void PopulateInternal(Chunk chunk, Vector2 position)
-        {
-            SpawnWorm();
         }
     }
 }

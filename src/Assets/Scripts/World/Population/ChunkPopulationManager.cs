@@ -18,18 +18,17 @@ namespace World.Population
         }
         
         [SerializeField]
-        private List<Entry<ChunkPopulator>> _spawnablePrefabs = new();
+        private List<Entry<GameObject>> _spawnablePrefabs = new();
         
-        private IRandomSelector<ChunkPopulator> _randomSelector;
+        private IRandomSelector<GameObject> _randomSelector;
 
 
         public void Populate(Chunk chunk)
         {
             Vector2 position = chunk.GetRandomPositionInside();
 
-            ChunkPopulator prefab = _randomSelector.SelectRandomItem();
-            ChunkPopulator populator = Instantiate(prefab, position, Quaternion.identity, chunk.transform);
-            populator.Populate(chunk, position);
+            GameObject prefab = _randomSelector.SelectRandomItem();
+            Instantiate(prefab, position, Quaternion.identity, chunk.transform);
         }
         
         

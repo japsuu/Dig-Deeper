@@ -123,7 +123,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: station
     originalName: 
-    pivot: {x: 0.49125597, y: -0.017770598}
+    pivot: {x: 0.49125597, y: -0.0047244094}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -131,7 +131,7 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 629
-      height: 619
+      height: 635
     spriteID: ce92084284397da4f94b8516db24e4cb
     spriteBone: []
     spriteOutline: []
@@ -154,9 +154,9 @@ ScriptedImporter:
       frameIndex: 0
       cellRect:
         x: 11
-        y: 11
+        y: 3
         width: 629
-        height: 619
+        height: 635
       spriteId: ce92084284397da4f94b8516db24e4cb
     linkedCells: []
     parentIndex: -1
