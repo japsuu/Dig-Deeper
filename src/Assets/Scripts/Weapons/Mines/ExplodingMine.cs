@@ -16,6 +16,7 @@ namespace Weapons.Mines
         
         [SerializeField] private AnimationCurve _explosionDamageFalloff;
         [SerializeField] private LayerMask _explodeOnCollisionLayers;
+        [SerializeField] private bool _canTriggerOtherMines;
 
         private readonly Collider2D[] _nearbyColliders = new Collider2D[8];
         private float _lifetime;
@@ -59,6 +60,9 @@ namespace Weapons.Mines
                     continue;
 
                 if (!go.TryGetComponent(out IDamageable damageable))
+                    continue;
+                
+                if (!_canTriggerOtherMines && go.TryGetComponent(out ExplodingMine _))
                     continue;
 
                 // Determine where shrapnel hit the damageable.

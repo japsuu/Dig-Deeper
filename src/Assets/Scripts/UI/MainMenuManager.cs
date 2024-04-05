@@ -52,7 +52,7 @@ namespace UI
             _helpPanel.gameObject.SetActive(false);
             _creditsPanel.gameObject.SetActive(false);
 
-            _highScoreText.text = "Your Highscore: " + HighScores.GetHighScores();
+            LoadHighScores();
         }
 
 
@@ -69,12 +69,19 @@ namespace UI
         }
         
         
-        // Hack hack hack because the highscore may be reset, and no time to implement an event
+        // Hack hack hack because the highscore may be reset by the user, and no time to implement an event
         private const float HIGH_SCORE_REFRESH_RATE = 1f;
         private void Update()
         {
             if (Time.time % HIGH_SCORE_REFRESH_RATE < 0.1f)
-                _highScoreText.text = "High Score: " + HighScores.GetHighScores();
+                LoadHighScores();
+        }
+
+
+        private void LoadHighScores()
+        {
+            (int credits, int depth) highScores = HighScores.GetHighScores();
+            _highScoreText.text = $"Your Highscores:\n{highScores.credits} credits\n{highScores.depth} m";
         }
     }
 }

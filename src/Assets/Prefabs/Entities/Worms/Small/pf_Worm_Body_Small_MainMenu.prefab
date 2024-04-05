@@ -130,13 +130,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb89e15b13534b10991f4a43a29923f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 0
+  _team: 2
   _deleteProjectileOnHit: 1
   _maxHealth: 100
   _receivedDamageMultiplier: 0.75
   SpriteRenderer: {fileID: 8119626514416453442}
   LinkRadius: 0.5
-  _collisionDamage: 10
+  _collisionDamage: 0
   HeadRef: {fileID: 0}
 --- !u!58 &1188822151702595368
 CircleCollider2D:
@@ -172,4 +172,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.85

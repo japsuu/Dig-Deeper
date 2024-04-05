@@ -21,7 +21,7 @@ public static class HighScores
     }
         
         
-    public static (int, int) GetHighScores()
+    public static (int credits, int depth) GetHighScores()
     {
         return (PlayerPrefs.GetInt(CREDITS_EARNED_KEY, 0), PlayerPrefs.GetInt(DEPTH_KEY, 0));
     }

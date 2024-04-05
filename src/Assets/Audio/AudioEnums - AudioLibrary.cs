@@ -1,5 +1,3 @@
-namespace Audio
-{
     public enum JSAMSound {
         Drill_Thump_Small,
         Drill_Thump_Large,
@@ -24,11 +22,11 @@ namespace Audio
         Station_Coins,
         Drill_Warning,
         Drill_Falling,
-        Drill_Drilling
+        Drill_Drilling,
+        Drill_Damaged
     }
     public enum JSAMMusic {
         Music_MainMenu,
         Music_Gameplay,
         Intro_Background_Loop
     }
-}

@@ -18,6 +18,10 @@ namespace Entities.Enemies
         private float _targetMaxDistanceFromPlayer = 15f;
 
         [SerializeField]
+        [Tooltip("Bias applied to the Y-axis of the target position, to get the worm to aim for the lower part of the player.")]
+        private float _biasTowardsLowerTargetPosition = 0.5f;
+
+        [SerializeField]
         private bool _playAttackSound = true;
         
         private Vector2 _targetPlayerOffset;
@@ -72,7 +76,9 @@ namespace Entities.Enemies
         
         private Vector2 GetRandomOffset()
         {
-            return Random.insideUnitCircle * _targetMaxDistanceFromPlayer;
+            Vector2 randomOffset = Random.insideUnitCircle * _targetMaxDistanceFromPlayer;
+            randomOffset.y -= _targetMaxDistanceFromPlayer * _biasTowardsLowerTargetPosition;
+            return randomOffset;
         }
         
         

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 8291404782715060774}
-  _populationChance: 0.004
+  _populationChance: 0.02
 --- !u!1 &6718126283364214225
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,6 +64,7 @@ namespace Audio
                 OneShotSoundType.DRILL_CRASH_WARNING => JSAMSound.Drill_Warning,
                 OneShotSoundType.DRILL_REBOOTING => JSAMSound.Drill_Reboot,
                 OneShotSoundType.DRILL_EXPLOSION => JSAMSound.Drill_Explosion,
+                OneShotSoundType.DRILL_DAMAGED => JSAMSound.Drill_Damaged,
                 OneShotSoundType.UI_BUTTON_CLICK => JSAMSound.UI_Menu_Open,
                 _ => null
             };

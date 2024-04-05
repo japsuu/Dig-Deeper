@@ -46,6 +46,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3873ad041c2022c4f97055f00c24e523, type: 2}
   - {fileID: 11400000, guid: 01decbf0692efa14e85877808532a963, type: 2}
   - {fileID: 11400000, guid: 5538b5ec7e99bc04f94b1f1da6f2ab6e, type: 2}
+  - {fileID: 11400000, guid: 4640d30e367545e4bbad32de7f5fe70b, type: 2}
   Music:
   - {fileID: 11400000, guid: fdd8bbd3d09121a4aaa1b44ed7823123, type: 2}
   - {fileID: 11400000, guid: 09553ebd03595124492b9fc187f73c05, type: 2}
@@ -73,6 +74,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3873ad041c2022c4f97055f00c24e523, type: 2}
     - {fileID: 11400000, guid: 01decbf0692efa14e85877808532a963, type: 2}
     - {fileID: 11400000, guid: 5538b5ec7e99bc04f94b1f1da6f2ab6e, type: 2}
+    - {fileID: 11400000, guid: 4640d30e367545e4bbad32de7f5fe70b, type: 2}
     foldout: 1
   - name: Ambient
     files:

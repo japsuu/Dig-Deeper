@@ -29,7 +29,7 @@ namespace World.Chunks
         private int _chunkLoadRadiusSquared;
         private int _chunkUnloadRadiusSquared;
         private Vector2Int _chunkCenterOffset;
-        private ChunkGenerator _chunkGenerator;
+        private ChunkGenerationManager _chunkGenerationManager;
         private Vector2Int _playerChunkPosition;
         private List<Vector2Int> _chunkLoadSpiral; // Precomputed spiral of chunk positions to load.
         private TileDatabase _tileDatabase;
@@ -42,7 +42,7 @@ namespace World.Chunks
 
         private void Awake()
         {
-            _chunkGenerator = GetComponent<ChunkGenerator>();
+            _chunkGenerationManager = GetComponent<ChunkGenerationManager>();
             _chunkLoadRadiusSquared = _chunkLoadRadius * _chunkLoadRadius;
 
             // Extend the unload distance by some distance relative to load distance, to prevent chunks getting unloaded too early.
@@ -51,7 +51,7 @@ namespace World.Chunks
 
             // Initialize the material database before any chunks are loaded.
             _tileDatabase = _availableMaterials.CreateDatabase();
-            _chunkGenerator.Initialize(_tileDatabase);
+            _chunkGenerationManager.Initialize(_tileDatabase);
         }
 
 
@@ -430,7 +430,7 @@ namespace World.Chunks
             _loadedChunksMap.Add(position, chunk);
             _loadedChunks.Add(position);
 
-            _chunkGenerator.QueueChunkGeneration(chunk);
+            _chunkGenerationManager.QueueChunkGeneration(chunk);
         }
 
 

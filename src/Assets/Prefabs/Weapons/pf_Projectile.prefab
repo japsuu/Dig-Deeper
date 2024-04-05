@@ -201,6 +201,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weightGrams: 2000
   _baseDamage: 55
+  _debugDraw: 0
+  _projectileHitLayers:
+    serializedVersion: 2
+    m_Bits: 1536
   _explodesOnImpact: 1
   _explosionRadius: 3
   _explosionDamageFalloff:
@@ -227,10 +231,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _debugDraw: 0
-  _projectileHitLayers:
-    serializedVersion: 2
-    m_Bits: 1536
+  _enableThickRaycast: 1
+  _raycastThickness: 0.1
 --- !u!114 &-8836323200504834665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8097d434ce84316a3678ae3e02548e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scriptUpdateMode: 1
   BreakRadius: 2
   BreakIntervalFrames: 0
-  _scriptUpdateMode: 1
   _enableLineCasting: 1

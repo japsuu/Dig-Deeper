@@ -10,21 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d15ae218647a2d4f85e14306846c10c, type: 3}
-  m_Name: Drill_Thump_Small
+  m_Name: Drill_Damaged
   m_EditorClassIdentifier: 
   safeName: 
   presetDescription: 
   files:
-  - {fileID: 8300000, guid: d9fe63fbbb4af7e409fb3dfe54b6bd98, type: 3}
+  - {fileID: 8300000, guid: 5da68c7c8d2a03040a5fa1c240bafbc6, type: 3}
+  - {fileID: 8300000, guid: 603974c855cc06e479d3a1526664a284, type: 3}
   loopStart: 0
   loopEnd: 0
   bpm: 120
-  relativeVolume: 1
+  relativeVolume: 0.7
   spatialize: 0
   maxDistance: 0
   priority: 128
   startingPitch: 1
-  pitchShift: 0.242
+  pitchShift: 0.264
   loopMode: 0
   delay: 0
   ignoreTimeScale: 0

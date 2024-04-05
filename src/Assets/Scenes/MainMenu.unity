@@ -10036,7 +10036,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Your Highscore: 99999'
+  m_text: 'Your Highscores:
+
+    9999999 credits
+
+    9999999 meters'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a68c7397923c3d84081f75696a902c4d, type: 2}
   m_sharedMaterial: {fileID: -3351359267559531349, guid: a68c7397923c3d84081f75696a902c4d, type: 2}
@@ -11703,7 +11707,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

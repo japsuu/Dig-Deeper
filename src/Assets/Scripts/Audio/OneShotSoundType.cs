@@ -17,6 +17,7 @@
         DRILL_CRASH_WARNING,
         DRILL_REBOOTING,
         DRILL_EXPLOSION,
+        DRILL_DAMAGED,
         UI_BUTTON_CLICK,
         UI_BUTTON_HOVER,
     }

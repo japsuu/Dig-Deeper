@@ -251,8 +251,11 @@ namespace Entities.Drill
                     if (!_terrainTrigger.IsTriggered)
                     {
                         LogVerbose("Exit crash sequence, drill is airborne.");
-                        StopCoroutine(_crashRecoverySequence);
-                        _crashRecoverySequence = null;
+                        if (_crashRecoverySequence != null)
+                        {
+                            StopCoroutine(_crashRecoverySequence);
+                            _crashRecoverySequence = null;
+                        }
                         // Clean up the coroutine.
                         SetDrillsEnabled(true);
                         SetLightsEnabled(true);
@@ -513,7 +516,10 @@ namespace Entities.Drill
         private void OnHealthChanged(HealthChangedArgs healthChangedArgs)
         {
             if (healthChangedArgs.IsDamage)
+            {
                 EventManager.PlayerDrill.OnDrillDamaged(healthChangedArgs);
+                AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_DAMAGED);
+            }
             else
                 EventManager.PlayerDrill.OnDrillHealed(healthChangedArgs);
         }
