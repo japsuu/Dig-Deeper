@@ -14,10 +14,11 @@ namespace World.Generation
 {
     /// <summary>
     /// Threaded generator that processes chunks in the background.
+    /// Multithreading is skipped for WebGL builds due to Unity's (browser's) limited support for threads.
     /// </summary>
     public class ChunkGenerator : MonoBehaviour
     {
-        public class ChunkData
+        private class ChunkData
         {
             public readonly Vector2Int ChunkPosition;
             public readonly TileData[] Tiles;
@@ -39,12 +40,16 @@ namespace World.Generation
         private const int BRICK_COUNT_X = Constants.CHUNK_SIZE_PIXELS / NOISE_SAMPLE_BRICK_SIZE;
         private const int BRICK_COUNT_Y = Constants.CHUNK_SIZE_PIXELS / NOISE_SAMPLE_BRICK_SIZE;
 
+        
+        [Header("References")]
         [SerializeField]
         private MaterialDefinition _baseGroundMaterial;
 
         [SerializeField]
         private List<MaterialGenerationSettings> _materialGenerationSettings;
 
+        
+        [Header("Settings")]
         [SerializeField]
         private int _groundLevel;
 
@@ -52,33 +57,20 @@ namespace World.Generation
         [Tooltip("The height at which chunk population should start.")]
         private int _populationLevel = -50;
 
-        [FormerlySerializedAs("_caveNoiseSettings")]
-        [Header("Noise")]
-        [SerializeField]
-        private NoiseFieldSettings _densityNoiseSettings;
-
-        [FormerlySerializedAs("_noise1Settings")]
-        [SerializeField]
-        private NoiseFieldSettings _temperatureSettings;
-
-        [FormerlySerializedAs("_noise2Settings")]
-        [SerializeField]
-        private NoiseFieldSettings _pressureSettings;
-
-        [FormerlySerializedAs("_noise3Settings")]
-        [SerializeField]
-        private NoiseFieldSettings _tectonicsSettings;
-
         [SerializeField]
         [Range(0f, 1f)]
         private float _caveFactor = 0.25f;
 
-#if UNITY_EDITOR
-        [SerializeField]
-        private Image _debugImage;
+        
+        [Header("Noise")]
+        [SerializeField] private NoiseFieldSettings _densityNoiseSettings;
+        [SerializeField] private NoiseFieldSettings _temperatureSettings;
+        [SerializeField] private NoiseFieldSettings _pressureSettings;
+        [SerializeField] private NoiseFieldSettings _tectonicsSettings;
 
-        [SerializeField]
-        private MaterialGenerationSettings _debugSettings;
+#if UNITY_EDITOR
+        [SerializeField] private Image _debugImage;
+        [SerializeField] private MaterialGenerationSettings _debugSettings;
 #endif
 
         private TileDatabase _tileDatabase;
