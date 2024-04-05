@@ -39,7 +39,7 @@ namespace Entities.Enemies
 
         private void Start()
         {
-            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_SPAWN);
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_SPAWN, transform);
         }
 
 
@@ -74,7 +74,7 @@ namespace Entities.Enemies
 
         public override void Damage(int amount)
         {
-            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_HIT_CRITICAL);
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_HIT_CRITICAL, transform);
             base.Damage(amount);
         }
 
@@ -84,7 +84,7 @@ namespace Entities.Enemies
             // If the head is killed, the whole worm should be destroyed
             DestroyRecursive();
             
-            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_DEATH);
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_DEATH, transform);
         }
     }
 }

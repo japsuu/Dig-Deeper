@@ -521,7 +521,10 @@ namespace Entities.Drill
                 AudioLayer.PlaySoundOneShot(OneShotSoundType.DRILL_DAMAGED);
             }
             else
+            {
                 EventManager.PlayerDrill.OnDrillHealed(healthChangedArgs);
+                AudioLayer.PlaySoundOneShot(OneShotSoundType.MISC_HEAL);
+            }
         }
 
 

@@ -24,6 +24,7 @@ namespace Entities.Enemies
         public int _collisionDamage = 10;
 
         protected WormBody TailLink;
+        protected bool AwaitingDestruction;
 
         
         protected override void Awake()
@@ -49,6 +50,9 @@ namespace Entities.Enemies
 
         protected void DestroyRecursive()
         {
+            if(AwaitingDestruction)
+                return;
+            AwaitingDestruction = true;
             if (gameObject == null)
                 return;
             
@@ -61,6 +65,7 @@ namespace Entities.Enemies
 
         protected void DestroySelf()
         {
+            AwaitingDestruction = true;
             Destroy(gameObject);
         }
         

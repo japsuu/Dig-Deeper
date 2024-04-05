@@ -63,7 +63,7 @@ namespace Entities.Enemies
             {
                 _targetPlayerOffset = GetRandomOffset();
                 if (_playAttackSound)
-                    AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_ATTACK);
+                    AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_ATTACK, transform);
                 _timeSinceReachedTarget = 0;
             }
             

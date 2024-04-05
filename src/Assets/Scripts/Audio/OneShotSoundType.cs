@@ -20,5 +20,7 @@
         DRILL_DAMAGED,
         UI_BUTTON_CLICK,
         UI_BUTTON_HOVER,
+        MISC_EXPLOSION,
+        MISC_HEAL,
     }
 }

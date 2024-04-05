@@ -109,7 +109,7 @@ namespace World.Chunks
             _isTextureDirty = true;
             _isGenerated = true;
             
-            if (canPopulate && Random.value < _populationChance * Difficulty.GetChunkPopulationModifier())
+            if (canPopulate && Random.value < _populationChance * Difficulty.GetChunkPopulationModifier(-transform.position.y))
                 ChunkPopulationManager.Instance.Populate(this);
         }
         

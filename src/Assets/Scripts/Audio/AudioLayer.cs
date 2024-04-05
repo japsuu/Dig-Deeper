@@ -1,4 +1,5 @@
 ﻿using JSAM;
+using UnityEngine;
 
 namespace Audio
 {
@@ -8,36 +9,59 @@ namespace Audio
     /// </summary>
     public static class AudioLayer
     {
-        public static void PlaySoundOneShot(OneShotSoundType clip)
+        public static void PlaySoundOneShot(OneShotSoundType clip, Vector3 position = default)
         {
             JSAMSound? jsamSound = OneShotSoundTypeToJsamSound(clip);
             
             if (jsamSound == null)
                 return;
             
-            AudioManager.PlaySound(jsamSound.Value);
+            if (position != default)
+                AudioManager.PlaySound(jsamSound.Value, position);
+            else
+                AudioManager.PlaySound(jsamSound.Value);
         }
         
         
-        public static void PlaySoundLoop(LoopingSoundType clip)
+        public static void PlaySoundOneShot(OneShotSoundType clip, Transform parent)
+        {
+            JSAMSound? jsamSound = OneShotSoundTypeToJsamSound(clip);
+            
+            if (jsamSound == null)
+                return;
+            
+            if (parent != null)
+                AudioManager.PlaySound(jsamSound.Value, parent);
+            else
+                AudioManager.PlaySound(jsamSound.Value);
+        }
+        
+        
+        public static void PlaySoundLoop(LoopingSoundType clip, Transform parent = null)
         {
             JSAMSound? jsamSound = LoopingSoundTypeToJsamSound(clip);
             
             if (jsamSound == null)
                 return;
             
-            AudioManager.PlaySound(jsamSound.Value);
+            if (parent != null)
+                AudioManager.PlaySound(jsamSound.Value, parent);
+            else
+                AudioManager.PlaySound(jsamSound.Value);
         }
         
         
-        public static void StopSoundLoop(LoopingSoundType clip)
+        public static void StopSoundLoop(LoopingSoundType clip, Transform parent = null)
         {
             JSAMSound? jsamSound = LoopingSoundTypeToJsamSound(clip);
             
             if (jsamSound == null)
                 return;
             
-            AudioManager.StopSound(jsamSound.Value);
+            if (parent != null)
+                AudioManager.StopSound(jsamSound.Value, parent);
+            else
+                AudioManager.StopSound(jsamSound.Value);
         }
         
         
@@ -66,6 +90,8 @@ namespace Audio
                 OneShotSoundType.DRILL_EXPLOSION => JSAMSound.Drill_Explosion,
                 OneShotSoundType.DRILL_DAMAGED => JSAMSound.Drill_Damaged,
                 OneShotSoundType.UI_BUTTON_CLICK => JSAMSound.UI_Menu_Open,
+                OneShotSoundType.MISC_EXPLOSION => JSAMSound.Explosion,
+                OneShotSoundType.MISC_HEAL => JSAMSound.Heal,
                 _ => null
             };
         }

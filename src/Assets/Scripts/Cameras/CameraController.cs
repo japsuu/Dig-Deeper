@@ -42,9 +42,23 @@ namespace Cameras
         private void OnSceneLoaded(Scene s, LoadSceneMode m)
         {
             // Try to find the target object in the scene.
-            GameObject player = GameObject.FindGameObjectWithTag(_cameraTargetTag);
-            if (player != null)
-                _virtualCamera.Follow = player.transform;
+            GameObject camTarget = GameObject.FindGameObjectWithTag(_cameraTargetTag);
+            if (camTarget != null)
+                _virtualCamera.Follow = camTarget.transform;
+            
+            // Try to find a audio listened in the scene. If one is found, replace the listener on the main camera.
+            AudioListener mainCamListener = MainCamera.GetComponent<AudioListener>();
+            mainCamListener.enabled = true;
+            AudioListener[] listeners = FindObjectsOfType<AudioListener>();
+            foreach (AudioListener listener in listeners)
+            {
+                if (listener == mainCamListener)
+                    continue;
+                
+                mainCamListener.enabled = false;
+                listener.enabled = true;
+                Debug.Log($"Found audio listener on object {listener.gameObject.name}. Replaced the main camera listener.");
+            }
             
             SetNoiseAmplitude(0f);
         }

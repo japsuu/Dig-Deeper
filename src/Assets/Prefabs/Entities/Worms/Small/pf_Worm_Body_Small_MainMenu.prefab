@@ -136,7 +136,7 @@ MonoBehaviour:
   _receivedDamageMultiplier: 0.75
   SpriteRenderer: {fileID: 8119626514416453442}
   LinkRadius: 0.5
-  _collisionDamage: 0
+  _collisionDamage: 4
   HeadRef: {fileID: 0}
 --- !u!58 &1188822151702595368
 CircleCollider2D:

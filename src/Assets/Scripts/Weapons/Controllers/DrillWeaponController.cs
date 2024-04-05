@@ -36,7 +36,7 @@ namespace Weapons.Controllers
         public void SetEnableFiring(bool enable)
         {
             _isFiringEnabled = enable;
-            AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
+            AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE, transform);
             foreach (GameObject go in _toggleableObjects)
                 go.SetActive(enable);
             _alarmLight.SetEnabled(enable);
@@ -73,9 +73,9 @@ namespace Weapons.Controllers
             _weaponRotationRoot.localEulerAngles = localRotation;
 
             if (_previousHorizontalAxis == 0 && axis != 0)
-                AudioLayer.PlaySoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
+                AudioLayer.PlaySoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE, transform);
             else if (_previousHorizontalAxis != 0 && axis == 0)
-                AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE);
+                AudioLayer.StopSoundLoop(LoopingSoundType.DRILL_CANNON_ROTATE, transform);
             
             _previousHorizontalAxis = axis;
         }

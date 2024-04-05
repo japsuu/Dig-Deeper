@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using Audio;
+using Entities;
 using UnityEngine;
 
 namespace Weapons.Mines
@@ -76,6 +77,7 @@ namespace Weapons.Mines
             }
             
             Destroy(gameObject);
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.MISC_EXPLOSION, transform.position);
         }
 
         private void OnDrawGizmosSelected()

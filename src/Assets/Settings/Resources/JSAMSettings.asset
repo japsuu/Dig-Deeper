@@ -17,10 +17,10 @@ MonoBehaviour:
   startingSoundChannels: 16
   startingMusicChannels: 3
   defaultSoundMaxDistance: 7
-  disableConsoleLogs: 0
+  disableConsoleLogs: 1
   dontDestroyOnLoad: 1
   dynamicSourceAllocation: 1
-  soundChannelPrefabOverride: {fileID: 0}
+  soundChannelPrefabOverride: {fileID: 4620221452601782289, guid: 2420a2f8a6d91b542a8b1402b4eec75a, type: 3}
   musicChannelPrefabOverride: {fileID: 0}
   stopSoundsOnSceneChanged: 0
   stopMusicOnSceneChanged: 0

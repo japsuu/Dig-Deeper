@@ -23,7 +23,9 @@
         Drill_Warning,
         Drill_Falling,
         Drill_Drilling,
-        Drill_Damaged
+        Drill_Damaged,
+        Explosion,
+        Heal
     }
     public enum JSAMMusic {
         Music_MainMenu,

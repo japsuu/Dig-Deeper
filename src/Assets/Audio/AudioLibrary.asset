@@ -19,6 +19,7 @@ MonoBehaviour:
   - UI
   - Worms
   - Station
+  - Misc
   musicCategories:
   - 
   Sounds:
@@ -47,6 +48,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01decbf0692efa14e85877808532a963, type: 2}
   - {fileID: 11400000, guid: 5538b5ec7e99bc04f94b1f1da6f2ab6e, type: 2}
   - {fileID: 11400000, guid: 4640d30e367545e4bbad32de7f5fe70b, type: 2}
+  - {fileID: 11400000, guid: 106f14720ab6d1d418ca450334cf0ef8, type: 2}
+  - {fileID: 11400000, guid: 298baba6d8c53994d8b30d07ba4133ed, type: 2}
   Music:
   - {fileID: 11400000, guid: fdd8bbd3d09121a4aaa1b44ed7823123, type: 2}
   - {fileID: 11400000, guid: 09553ebd03595124492b9fc187f73c05, type: 2}
@@ -104,6 +107,11 @@ MonoBehaviour:
     files:
     - {fileID: 11400000, guid: ca2933bd59b805e4fac7a7749454c246, type: 2}
     - {fileID: 11400000, guid: 6b2692522e736e74982788ba094532a1, type: 2}
+    foldout: 1
+  - name: Misc
+    files:
+    - {fileID: 11400000, guid: 106f14720ab6d1d418ca450334cf0ef8, type: 2}
+    - {fileID: 11400000, guid: 298baba6d8c53994d8b30d07ba4133ed, type: 2}
     foldout: 1
   musicCategoriesToList:
   - name: 

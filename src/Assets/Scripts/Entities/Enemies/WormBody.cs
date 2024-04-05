@@ -5,15 +5,13 @@ namespace Entities.Enemies
 {
     public class WormBody : WormPart
     {
-        private bool _awaitingDestruction;    // This object may be set as head the same frame it is destroyed.
-        
         [HideInInspector]
         public WormHead HeadRef;
         
         
         public void SetAsHead()
         {
-            if (_awaitingDestruction)
+            if (AwaitingDestruction)
                 return;
             
             if (HeadRef == null)
@@ -31,7 +29,7 @@ namespace Entities.Enemies
 
         public override void Damage(int amount)
         {
-            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_HIT_NORMAL);
+            AudioLayer.PlaySoundOneShot(OneShotSoundType.WORM_HIT_NORMAL, transform);
             
             base.Damage(amount);
         }
@@ -39,7 +37,9 @@ namespace Entities.Enemies
 
         protected override void OnKilled()
         {
-            _awaitingDestruction = true;
+            if (AwaitingDestruction)
+                return;
+            
             if (TailLink != null)
                 TailLink.SetAsHead();
             
