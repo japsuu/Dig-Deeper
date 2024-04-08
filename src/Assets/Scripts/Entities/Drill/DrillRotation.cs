@@ -27,7 +27,7 @@ namespace Entities.Drill
 
         
         private float _rotationSpeed;
-        private float _controlFactor;
+        private float _controlFactor = 1f;
         private float _tweenFactor;
         private float _terrainHardnessFactor;
 

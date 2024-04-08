@@ -1,36 +1,16 @@
-﻿using System.Linq;
-using TMPro;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UI.Settings
 {
-    public class DifficultySettings : MonoBehaviour
+    public class DifficultySettings : DropDownSettings
     {
-        [SerializeField]
-        private TMP_Dropdown _dropdown;
+        protected override List<string> Options => Enum.GetNames(typeof(Difficulty.DifficultyType)).ToList();
+        protected override int DefaultValue => (int)Difficulty.CurrentDifficulty;
 
-
-        private void Awake()
-        {
-            // Populate the dropdown with the available Difficulty settings
-            _dropdown.ClearOptions();
-            _dropdown.AddOptions(System.Enum.GetNames(typeof(Difficulty.DifficultyType)).ToList());
-            
-            // Set the current quality setting
-            _dropdown.value = (int)Difficulty.CurrentDifficulty;
-            
-            // Refresh the shown value
-            _dropdown.RefreshShownValue();
-        }
-
-
-        private void Start()
-        {
-            _dropdown.onValueChanged.AddListener(ChangeDifficulty);
-        }
         
-        
-        private static void ChangeDifficulty(int index)
+        protected override void OnOptionSelected(int index)
         {
             Difficulty.CurrentDifficulty = (Difficulty.DifficultyType)index;
         }

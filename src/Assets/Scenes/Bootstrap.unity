@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 97087973}
   - component: {fileID: 97087972}
   - component: {fileID: 97087971}
-  - component: {fileID: 97087970}
   m_Layer: 5
   m_Name: Tooltip Canvas
   m_TagString: Untagged
@@ -142,23 +141,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &97087970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 97087969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &97087971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,7 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guiCamera: {fileID: 3869985060325527951}
   matchRotationTo: {fileID: 0}
-  tooltipsEnabled: 1
+  tooltipsEnabled: 0
   touchSupport: 0
   tooltipDelay: 0.33
   fadeDuration: 0.2
@@ -1497,7 +1479,6 @@ SceneRoots:
   - {fileID: 535285374}
   - {fileID: 849919313}
   - {fileID: 1903361206}
-  - {fileID: 147810896}
   - {fileID: 809114194}
   - {fileID: 1671978460}
   - {fileID: 3322528412537676811}
@@ -1505,6 +1486,7 @@ SceneRoots:
   - {fileID: 1592624377}
   - {fileID: 761582173}
   - {fileID: 97087973}
+  - {fileID: 147810896}
   - {fileID: 2094437620}
   - {fileID: 1950121197823002228}
   - {fileID: 235798073769292829}

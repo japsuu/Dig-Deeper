@@ -1,38 +1,18 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
-using UnityEngine;
 
 namespace UI.Settings
 {
-    public class QualitySettings : MonoBehaviour
+    public class QualitySettings : DropDownSettings
     {
-        [SerializeField]
-        private TMP_Dropdown _qualityDropdown;
+        protected override List<string> Options => UnityEngine.QualitySettings.names.ToList();
+        protected override int DefaultValue => UnityEngine.QualitySettings.GetQualityLevel();
 
-
-        private void Awake()
-        {
-            // Populate the dropdown with the available quality settings
-            _qualityDropdown.ClearOptions();
-            _qualityDropdown.AddOptions(UnityEngine.QualitySettings.names.ToList());
-            
-            // Set the current quality setting
-            _qualityDropdown.value = UnityEngine.QualitySettings.GetQualityLevel();
-            
-            // Refresh the shown value
-            _qualityDropdown.RefreshShownValue();
-        }
-
-
-        private void Start()
-        {
-            _qualityDropdown.onValueChanged.AddListener(ChangeQuality);
-        }
         
-        
-        private void ChangeQuality(int qualityIndex)
+        protected override void OnOptionSelected(int index)
         {
-            UnityEngine.QualitySettings.SetQualityLevel(qualityIndex, true);
+            UnityEngine.QualitySettings.SetQualityLevel(index, true);
         }
     }
 }

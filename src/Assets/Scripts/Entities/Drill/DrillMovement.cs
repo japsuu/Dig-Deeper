@@ -28,7 +28,7 @@ namespace Entities.Drill
         [SerializeField] private float _movementEndTweenDuration = 1f;
 
         private float _movementSpeed;
-        private float _controlFactor;
+        private float _controlFactor = 1f;
         private float _tweenFactor;
         private float _terrainHardnessFactor;
         private Rigidbody2D _rigidbody;
